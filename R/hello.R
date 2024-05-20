@@ -14,5 +14,5 @@
 #   Test Package:              'Cmd + Shift + T'
 
 hello <- function(x) {
-  x^2
+  x + 5
 }
