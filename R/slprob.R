@@ -15,6 +15,7 @@
 #'
 #' @noRd
 #' @examples
+#' slprob(c(1,1,2,3,3,2,1,2),1:3)
 slprob <- function(y, yunit) {
   # Get length of y vector
   n <- length(y)
