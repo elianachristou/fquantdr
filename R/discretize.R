@@ -17,31 +17,33 @@
 #' @examples
 #' y -> c(1, 2, 3, 2)
 #' yunit -> unique(y)
-#'
+#' discretize(y, yunit)
 discretize <- function(y, yunit) {
   n <- length(y)
-  #Add small amount of noise to y
+  # Add small amount of noise to y
   y <- y + .00001 * mean(y) * rnorm(n)
   nsli <- length(yunit)
-  #order y values in ascending order
+  # Order y values in ascending order
   yord <- y[order(y)]
   n <- length(y)
-  nwith <- floor(n / nsli)
-  #instantiate vector of division points between slices
+  nwidth <- floor(n / nsli)
+  # Instantiate vector of division points between slices
   divpt <- rep(0, nsli - 1)
-  #set each division point to the values of yord that
-  #represent the boundaries between slices
+  # Set each division point to the values of yord that represent the boundaries
+  # between slices
   for(i in 1:(nsli - 1)) {
-    divpt[i] <- yord[i * nwith + 1] }
+    divpt[i] <- yord[i * nwidth + 1]
+  }
 
   y1 <- rep(0, n)
-  #Assign slice labels to the upper boundary slice
+  # Assign slice labels to the upper boundary slice
   y1[y >= divpt[nsli - 1]] <- nsli
-  #Assign slice labels to the lower boundary slice
+  # Assign slice labels to the lower boundary slice
   y1[y < divpt[1]] <- 1
-  #Assign slices labels to intermediate slices
+  # Assign slices labels to intermediate slices
   for(i in 2:(nsli - 1)) {
-    y1[(y >= divpt[i - 1]) & (y < divpt[i])] <- i }
-  #return discretized y
-  return(y1)
+    y1[(y >= divpt[i - 1]) & (y < divpt[i])] <- i
+  }
+  # Return discretized y
+  y1
 }
