@@ -53,6 +53,10 @@ sonf = function(y, xfd, dev2_penalty = FALSE, lambda=NULL) {
   if (length(y) != dim(xfd$coef)[2]) {
     stop("The length of y and the number of observations in xfd must agree")
   }
+  # checks if n > p
+  if (length(y) <= dim(xfd$coef)[3]) {
+    stop(paste("number of observations of y (", length(y), ") should be greater than the number of predictors of xfd (", dim(xfd$coef)[3], ").", sep = ""))
+  }
 
   basis <- xfd$basis
   nbasis <- basis$nbasis
