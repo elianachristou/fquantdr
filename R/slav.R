@@ -20,6 +20,7 @@
 #'   nrow = 4, byrow= TRUE)
 #' y <- c(1, 2, 3, 2)
 #' yunit <- unique(y)
+#' slav(xcoefs, y, yunit)
 slav <- function(xcoefs, y, yunit) {
   # Get dimensions of xcoefs
   n <- nrow(xcoefs)
