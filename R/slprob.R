@@ -17,6 +17,19 @@
 #' @examples
 #' slprob(c(1,1,2,3,3,2,1,2),1:3)
 slprob <- function(y, yunit) {
+  if (!is.vector(y)) {
+    stop("y must be a vector.")
+  }
+  if (!is.vector(yunit)) {
+    stop("yunit must be a vector.")
+  }
+  for (i in y) {
+    if(!(i %in% yunit)) {
+      stop(paste("y must be discretized such that all values in y are in",
+                 "yunit. The value", i, "is not in yunit."))
+    }
+  }
+
   # Get length of y vector
   n <- length(y)
   # Get number of slices from yunit
