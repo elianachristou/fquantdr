@@ -4,13 +4,13 @@
 #' properties possible of the original matrix.
 #'
 #' The function finds the average between a matrix and its transpose to create
-#' a symmetrical matrix while retaining properties such as the mean and
+#' a symmetrical matrix while retaining properties such as the mean.
 #'
-#' @param a
+#' @param a The matrix to symmetrize
 #'
-#' @return
-#' @export
+#' @return A symmetric matrix based on the matrix \code{a}
 #'
+#' @noRd
 #' @examples
 #' testMatrix <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), nrow = 3, ncol = 3)
 #' symmetry(testMatrix)
