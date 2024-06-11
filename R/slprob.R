@@ -25,7 +25,7 @@ slprob <- function(y, yunit) {
   out <- rep(0, nslice)
   for (i in 1:nslice) {
     # Probabilty = number of points in slice / number of points
-    out[i] <- length(y[y==yunit[i]]) / n
+    out[i] <- length(y[y == yunit[i]]) / n
   }
   # Return output vector
   out
