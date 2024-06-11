@@ -1,8 +1,12 @@
 #' Discretize Response
 #'
-#' \code{discretize} converts the response into a discrete form by creating slices and assigning each part of the response to the slice it is in.
+#' \code{discretize} converts the response into a discrete form by creating
+#' slices and assigning each part of the response to the slice it is in.
 #'
-#' This function converts a vector response into a vector of the slices each value in the response is a part of. This is important for the Functional Sliced Inverse Regression method which relies on using these slices for reducing the dimension of data.
+#' This function converts a vector response into a vector of the slices each
+#' value in the response is a part of. This is important for the Functional
+#' Sliced Inverse Regression method which relies on using these slices for
+#' reducing the dimension of data.
 #'
 #' @param y A vector representing the response variable
 #' @param yunit A vector defining the slices used
