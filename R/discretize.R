@@ -32,7 +32,7 @@ discretize <- function(y, yunit) {
 
   n <- length(y)
   # Add small amount of noise to y
-  y <- y + .00001 * mean(y) * rnorm(n)
+  y <- y + .00001 * mean(y) * stats::rnorm(n)
   nsli <- length(yunit)
   # Order y values in ascending order
   yord <- y[order(y)]
