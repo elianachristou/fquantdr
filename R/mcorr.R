@@ -22,6 +22,13 @@
 #'    data based on weak conditional moments. \emph{The Annals of Statistics}
 #'    50(1), 107--128.
 #'
+#' @include matpower.R
+#' @examples
+#' set.seed(1234)
+#' u <- matrix(rnorm(100), ncol=2)
+#' v <- matrix(rnorm(100), ncol=2)
+#' mcorr(u, v)
+#'
 #' @noRd
 
 mcorr <- function(u, v) {
@@ -39,7 +46,10 @@ mcorr <- function(u, v) {
     stop("u and v must have the same dimension.")
   }
 
-  if(dim(u)[2] == 1) return(c(abs(cor(u, v))))
+  if(dim(u)[2] == 1) {
+    return(c(abs(cor(u, v))))
+  }
+
   if(dim(u)[2] != 1) {
     suu.nhalf <- matpower(var(u), -1/2)
     svv.inv <- solve(var(v))
