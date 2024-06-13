@@ -38,7 +38,7 @@ gramatrix <- function(K, databasis) {
   }
 
   # Kernmat is assigned a K x K matrix of the inner products
-  kernmat <- inprod(databasis, databasis)
+  kernmat <- fda::inprod(databasis, databasis)
 
   # Checks to make sure inprod returned a matrix
   if (!is.matrix(kernmat)) {
