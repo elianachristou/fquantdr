@@ -28,9 +28,6 @@
 #'
 #'    \item{X: }{The designed matrix used in the regression}}
 #'
-#' @examples
-#' # example code
-#'
 #' @export
 sonf = function(y, xfd, dev2_penalty = FALSE, lambda=NULL) {
 
