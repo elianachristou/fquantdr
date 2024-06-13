@@ -2,7 +2,7 @@
 
 #' qmat: Q = I - J/n matrix
 
-#' \{code} Creates a variation of the identity matrix such that each row sums
+#' \code{qmat} Creates a variation of the identity matrix such that each row sums
 #' zero
 
 #' This function takes a value for n and uses it to create an identity
@@ -28,10 +28,23 @@
 #' qmat(3)
 
 qmat <- function(n) {
+  # Checks to see if n is a positive integer
+  if (!is.numeric(n) || n <= 0 || n != as.integer(K)) {
+    stop("n must be a positive integer.")
+  }
+
   # Creates a n x n identity matrix
   ii <- diag(n)
+  # Checks to see if a matrix is formed
+  if (!is.matrix(ii)){
+    stop("ii must be a matrix.")
+  }
   # Creates a n x n matrix where every value is assigned 1
   jj <- rep(1, n) %*% t(rep(1, n))
+  # Checks if jj is a matrix
+  if (!is.matrix(jj)){
+    stop("jj must be a matrix.")
+  }
   # divides the all-ones matrix by n and subtracts the new matrix from the identiy matrix
   return(ii - jj / n) }
 

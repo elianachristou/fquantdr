@@ -2,7 +2,7 @@
 
 #' matpower: Power of a matrix
 
-#' \{code} symmetries a matrix using eigen decomposition
+#' \code{matpower} symmetries a matrix using eigen decomposition
 
 #' This function takes in a matrix and an alpha value and proceeds to
 #' transform the matrix by computing its eignvectors and eigenvalues, creating a
@@ -26,6 +26,14 @@
 
 
 matpower <- function(a, alpha) {
+  # Checks to make sure matrix returned a matrix
+  if (!is.matrix(a)) {
+    stop("The first input has not returned a matrix.")
+  }
+  # Checks if alpha is a positive integer
+  if (!is.numeric(alpha) || alpha <= 0 || alpha != as.integer(alpha)) {
+    stop("The second value has to be an integer exponenet. ")
+  }
   # Computes the transpose of a matrix and then adds it to the original
   # matrix. The new matrix is then divided by two and then rounded to the 5th
   # decimal place.
