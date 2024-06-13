@@ -22,6 +22,24 @@
 #' yunit <- unique(y)
 #' slav(xcoefs, y, yunit)
 slav <- function(xcoefs, y, yunit) {
+
+  # Check to ensure xcoefs is a matrix
+  if (!is.matrix(xcoefs)){
+    stop("The x coefficients are not in matrix form")
+  }
+
+  if (!is.vector(y)) {
+    stop("y must be a vector.")
+  }
+  if (!is.vector(yunit)) {
+    stop("yunit must be a vector.")
+  }
+  for (i in y) {
+    if(!(i %in% yunit)) {
+      stop(paste("y must be discretized such that all values in y are in",
+                 "yunit. The value", i, "is not in yunit."))
+    }
+  }
   # Get dimensions of xcoefs
   n <- nrow(xcoefs)
   K <- ncol(xcoefs)
