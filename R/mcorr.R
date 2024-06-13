@@ -29,6 +29,11 @@ mcorr <- function(u, v) {
   v <- as.matrix(v)
 
   # compatibility checks
+  # checks if the number of rows for u and v agree
+  if (dim(u)[1] != dim(v)[1]) {
+    stop("u and v must have the same number of rows.")
+  }
+
   # checks if u and v have the same dimension
   if (dim(u)[2] != dim(v)[2]) {
     stop("u and v must have the same dimension.")
