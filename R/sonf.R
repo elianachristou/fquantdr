@@ -93,12 +93,12 @@ sonf = function(y, xfd, dev2_penalty = FALSE, lambda=NULL) {
   y_cen <- y - my
   X <- as.matrix(xcoef_cen %*% B)
   if (dev2_penalty == FALSE) {
-    beta_coef <- ginv(as.matrix(t(X) %*% X)) %*% t(X) %*% y_cen
+    beta_coef <- MASS::ginv(as.matrix(t(X) %*% X)) %*% t(X) %*% y_cen
   } else {
     if (is.null(lambda)) {
       stop("lambda must be provided when dev2_penalty is TRUE")
     }
-    beta_coef <- ginv(as.matrix(t(X) %*% X + lambda * DB)) %*% t(X) %*% y_cen
+    beta_coef <- MASS::ginv(as.matrix(t(X) %*% X + lambda * DB)) %*% t(X) %*% y_cen
   }
   pred <- X %*% beta_coef + my
   if (p == 1) {
