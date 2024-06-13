@@ -28,9 +28,6 @@
 #'
 #'    \item{X: }{The designed matrix used in the regression}}
 #'
-#' @examples
-#' # example code
-#'
 #' @export
 sonf = function(y, xfd, dev2_penalty = FALSE, lambda=NULL) {
 
@@ -62,12 +59,12 @@ sonf = function(y, xfd, dev2_penalty = FALSE, lambda=NULL) {
   nbasis <- basis$nbasis
   bname <- basis$type
   if (bname == 'bspline') {
-    B <- bsplinepen(basis, 0)  # B_ij = <b_i,b_j>
-    DB <- bsplinepen(basis, 2) # DB_ij = <b''_i, b''_j>
+    B <- fda::bsplinepen(basis, 0)  # B_ij = <b_i,b_j>
+    DB <- fda::bsplinepen(basis, 2) # DB_ij = <b''_i, b''_j>
   }
   if (bname == 'fourier') {
     B <- diag(nbasis)
-    DB <- fourierpen(basis, 2)
+    DB <- fda::fourierpen(basis, 2)
   }
   tmp <- dim(xfd$coef)
   n <- tmp[2]
