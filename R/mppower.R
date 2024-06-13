@@ -47,7 +47,7 @@ mppower <- function(matrix, power, ignore) {
     stop("Must be a real number.")
   }
   # Assigns eig the eigenvectors and eigenvalues of a symmetric matrix
-  eig <- eigen(matrix, sym = T)
+  eig <- eigen(matrix, symmetric = T)
   # Assignes eval a vector of the eigenvalues
   eval <- eig$values
   # Assigns evec a matrix of the eigenvectors
