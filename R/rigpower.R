@@ -1,6 +1,6 @@
 #' Preforms a power operation on a transformed input matrix
 
-#' \{code} This function takes in three values: a matrix, a power, and the value
+#' \code{rigpower} This function takes in three values: a matrix, a power, and the value
 #' rho. Using those values the function computes the eigenvalues and eigenvectors
 #' of the matrix. It uses that information to then transform the original matrix
 #' using the matpower function.
@@ -28,6 +28,17 @@
 #' rigpower(matx, power, rho)
 
 rigpower <- function(matrix, power, rho) {
+  # Checks to make sure matrix returned a matrix
+  if (!is.matrix(matrix)) {
+    stop("The first input has not returned a matrix.")
+  }
+  # Checks if power is a positive integer
+  if (!is.numeric(power) || power <= 0 || power != as.integer(power)) {
+    stop("The second value has to be an integer exponenet. ")
+  }
+  if (!is.numeric(rho)) {
+    stop("Must be a real number.")
+  }
   # eig is assigned the eigenvalues and vectors of the matrix
   eig <- eigen(matrix)
   # eval is assigned a vector of the eigenvalues
@@ -40,7 +51,15 @@ rigpower <- function(matrix, power, rho) {
   # diagonal matrix that stores the values of the maximum eigenvalue being
   # multiplied by rho
   matrix1 <- matrix + rho * max(eval) * diag(p)
+  # Checks if the computation produced a matrix
+  if (!is.matrix(matrix1)) {
+    stop("matrix1 must be a matrix.")
+  }
   # tmp is assigned the value of a transformed matrix from matpower
   tmp <- matpower(matrix1, power)
+  # Checks if the computation produced a matrix
+  if (!is.matrix(tmp)) {
+    stop("tmp must be a matrix.")
+  }
   # returns the matrix
   return(tmp) }

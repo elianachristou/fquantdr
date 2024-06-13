@@ -2,7 +2,7 @@
 
 #' mppower: Moore-Penrose type power
 
-#' \{code} Reconstructs matrix on the basis of significant eigenvalues
+#' \code{mppower} Reconstructs matrix on the basis of significant eigenvalues
 
 #' This code takes an input of a matrix and computes it eigenvalues and
 #' eigenvectors. Once computed, it transforms the original matrix by selecting
@@ -34,6 +34,18 @@
 
 
 mppower <- function(matrix, power, ignore) {
+  # Checks if the matrix input is a matrix
+  if (!is.matrix(matrix)){
+    stop("The first input must be a matrix.")
+  }
+  # Checks if power is a positive integer
+  if (!is.numeric(power) || power <= 0 || power != as.integer(power)) {
+    stop("The second value has to be an integer exponenet. ")
+  }
+  # Compatability check for ignore
+  if (!is.numeric(ignore)) {
+    stop("Must be a real number.")
+  }
   # Assigns eig the eigenvectors and eigenvalues of a symmetric matrix
   eig <- eigen(matrix, sym = T)
   # Assignes eval a vector of the eigenvalues
@@ -44,5 +56,9 @@ mppower <- function(matrix, power, ignore) {
   m <- length(eval[abs(eval) > ignore])
   # reconstructs the matrix based on significant eigenvalues
   tmp <- evec[, 1:m] %*% diag(eval[1:m]^power) %*% t(evec[, 1:m])
+  # Checks if the computation produced a matrix
+  if (!is.matrix(tmp)) {
+    stop("tmp must be a matrix.")
+  }
   return(tmp)
 }
