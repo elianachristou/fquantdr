@@ -29,7 +29,7 @@
 
 qmat <- function(n) {
   # Checks to see if n is a positive integer
-  if (!is.numeric(n) || n <= 0 || n != as.integer(K)) {
+  if (!is.numeric(n) || n <= 0 || n != as.integer(n)) {
     stop("n must be a positive integer.")
   }
 
