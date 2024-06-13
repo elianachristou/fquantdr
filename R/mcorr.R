@@ -24,11 +24,16 @@
 #'
 #' @noRd
 
-
-
 mcorr <- function(u, v) {
   u <- as.matrix(u)
   v <- as.matrix(v)
+
+  # compatibility checks
+  # checks if u and v have the same dimension
+  if (dim(u)[2] != dim(v)[2]) {
+    stop("u and v must have the same dimension.")
+  }
+
   if(dim(u)[2] == 1) return(c(abs(cor(u, v))))
   if(dim(u)[2] != 1) {
     suu.nhalf <- matpower(var(u), -1/2)
