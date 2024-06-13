@@ -19,6 +19,17 @@
 #' yunit -> unique(y)
 #' discretize(y, yunit)
 discretize <- function(y, yunit) {
+
+  # Check if y is a vector
+  if (!is.vector(y)) {
+    stop("y must be a vector.")
+  }
+
+  # Check if yunit is a vector
+  if (!is.vector(yunit)) {
+    stop("yunit must be a vector.")
+  }
+
   n <- length(y)
   # Add small amount of noise to y
   y <- y + .00001 * mean(y) * rnorm(n)
