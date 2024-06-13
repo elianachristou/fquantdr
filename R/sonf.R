@@ -102,13 +102,13 @@ sonf = function(y, xfd, dev2_penalty = FALSE, lambda=NULL) {
   }
   pred <- X %*% beta_coef + my
   if (p == 1) {
-    betafd <- fd(beta_coef, basis)
+    betafd <- fda::fd(beta_coef, basis)
   } else {
     betafd <- NULL
     for (j in 1:p) {
       start.ind <- (j - 1) * nbasis + 1
       end.ind <- j * nbasis
-      betafd[[j]] <- fd(beta_coef[start.ind:end.ind], basis)
+      betafd[[j]] <- fda::fd(beta_coef[start.ind:end.ind], basis)
     }
   }
   return(list(beta_coef = beta_coef, betafd = betafd, yhat = pred, X = X))
