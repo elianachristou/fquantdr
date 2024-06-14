@@ -13,3 +13,5 @@ Imports:
     fda,
     MASS,
     Matrix
+URL: https://github.com/elianachristou/fcqs
+BugReports: https://github.com/elianachristou/fcqs/issues
