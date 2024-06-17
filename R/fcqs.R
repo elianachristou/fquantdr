@@ -57,37 +57,42 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR){
   beta.mfsir <- out.mfsir$betas[, 1:d_DR]
   vv <- xcoef %*% gx %*% beta.mfsir
 
-  # Run FCQS methodology to first find the initial vector
-  # Estimate the conditional quantile
-  red_dim <- floor(0.1 * n) # Find length of 10% of observations
-  # Get middle 80% of response
+  # run fcqs to first find the initial vector
+  # estimate the conditional quantile
+  # find how many observations correspond to a 10%
+  red_dim <- floor(0.1 * n)
   index_y <- order(y)[red_dim:(n - red_dim)]
-  # Get initial bandwidth
+  # estimates bandwidth h
   h <- KernSmooth::dpill(vv[index_y, ], y[index_y])
-  # Transform bandwidth for given quantile
-  h <- 4 * h * (tau * (1 - tau) / (dnorm(qnorm(tau))) ^ 2) ^ 0.2
-  # Use alternative method for bandwidth calculation on error
+  # changes bandwidth calculation based on tau
+  h <- 4 * h * (tau * (1 - tau) / (dnorm(qnorm(tau)))^2)^.2
+  # deal with a non-numeric bandwidth values
   if (h == 'NaN') {
-    h <- 1.25 * max(n ^ (-1 / (d_tau + 4)), min(2, sd(y)) *
-                    n ^ (- 1 / (d_tau + 4)))
+    h <- 1.25 * max(n^(-1 / (d_tau + 4)), min(2, sd(y)) * n^(- 1 / (d_tau + 4)))
   }
-  # Scale bandwidth by 3
   h <- 3 * h
-  # Get qhat through LLQR function
+  # computes conditional quantile estimate
   qhat <- quantdr::llqr(vv, y, tau = tau, h = h)$ll_est
 
   # fit a simple linear regression from qhat on xfd
+  # create functional data object
   x.fd <- fd(xcoef_array, databasis)
   fcqs.out <- sonf(qhat, x.fd, dev2_penalty = TRUE, lambda = 1e-4)
+  # compute initial inner product
   initial_inner_prod <- fcqs.out$yhat
-  initial_beta_coef <- fcqs.out$beta_coef # or betafd
+  # compute initial beta coefficients
+  initial_beta_coef <- fcqs.out$beta_coef
 
+  # initialize beta coefficients
   beta_vector <- initial_beta_coef
+  # initialize innner product values
   inner_prod <- initial_inner_prod
   # construct more vectors
   for (j in 1:(min(p * q, 40) - 1)) {
+    # construct new beta vector using the inner product and x coefficients
     new_beta <- apply(matrix(rep(as.vector(inner_prod), 2), n, p * q) * xcoef,
                       2, mean)
+    # combine new beta vector and initial beta vector
     beta_vector <- cbind(beta_vector, new_beta)
 
     # need to create the new inner_prod
@@ -95,11 +100,16 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR){
   }
 
   # eigenfunction decomposition
+  # compute Moore-Penrose inverse of gx to the .5 power
   gx.half = mppower(gx, 0.5, 10^(-8))
+  # compute Moor-Penrose inverse of gx to the -.5 power
   gx.inv.half = mppower(gx, -0.5, 10^(-8))
+  # Compute matrix A to find eigenvectors of M
   A =  mppower(1/n*gx.half %*% t(xcoef) %*% xcoef %*% gx.half,-0.5,10^(-8))
   M <- A %*% gx.half %*% beta_vector %*% t(beta_vector) %*% gx.half %*% A
+  # obtain eigenvectors and eigenvalues of symmetric M
   gg <- eigen(M, sym = T)$vectors
+  #
   vv <- gx.inv.half %*% A %*% gg[, 1:d_tau]
   vv2 <- xcoef %*% gx.half %*% A %*% gg[,1:d_tau]
 
