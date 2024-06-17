@@ -141,7 +141,7 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR){
   M <- A %*% gx.half %*% beta_vector %*% t(beta_vector) %*% gx.half %*% A
   # obtain eigenvectors and eigenvalues of symmetric M
   gg <- eigen(M, sym = T)$vectors
-  #
+  # compiute directions of central quantile subspace
   vv <- gx.inv.half %*% A %*% gg[, 1:d_tau]
   vv2 <- xcoef %*% gx.half %*% A %*% gg[,1:d_tau]
 
