@@ -1,27 +1,36 @@
-fcqs <- function(Xc, y, t, q, nbasis, tau, d_tau, H, d_DR){
+fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR){
 
   if (!is.array(Xc)) {
     stop(paste('Xc needs to be an array; convert it to a n x nt x p array,',
                'where n is the sample size, nt is the number of time points,',
-               ' and p is the number of predictors'))
+               'and p is the number of predictors'))
   }
 
-  if (dim(Xc)[2] != length(t)){
+  if (dim(Xc)[2] != length(time_points)){
     stop(paste('Xc needs to be an n x nt x p array, where n is the sample size,',
-               ' nt is the number of times points, and p is the number of
-               ', 'predictors'))
+               'nt is the number of time points, and p is the number of',
+               'predictors'))
   }
 
+  # Get dimensions of predictors
+  # n = number of observations
+  # ntx = number of time points
+  # p = number of predictors
   n <- dim(Xc)[1]
   ntx <- dim(Xc)[2]
   p <- dim(Xc)[3]
 
+  # Create basis for functional data using splines
   databasis <- create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
-  xcoef <- numeric() #retrieves the coodinates as an n x (p * q) matrix
-  # retrieves the coefficients as a (q x n x p) array for the fRegress function
+  # Initialize array of predictor coordinates (n x (p * q) dimension)
+  xcoef <- numeric()
+  # Retrieves the coefficients as a (q x n x p) array for the fRegress function
   xcoef_array <- array(0, c(nbasis, n, p))
+  # Loop for all predictors
   for (k in 1:p) {
-    xfdk <- fda::smooth.basis(t, t(Xc[, , k]), databasis)$fd
+    # Smooth functional predictor using given basis
+    xfdk <- fda::smooth.basis(time_points, t(Xc[, , k]), databasis)$fd
+    # Center data
     xfdk <- fda::center.fd(xfdk)
     xk.coef <- t(xfdk$coef)
     xcoef_array[, , k] <- t(xk.coef)
