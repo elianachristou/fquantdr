@@ -27,6 +27,20 @@
 #' @references Wang, G., Liu, S., Han, F., and Di, C.-Z. (2022). Robust functional
 #'    principal component analysis via a functional pairwise spatial sign operator.
 #'    \emph{Biometrics} https://doi.org/10.1111/biom.13695.
+#'
+#' @import stats
+#' @examples
+#' # Example 1
+#' n <- 100
+#' p <- 3
+#' q <- 5
+#' t <- seq(0, 1, length.out = 101)
+#' eta <- matrix(rnorm(n * p * q), n, p * q)
+#'
+#' result <- gen_funct_data(n, p, q, t, eta)
+#' g <- result$g # Original functional predictors
+#' cg <- result$cg # Centered functional predictors
+
 
 
 
