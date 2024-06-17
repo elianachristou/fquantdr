@@ -40,20 +40,16 @@
 #' result <- gen_funct_data(n, p, q, t, eta)
 #' g <- result$g # Original functional predictors
 #' cg <- result$cg # Centered functional predictors
-
-
-
-
-
-
+#'
+#' @export
 gen_funct_data <- function(n, p, q, t, eta) {
   Time <- length(t)
   g <- array(0, dim = c(n, Time, p))
   cg <- array(0, dim = c(n, Time, p))
 
   ## Fourier basis
-  f.ans <- create.fourier.basis(rangeval = c(0, 1), nbasis = q, dropind = 1)
-  st <- as.matrix(eval.basis(t, f.ans))
+  f.ans <- fda::create.fourier.basis(rangeval = c(0, 1), nbasis = q, dropind = 1)
+  st <- as.matrix(fda::eval.basis(t, f.ans))
 
   ## g and cg are original and centered functional predictors
   for(j in 1:p) {
