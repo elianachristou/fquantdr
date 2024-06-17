@@ -32,21 +32,27 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR){
     xfdk <- fda::smooth.basis(time_points, t(Xc[, , k]), databasis)$fd
     # Center data
     xfdk <- fda::center.fd(xfdk)
+    # Get coefficients (Note: Should this be coefs instead of coef?)
     xk.coef <- t(xfdk$coef)
+    # Create array from coefficients
     xcoef_array[, , k] <- t(xk.coef)
+    # Add coefficients to xcoef matrix
     xcoef <- cbind(xcoef, xk.coef)
   }
 
-  #compute block diagonal gram matrix gx
+  # Compute block diagonal gram matrix gx
   gi <- gramatrix(nbasis, databasis)
-
+  # Initialize gx as (p * nbasis) x (p * nbasis) square matrix
   gx <- matrix(0, nrow = p * (nbasis), ncol = p * (nbasis))
+  # Loop through predictors
   for (i in 1:p) {
+    # Get indices for (nbasis x nbasis) block matrix for predictor in gx
     index <- ((i - 1) * (nbasis) + 1):(i * (nbasis))
+    # Add block matrix at diagonal index in gx
     gx[index, index] <- gi
   }
 
-  # run fsir
+  # Run Functional Sliced Inverse Regression
   out.mfsir <- mfsir(Xc, y, H, nbasis)
   beta.mfsir <- out.mfsir$betas[, 1:d_DR]
   vv <- xcoef %*% gx %*% beta.mfsir
