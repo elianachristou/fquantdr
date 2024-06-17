@@ -89,21 +89,22 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR){
   beta.mfsir <- out.mfsir$betas[, 1:d_DR]
   vv <- xcoef %*% gx %*% beta.mfsir
 
-  # run fcqs to first find the initial vector
-  # estimate the conditional quantile
-  # find how many observations correspond to a 10%
-  red_dim <- floor(0.1 * n)
+  # Run FCQS methodology to first find the initial vector
+  # Estimate the conditional quantile
+  red_dim <- floor(0.1 * n) # Find length of 10% of observations
+  # Get middle 80% of response
   index_y <- order(y)[red_dim:(n - red_dim)]
-  # estimates bandwidth h
+  # Get initial bandwidth
   h <- KernSmooth::dpill(vv[index_y, ], y[index_y])
-  # changes bandwidth calculation based on tau
-  h <- 4 * h * (tau * (1 - tau) / (dnorm(qnorm(tau)))^2)^.2
-  # deal with a non-numeric bandwidth values
+  # Transform bandwidth for given quantile
+  h <- 4 * h * (tau * (1 - tau) / (dnorm(qnorm(tau))) ^ 2) ^ 0.2
+  # Use alternative method for bandwidth calculation on error
   if (h == 'NaN') {
-    h <- 1.25 * max(n^(-1 / (d_tau + 4)), min(2, sd(y)) * n^(- 1 / (d_tau + 4)))
-  }
+    h <- 1.25 * max(n ^ (-1 / (d_tau + 4)), min(2, sd(y)) *
+                      n ^ (- 1 / (d_tau + 4)))  }
+  # Scale bandwidth by 3
   h <- 3 * h
-  # computes conditional quantile estimate
+  # Get qhat through LLQR function
   qhat <- quantdr::llqr(vv, y, tau = tau, h = h)$ll_est
 
   # fit a simple linear regression from qhat on xfd
