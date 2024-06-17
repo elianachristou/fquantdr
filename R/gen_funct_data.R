@@ -24,6 +24,9 @@
 #'    \item{cg: }{the centered functional predictors}
 #'    }
 #'
+#' @references Wang, G., Liu, S., Han, F., and Di, C.-Z. (2022). Robust functional
+#'    principal component analysis via a functional pairwise spatial sign operator.
+#'    \emph{Biometrics} https://doi.org/10.1111/biom.13695.
 
 
 
