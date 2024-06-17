@@ -1,3 +1,35 @@
+#' Functional Central Quantile Subspace
+#'
+#' \code{fcqs} estimates the directions of the functional central quantile
+#' subspace, extending the central quantile subspace to functional data.
+#'
+#' This function computes the directions that span the \eqn{\tau}th functional
+#' central quantile subspace. These directions represent functions that can
+#' be linearly applied via the inner product to given predictors to reduce the
+#' dimension of infinitely-dimensional functional data without losing any
+#' information required for accurate quantile regression of the functional
+#' data.
+#'
+#' @param Xc An n x t x p array of functional data where n represents the
+#' number of observations, t represents the number of time points, and p is the
+#' number of functional predictors
+#' @param y A vector representing the univariate response
+#' @param time_points A vector of the time points spanned by the functional
+#' predictors
+#' @param q A number used to define the dimension during KL expansion
+#' @param nbasis The number of basis functions for smoothing functional data
+#' @param tau The quantile level, between 0 and 1, which we are calculating
+#' the FCQS for
+#' @param d_tau The dimension of the functional central quantile subspace (FCQS)
+#' @param H The number of slices for functional sliced inverse regression
+#' @param d_DR The dimension of the functional central subspace (FCS)
+#'
+#' @return The directions of the functional central quantile subspace, which can
+#' be used to sufficiently reduce the dimension of the functional predictors for
+#' quantile regression
+#' @export
+#'
+#' @examples
 fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR){
 
   if (!is.array(Xc)) {
