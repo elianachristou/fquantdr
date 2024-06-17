@@ -67,7 +67,7 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR){
     h <- 1.25 * max(n^(-1 / (d_tau + 4)), min(2, sd(y)) * n^(- 1 / (d_tau + 4)))
   }
   h <- 3 * h
-  qhat <- llqr(vv, y, tau = tau, h = h)$ll_est
+  qhat <- quantdr::llqr(vv, y, tau = tau, h = h)$ll_est
 
   # fit a simple linear regression from qhat on xfd
   x.fd <- fd(xcoef_array, databasis)
