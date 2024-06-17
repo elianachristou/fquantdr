@@ -9,6 +9,20 @@
 #' relevant scores with the evaluated basis functions and then centers this data
 #' by subtracting the mean of each time point across all observation.
 #'
+#' @param n Sample size, i.e., the number of observations
+#' @param p the number of predictors
+#' @param q the number of Fourier basis functions used to generate the
+#'    functional data
+#' @param t time points
+#' @param eta A matrix of scores of size pq * pq. These scores can be Gaussian
+#'    or elliptical
+#'
+#' @return \code{gen_funct_data} generates the functional data using Fourier
+#'    basis functions and returns:
+#'    \itemize{
+#'    \item{g: }{the original functional predictors}
+#'    \item{cg: }{the centered functional predictors}
+#'    }
 #'
 
 
