@@ -2,7 +2,7 @@
 #'
 #' \code{sonf} estimates the relationship between a scalar response and
 #' functional predictors using basis functions, with options for applying
-#' a second derivative penalty or not.
+#' a second derivative penalty or not. Test
 #'
 #' This function performs scalar-on-function regression, predicting a scalar
 #' response \code{y} using one or more functional predictors \code{xfd}. It
