@@ -47,6 +47,17 @@ gen_funct_data <- function(n, p, q, t, eta) {
   g <- array(0, dim = c(n, Time, p))
   cg <- array(0, dim = c(n, Time, p))
 
+  # compatibility checks
+  # checks if the dimension of eta is n * (p * q)
+  if (!is.matrix(eta) || nrow(eta) != n || ncol(eta) != (p * q)) {
+    stop("Parameter 'eta' must be a numeric matrix with dimensions n x (p * q).")
+  }
+
+  # checks if n is an interger and n > p
+  if (!is.numeric(n) || length(n) != 1 || n <= 0 || n <= p) {
+    stop("Parameter 'n' must be a positive integer and greater than 'p'.")
+  }
+
   ## Fourier basis
   f.ans <- fda::create.fourier.basis(rangeval = c(0, 1), nbasis = q, dropind = 1)
   st <- as.matrix(fda::eval.basis(t, f.ans))
@@ -55,6 +66,7 @@ gen_funct_data <- function(n, p, q, t, eta) {
   for(j in 1:p) {
     index.j <- (((j - 1) * q + 1):(j * q))
     g[, , j] <- eta[, index.j] %*% t(st)
-    cg[, , j] <- g[, , j] - matrix(rep(apply(g[, , j], 2, mean), n), nrow = n, byrow = T) }
+    cg[, , j] <- g[, , j] - matrix(rep(apply(g[, , j], 2, mean), n), nrow = n, byrow = T)
+  }
   return(list(g = g, cg = cg))
 }
