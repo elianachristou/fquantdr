@@ -22,6 +22,7 @@
 #'    data based on weak conditional moments. \emph{The Annals of Statistics}
 #'    50(1), 107--128.
 #'
+#' @import stats
 #' @include matpower.R
 #' @examples
 #' set.seed(1234)
