@@ -32,8 +32,8 @@
 #' @examples
 #' # Example 1
 #' n <- 100
-#' p <- 3
-#' q <- 5
+#' p <- 5
+#' q <- 4 (double check!)
 #' t <- seq(0, 1, length.out = 101)
 #' eta <- matrix(rnorm(n * p * q), n, p * q)
 #'
