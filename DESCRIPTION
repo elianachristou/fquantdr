@@ -1,4 +1,4 @@
-Package: fcqs
+Package: fquantdr
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
@@ -13,5 +13,19 @@ Imports:
     fda,
     MASS,
     Matrix
-URL: https://github.com/elianachristou/fcqs
-BugReports: https://github.com/elianachristou/fcqs/issues
+URL: https://github.com/elianachristou/fquantdr
+BugReports: https://github.com/elianachristou/fquantdr/issues
+RoxygenNote: 7.3.1
+Collate: 
+    'discretize.R'
+    'gen_funct_data.R'
+    'gramatrix.R'
+    'matpower.R'
+    'mcorr.R'
+    'mppower.R'
+    'qmat.R'
+    'rigpower.R'
+    'slav.R'
+    'slprob.R'
+    'sonf.R'
+    'symmetry.R'

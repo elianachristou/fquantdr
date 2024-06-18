@@ -16,10 +16,6 @@
 
 #' @noRd
 
-#' databasis is a spline object
-
-
-
 #' @examples
 #' K <- 3
 #' x <- seq(0, 10, length.out = 5)
