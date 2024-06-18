@@ -38,10 +38,26 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR){
                'and p is the number of predictors'))
   }
 
+  if (!is.vector(y)) {
+    stop("y should be a vector representing a univariate response.")
+  }
+
+  if (!is.vector(time_points)) {
+    stop("time_points should be a vector.")
+  }
+
   if (dim(Xc)[2] != length(time_points)){
     stop(paste('Xc needs to be an n x nt x p array, where n is the sample size,',
                'nt is the number of time points, and p is the number of',
                'predictors'))
+  }
+
+  if(dim(Xc)[1] != length(y)) {
+    stop("y and Xc should show the same number of observations.")
+  }
+
+  if(tau < 0 | tau > 1) {
+    stop("The quantile level, tau, must be between 0 and 1.")
   }
 
   # Get dimensions of predictors
