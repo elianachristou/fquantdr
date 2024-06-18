@@ -1,12 +1,12 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# fcqs
+# fquantdr
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of fcqs is to …
+The goal of fquantdr is to …
 
 ## Installation
 
@@ -15,7 +15,7 @@ You can install the development version of fcqs from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("elianachristou/fcqs")
+devtools::install_github("elianachristou/fquantdr")
 ```
 
 ## Example
@@ -23,7 +23,7 @@ devtools::install_github("elianachristou/fcqs")
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-library(fcqs)
+library(fquantdr)
 ## basic example code
 ```
 

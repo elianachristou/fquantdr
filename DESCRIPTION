@@ -1,4 +1,4 @@
-Package: fcqs
+Package: fquantdr
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
@@ -13,5 +13,5 @@ Imports:
     fda,
     MASS,
     Matrix
-URL: https://github.com/elianachristou/fcqs
-BugReports: https://github.com/elianachristou/fcqs/issues
+URL: https://github.com/elianachristou/fquantdr
+BugReports: https://github.com/elianachristou/fquantdr/issues
