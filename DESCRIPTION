@@ -29,3 +29,7 @@ Collate:
     'slprob.R'
     'sonf.R'
     'symmetry.R'
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
