@@ -107,44 +107,45 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR){
   # Get qhat through LLQR function
   qhat <- quantdr::llqr(vv, y, tau = tau, h = h)$ll_est
 
-  # fit a simple linear regression from qhat on xfd
-  # create functional data object
+  # Fit a simple linear regression from qhat on xfd
+  # Create functional data object
   x.fd <- fd(xcoef_array, databasis)
   fcqs.out <- sonf(qhat, x.fd, dev2_penalty = TRUE, lambda = 1e-4)
-  # compute initial inner product
+  # Compute initial inner product
   initial_inner_prod <- fcqs.out$yhat
-  # compute initial beta coefficients
+  # Compute initial beta coefficients
   initial_beta_coef <- fcqs.out$beta_coef
 
-  # initialize beta coefficients
+  # Initialize beta coefficients
   beta_vector <- initial_beta_coef
-  # initialize innner product values
+  # Initialize innner product values
   inner_prod <- initial_inner_prod
-  # construct more vectors
+  # Construct more vectors
   for (j in 1:(min(p * q, 40) - 1)) {
-    # construct new beta vector using the inner product and x coefficients
+    # Construct new beta vector using the inner product and x coefficients
     new_beta <- apply(matrix(rep(as.vector(inner_prod), 2), n, p * q) * xcoef,
                       2, mean)
-    # combine new beta vector and initial beta vector
+    # Combine new beta vector and initial beta vector
     beta_vector <- cbind(beta_vector, new_beta)
 
-    # need to create the new inner_prod
+    # Need to create the new inner_prod
     inner_prod <- xcoef %*% gx %*% new_beta
   }
 
-  # eigenfunction decomposition
-  # compute Moore-Penrose inverse of gx to the .5 power
+  # Eigenfunction decomposition
+  # Compute Moore-Penrose inverse of gx to the .5 power
   gx.half = mppower(gx, 0.5, 10^(-8))
-  # compute Moor-Penrose inverse of gx to the -.5 power
+  # Compute Moor-Penrose inverse of gx to the -.5 power
   gx.inv.half = mppower(gx, -0.5, 10^(-8))
   # Compute matrix A to find eigenvectors of M
   A =  mppower(1/n*gx.half %*% t(xcoef) %*% xcoef %*% gx.half,-0.5,10^(-8))
   M <- A %*% gx.half %*% beta_vector %*% t(beta_vector) %*% gx.half %*% A
-  # obtain eigenvectors and eigenvalues of symmetric M
+  # Obtain eigenvectors and eigenvalues of symmetric M
   gg <- eigen(M, sym = T)$vectors
-  # compiute directions of central quantile subspace
+  # Compiute directions of central quantile subspace
   vv <- gx.inv.half %*% A %*% gg[, 1:d_tau]
   vv2 <- xcoef %*% gx.half %*% A %*% gg[,1:d_tau]
 
-  return(list(vv = vv, vv2 = vv2))
+  # Return directions of FCQS
+  list(vv = vv, vv2 = vv2)
 }
