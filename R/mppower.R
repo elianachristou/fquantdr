@@ -22,9 +22,6 @@
 
 #' @noRd
 
-
-#' References
-
 #' @examples
 #' matrix1 <- matrix(c(3, 4, 8, 2, 5, 1), nrow = 2, ncol = 3)
 #' power <- 3

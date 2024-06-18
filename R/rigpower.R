@@ -13,13 +13,6 @@
 #' @return returns a modified version of the input matrix that has been altered
 #' by an scaled identity matrix
 #' @noRd
-#' References
-
-#' rigpower: Ridge-regression type power
-
-#' Taking power ignoring 0 eigenvalues;
-
-#' ignoring criterion=ignore
 
 #' @examples
 #' matx <- matrix(c(7, 3, 5, 2, 5, 1), nrow = 2, ncol = 3)
