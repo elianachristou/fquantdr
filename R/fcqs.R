@@ -80,8 +80,8 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR){
     xfdk <- fda::smooth.basis(time_points, t(Xc[, , k]), databasis)$fd
     # Center data
     xfdk <- fda::center.fd(xfdk)
-    # Get coefficients (Note: Should this be coefs instead of coef?)
-    xk.coef <- t(xfdk$coef)
+    # Get coefficients
+    xk.coef <- t(xfdk$coefs)
     # Create array from coefficients
     xcoef_array[, , k] <- t(xk.coef)
     # Add coefficients to xcoef matrix
