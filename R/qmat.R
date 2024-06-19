@@ -16,7 +16,6 @@
 #' @return gives back a I - J/n matrix
 
 #' @noRd
-
 #' @examples
 #' #number of columns
 #' n <- 3
@@ -26,7 +25,7 @@
 #' jj <- rep(1, 3) %*% t(rep(1, 3))
 #' # returns a new matrix
 #' qmat(3)
-
+#'
 qmat <- function(n) {
   # Checks to see if n is a positive integer
   if (!is.numeric(n) || n <= 0 || n != as.integer(n)) {

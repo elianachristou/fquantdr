@@ -13,15 +13,16 @@
 #' @param yunit A vector defining the slices used
 #'
 #' @return Matrix of slice average
-#' @noRd
 #'
+#' @noRd
 #' @examples
 #' xcoefs <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12),
 #'   nrow = 4, byrow= TRUE)
 #' y <- c(1, 2, 3, 2)
 #' yunit <- unique(y)
 #' slav(xcoefs, y, yunit)
-slav <- function(xcoefs, y, yunit) {
+#'
+slav <- function(xcoefs, y, H) {
 
   # Check to ensure xcoefs is a matrix
   if (!is.matrix(xcoefs)){
@@ -43,6 +44,7 @@ slav <- function(xcoefs, y, yunit) {
   # Get dimensions of xcoefs
   n <- nrow(xcoefs)
   K <- ncol(xcoefs)
+  yunit <- 1:H
   # Get number of slices
   nslice <- length(yunit)
   # Initialize matrix of mean coordinates for each slice
