@@ -3,9 +3,15 @@ Type: Package
 Title: Dimension Reduction Techniques for Conditional Quantiles for 
     Functional Data
 Version: 0.0.0.9000
-Authors@R: person("Eliana", "Christou", email="echris15@uncc.edu",
-    role = c("aut", "cre"), comment = c(ORCID = "https://orcid.org/0000-0001-5044-0969"))
-Maintainer: The package maintainer <yourself@somewhere.net>
+Authors@R: c(person("Eliana", "Christou", email="echris15@uncc.edu",
+    role = c("aut", "cre"), comment = c(ORCID = "https://orcid.org/0000-0001-5044-0969"),
+    person("Precious", "Donkoer", role = "aut"),
+    person("Nathan", "Hogshead", role = "aut"),
+    person("Eftychia", "Solea", role = "ctb"),
+    person("Jun", "Song", role = "ctb"),
+    person("Austin", "Stitz", role = "aut"),
+    person("Shanshan", "Wang", role = "aut"))
+Maintainer: The package maintainer <echris15@uncc.edu>
 Description: An implementation of dimension reduction techniques for 
     conditionl quantiles under the presence of functional predictors.
     Specifically, the main function 'fcqs' replaces the functional 
