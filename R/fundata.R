@@ -43,6 +43,22 @@
 #'  fda::matplot(t, t(g[, , 1]), type = "l", lty = 1, col = 1:n, xlab = "Time",
 #'  ylab = "Value", main = paste("Functional Predictor", 1))
 #'
+#' Example 2
+#' n <- 100
+#' p <- 5
+#' q <- 4
+#' t <- seq(0, 1, length.out = 101)
+#' SigmaCov <- matrix(0, nrow = p * q, ncol = p * q)
+#' for (j in 1:p) {
+#'  index.j <-(((j - 1) * q + 1):(j * q))
+#'  diag(SigmaCov[index.j, index.j]) <- c(2, 1, 1/2, 1/4)
+#' }
+#' eta <- mvtnorm::rmvnorm(n, mean = rep(0, p * q), sigma = SigmaCov)
+#' result <- fundata(n, p, q, t, eta)
+#' # plot the first functional predictor for illustration purposes
+#' fda::matplot(t, t(result$g[, , 1]), type = "l", lty = 1, col = 1:n,
+#'     xlab = "Time", ylab = "Value", main = paste("Functional Predictor", 1))
+#'
 #' @export
 fundata <- function(n, p, q, t, eta) {
   # define the parameters
