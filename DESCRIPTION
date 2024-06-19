@@ -6,8 +6,11 @@ Version: 0.0.0.9000
 Authors@R: person("Eliana", "Christou", email="echris15@uncc.edu",
     role = c("aut", "cre"), comment = c(ORCID = "https://orcid.org/0000-0001-5044-0969"))
 Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: An implementation of dimension reduction techniques for 
+    conditionl quantiles under the presence of functional predictors.
+    Specifically, the main function 'fcqs' replaces the functional 
+    predictors with few finite linear operators and achieves dimension
+    reduction.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
