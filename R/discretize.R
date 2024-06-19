@@ -10,10 +10,10 @@
 #' necessary when performing the extension of SIR to functional predictors,
 #' introduced by Ferr\'e and Yao (2003).
 #'
-#' @param y A vector representing the response variable
-#' @param yunit A vector defining the slices used
+#' @param y A (continuous or discrete) vector
+#' @param H The number of slices
 #'
-#' @return A vector defining the slices each item in the response corresponds to
+#' @return A vector defining the slices each value of y corresponds to
 #'
 #' @references Li, K.-C. (1991) Sliced Inverse Regression for Dimension Reduction.
 #'     \emph{Journal of the American Statistical Association}, 86(414), 316-327.
