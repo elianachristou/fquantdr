@@ -12,9 +12,9 @@
 #'
 #' @param y A (continuous or discrete) vector.  If y is discrete, a small
 #'     amount of noise is added to make it continuous.
-#' @param H The number of slices
+#' @param H The number of slices.
 #'
-#' @return A vector defining the slices each value of y corresponds to
+#' @return A vector defining the slices each value of y corresponds to.
 #'
 #' @references Li, K.-C. (1991) Sliced Inverse Regression for Dimension Reduction.
 #'     \emph{Journal of the American Statistical Association}, 86(414), 316-327.
