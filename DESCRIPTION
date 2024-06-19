@@ -30,7 +30,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Collate: 
     'discretize.R'
-    'gen_funct_data.R'
+    'fundata.R'
     'gramatrix.R'
     'matpower.R'
     'mcorr.R'
@@ -43,5 +43,6 @@ Collate:
     'symmetry.R'
 Suggests: 
     knitr,
+    mvtnorm,
     rmarkdown
 VignetteBuilder: knitr
