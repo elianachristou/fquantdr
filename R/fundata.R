@@ -12,15 +12,14 @@
 #' time point.  The output is a list containing both the original and centered
 #' functional predictors.
 #'
-#' @param n Sample size, i.e., the number of observations
-#' @param p the number of predictors
-#' @param q the number of Fourier basis functions used to generate the
+#' @param n The number of observations, i.e., sample size
+#' @param p The number of predictors
+#' @param q The number of Fourier basis functions used to generate the
 #'    functional data
-#' @param t time points
-#' @param eta A matrix of scores of size pq * pq. These scores can be Gaussian
-#'    or elliptical
+#' @param t The vector with the time points
+#' @param eta A matrix of scores of size pq * pq.
 #'
-#' @return \code{gen_funct_data} generates the functional data using Fourier
+#' @return \code{fundata} generates the functional data using Fourier
 #'    basis functions and returns:
 #'    \itemize{
 #'    \item{g: }{the original functional predictors}
@@ -40,7 +39,7 @@
 #' t <- seq(0, 1, length.out = 101)
 #' eta <- matrix(rnorm(n * p * q), n, p * q)
 #'
-#' result <- gen_funct_data(n, p, q, t, eta)
+#' result <- fundata(n, p, q, t, eta)
 #' g <- result$g # Original functional predictors
 #' cg <- result$cg # Centered functional predictors
 #'
