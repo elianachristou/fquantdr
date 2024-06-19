@@ -15,15 +15,13 @@
 #' @return A K x K matrix that has been scaled by its inner product
 
 #' @noRd
-
 #' @examples
 #' K <- 3
 #' x <- seq(0, 10, length.out = 5)
 #' b_spline <- bs(x, degree = 3, knots = c(3, 7))
 #' databasis <- b_spline
 #' grammatrix(K, databasis)
-
-
+#'
 gramatrix <- function(K, databasis) {
   # compatability checks for both K and databasis
   if (!is.numeric(K) || K <= 0 || K != as.integer(K)) {
