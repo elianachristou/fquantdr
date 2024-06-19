@@ -22,12 +22,12 @@
 # Ferr\'e, L, and Yao, F. (2003) Function Sliced Inverse Regression
 # Analysis. \emph{Statistics}, 37(6), 475-488.
 #
-#' @noRd
 # @examples
 # y <-  c(2.5, 3.6, 1.2, 4.8, 2.9)
 # H <- 3
 # discretize(y, H)
 #
+#' @noRd
 discretize <- function(y, H) {
 
   # Check if y is a vector
