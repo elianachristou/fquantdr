@@ -44,6 +44,7 @@
 #'
 #' @export
 fundata <- function(n, p, q, t, eta) {
+  # define the parameters
   Time <- length(t)
   g <- array(0, dim = c(n, Time, p))
   cg <- array(0, dim = c(n, Time, p))
@@ -59,11 +60,13 @@ fundata <- function(n, p, q, t, eta) {
     stop("Parameter 'n' must be a positive integer and greater than 'p'.")
   }
 
-  ## Fourier basis
-  f.ans <- fda::create.fourier.basis(rangeval = c(0, 1), nbasis = q, dropind = 1)
+  ## Create a Fourier basis with q basis functions over the interval [0, 1]
+  f.ans <- fda::create.fourier.basis(rangeval = c(0, 1), nbasis = q,
+                                     dropind = 1)
   st <- as.matrix(fda::eval.basis(t, f.ans))
 
-  ## g and cg are original and centered functional predictors
+  ## Generate functional predictors
+  # g and cg are the original and centered functional predictors
   for(j in 1:p) {
     index.j <- (((j - 1) * q + 1):(j * q))
     g[, , j] <- eta[, index.j] %*% t(st)
