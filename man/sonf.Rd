@@ -30,7 +30,7 @@ derivative penalty.}
 \description{
 \code{sonf} estimates the relationship between a scalar response and
 functional predictors using basis functions, with options for applying
-a second derivative penalty or not.
+a second derivative penalty or not. Test
 }
 \details{
 This function performs scalar-on-function regression, predicting a scalar
