@@ -1,45 +1,71 @@
-#' Discretize Response
+#' Discretize conversion of a continuous numeric vector
 #'
-#' \code{discretize} converts the response into a discrete form by creating
-#' slices and assigning each part of the response to the slice it is in.
+#' \code{discretize} converts a continuous numeric vector into a discrete
+#' vector with labels corresponding to different slices of the data.
 #'
-#' This function converts a vector response into a vector of the slices each
-#' value in the response is a part of. This is important for the Functional
-#' Sliced Inverse Regression method which relies on using these slices for
-#' reducing the dimension of data.
+#' This function converts a continuous numeric vector into a discrete vector
+#' by slicing the data and assigning a label to each value according to which
+#' slice it is in.  The idea stems from Li (1991), who proposed sliced inverse
+#' regression (SIR), a dimension reduction technique.  This function is
+#' necessary when performing the extension of SIR to functional predictors,
+#' introduced by Ferr\'e and Yao (2003).
 #'
-#' @param y A vector representing the response variable
-#' @param yunit A vector defining the slices used
+#' @param y A (continuous or discrete) vector.  If y is discrete, a small
+#'     amount of noise is added to make it continuous.
+#' @param H The number of slices
 #'
-#' @return A vector defining the slices each item in the response corresponds to
+#' @return A vector defining the slices each value of y corresponds to
+#'
+#' @references Li, K.-C. (1991) Sliced Inverse Regression for Dimension Reduction.
+#'     \emph{Journal of the American Statistical Association}, 86(414), 316-327.
+#'
+#' Ferr\'e, L, and Yao, F. (2003) Function Sliced Inverse Regression
+#' Analysis. \emph{Statistics}, 37(6), 475-488.
 #'
 #' @noRd
 #' @examples
-#' y -> c(1, 2, 3, 2)
-#' yunit -> unique(y)
-#' discretize(y, yunit)
-discretize <- function(y, yunit) {
+#' y <-  c(2.5, 3.6, 1.2, 4.8, 2.9)
+#' H <- 3
+#' discretize(y, H)
+#'
+discretize <- function(y, H) {
 
   # Check if y is a vector
   if (!is.vector(y)) {
     stop("y must be a vector.")
   }
 
-  # Check if yunit is a vector
-  if (!is.vector(yunit)) {
-    stop("yunit must be a vector.")
+  # Check if H is numeric
+  if (!is.numeric(H)) {
+    stop("H must be numeric.")
   }
 
+  # Check if H is just one number
+  if (length(H) > 1) {
+    stop("H must be one number.")
+  }
+
+  # Check if H is a positive number
+  if (H <= 0) {
+    stop("H must be a positive number.")
+  }
+
+  # define the parameters
   n <- length(y)
+  yunit <- 1:H
+  nsli <- length(yunit)
+
   # Add small amount of noise to y
   y <- y + .00001 * mean(y) * stats::rnorm(n)
-  nsli <- length(yunit)
+
   # Order y values in ascending order
   yord <- y[order(y)]
-  n <- length(y)
+  # nwdith represents the approximate number of data points per slice
   nwidth <- floor(n / nsli)
+
   # Instantiate vector of division points between slices
   divpt <- rep(0, nsli - 1)
+
   # Set each division point to the values of yord that represent the boundaries
   # between slices
   for(i in 1:(nsli - 1)) {
