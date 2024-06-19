@@ -43,7 +43,7 @@
 #' cg <- result$cg # Centered functional predictors
 #'
 #' @export
-gen_funct_data <- function(n, p, q, t, eta) {
+fundata <- function(n, p, q, t, eta) {
   Time <- length(t)
   g <- array(0, dim = c(n, Time, p))
   cg <- array(0, dim = c(n, Time, p))
