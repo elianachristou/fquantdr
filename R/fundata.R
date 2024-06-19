@@ -12,18 +12,17 @@
 #' time point.  The output is a list containing both the original and centered
 #' functional predictors.
 #'
-#' @param n The number of observations, i.e., sample size
-#' @param p The number of predictors
-#' @param q The number of Fourier basis functions used to generate the
-#'    functional data
-#' @param t The vector with the time points
-#' @param eta A matrix of scores of size pq * pq.
+#' @param n The number of observations, i.e., sample size.
+#' @param p The number of functional predictors.
+#' @param q The number of Fourier basis functions.
+#' @param t A vector of time points at which the functional data is evaluated.
+#' @param eta A matrix of coefficients with dimensions \code{n} by \code{p * q}.
 #'
-#' @return \code{fundata} generates the functional data using Fourier
+#' @return \code{fundata} generates functional data based on Fourier
 #'    basis functions and returns:
 #'    \itemize{
-#'    \item{g: }{the original functional predictors}
-#'    \item{cg: }{the centered functional predictors}
+#'        \item \code{g}: the original functional predictors
+#'        \item \code{cg}: the centered functional predictors
 #'    }
 #'
 #' @references Wang, G., Liu, S., Han, F., and Di, C.-Z. (2022). Robust functional
