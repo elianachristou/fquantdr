@@ -43,7 +43,7 @@
 #'  fda::matplot(t, t(g[, , 1]), type = "l", lty = 1, col = 1:n, xlab = "Time",
 #'  ylab = "Value", main = paste("Functional Predictor", 1))
 #'
-#' Example 2
+#' # Example 2
 #' n <- 100
 #' p <- 5
 #' q <- 4
