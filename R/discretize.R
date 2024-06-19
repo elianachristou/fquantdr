@@ -10,7 +10,8 @@
 #' necessary when performing the extension of SIR to functional predictors,
 #' introduced by Ferr\'e and Yao (2003).
 #'
-#' @param y A (continuous or discrete) vector
+#' @param y A (continuous or discrete) vector.  If y is discrete, a small
+#'     amount of noise is added to make it continuous.
 #' @param H The number of slices
 #'
 #' @return A vector defining the slices each value of y corresponds to
@@ -47,16 +48,17 @@ discretize <- function(y, H) {
     stop("H must be a positive number.")
   }
 
+  # define the parameters
   n <- length(y)
   yunit <- 1:H
+  nsli <- length(yunit)
 
   # Add small amount of noise to y
   y <- y + .00001 * mean(y) * stats::rnorm(n)
-  nsli <- length(yunit)
 
   # Order y values in ascending order
   yord <- y[order(y)]
-  n <- length(y)
+  # nwdith represents the approximate number of data points per slice
   nwidth <- floor(n / nsli)
 
   # Instantiate vector of division points between slices
