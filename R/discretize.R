@@ -21,31 +21,37 @@
 #'    Analysis. \emph{Statistics}, 37(6), 475-488.
 #' @noRd
 #' @examples
-#' y -> c(1, 2, 3, 2)
-#' yunit -> unique(y)
-#' discretize(y, yunit)
-discretize <- function(y, yunit) {
+#' y <-  c(1, 2, 3, 2)
+#' H <- 3
+#' discretize(y, H)
+#'
+discretize <- function(y, H) {
 
   # Check if y is a vector
   if (!is.vector(y)) {
     stop("y must be a vector.")
   }
 
-  # Check if yunit is a vector
-  if (!is.vector(yunit)) {
-    stop("yunit must be a vector.")
+  # Check if H is a number
+  if (!is.numeric(H)) {
+    stop("H must be a number.")
   }
 
   n <- length(y)
+  yunit <- 1:H
+
   # Add small amount of noise to y
   y <- y + .00001 * mean(y) * stats::rnorm(n)
   nsli <- length(yunit)
+
   # Order y values in ascending order
   yord <- y[order(y)]
   n <- length(y)
   nwidth <- floor(n / nsli)
+
   # Instantiate vector of division points between slices
   divpt <- rep(0, nsli - 1)
+
   # Set each division point to the values of yord that represent the boundaries
   # between slices
   for(i in 1:(nsli - 1)) {
