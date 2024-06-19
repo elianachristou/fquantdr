@@ -32,9 +32,19 @@ discretize <- function(y, H) {
     stop("y must be a vector.")
   }
 
-  # Check if H is a number
+  # Check if H is numeric
   if (!is.numeric(H)) {
-    stop("H must be a number.")
+    stop("H must be numeric.")
+  }
+
+  # Check if H is just one number
+  if (length(H) > 1) {
+    stop("H must be one number.")
+  }
+
+  # Check if H is a positive number
+  if (H <= 0) {
+    stop("H must be a positive number.")
   }
 
   n <- length(y)
