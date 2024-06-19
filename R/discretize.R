@@ -16,8 +16,9 @@
 #' @return A vector defining the slices each item in the response corresponds to
 #'
 #' @references Li, K.-C. (1991) Sliced Inverse Regression for Dimension Reduction.
-#'     \emphe{Journal of the American Statistical Association}, 86(414), 316-327.
-#'
+#'     \emph{Journal of the American Statistical Association}, 86(414), 316-327.
+#'    Ferr\'e, L, and Yao, F. (2003) Function Sliced Inverse Regression
+#'    Analysis. \emph{Statistics}, 37(6), 475-488.
 #' @noRd
 #' @examples
 #' y -> c(1, 2, 3, 2)
