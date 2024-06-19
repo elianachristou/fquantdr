@@ -22,7 +22,7 @@
 #'    Analysis. \emph{Statistics}, 37(6), 475-488.
 #' @noRd
 #' @examples
-#' y <-  c(1, 2, 3, 2)
+#' y <-  c(2..5, 3.6, 1.2, 4.8, 2.9)
 #' H <- 3
 #' discretize(y, H)
 #'
