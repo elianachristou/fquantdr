@@ -21,7 +21,7 @@
 #' y <- c(1, 2, 3, 2)
 #' yunit <- unique(y)
 #' slav(xcoefs, y, yunit)
-slav <- function(xcoefs, y, yunit) {
+slav <- function(xcoefs, y, H) {
 
   # Check to ensure xcoefs is a matrix
   if (!is.matrix(xcoefs)){
@@ -43,6 +43,7 @@ slav <- function(xcoefs, y, yunit) {
   # Get dimensions of xcoefs
   n <- nrow(xcoefs)
   K <- ncol(xcoefs)
+  yunit <- 1:H
   # Get number of slices
   nslice <- length(yunit)
   # Initialize matrix of mean coordinates for each slice

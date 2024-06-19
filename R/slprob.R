@@ -16,7 +16,7 @@
 #' @noRd
 #' @examples
 #' slprob(c(1,1,2,3,3,2,1,2),1:3)
-slprob <- function(y, yunit) {
+slprob <- function(y, H) {
   if (!is.vector(y)) {
     stop("y must be a vector.")
   }
@@ -32,6 +32,7 @@ slprob <- function(y, yunit) {
 
   # Get length of y vector
   n <- length(y)
+  yunit <- 1:H
   # Get number of slices from yunit
   nslice <- length(yunit)
   # Define new vector for output
