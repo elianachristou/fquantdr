@@ -20,13 +20,14 @@
 #'
 #' @return \code{sonf} computes a scalar-on-function regression and returns:
 #'    \itemize{
-#'    \item{beta_coef: }{The regression coefficients.}
+#'    \item \code{beta_coef}: The regression coefficients.
 #'
-#'    \item{beta_fd: }{The functional data objects for the beta coefficients.}
+#'    \item \code{beta_fd}: The functional data objects for the beta coefficients.
 #'
-#'    \item{yhat: }{The predicted values of \code{y}}
+#'    \item \code{yhat}: The predicted values of \code{y}.
 #'
-#'    \item{X: }{The designed matrix used in the regression}}
+#'    \item \code{X}: The designed matrix used in the regression.
+#'    }
 #'
 #' @export
 sonf = function(y, xfd, dev2_penalty = FALSE, lambda=NULL) {
