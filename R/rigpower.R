@@ -12,14 +12,14 @@
 #'
 #' @return returns a modified version of the input matrix that has been altered
 #' by an scaled identity matrix
+#'
 #' @noRd
-
 #' @examples
 #' matx <- matrix(c(7, 3, 5, 2, 5, 1), nrow = 2, ncol = 3)
 #' power<- 2
 #' rho <- .1
 #' rigpower(matx, power, rho)
-
+#'
 rigpower <- function(matrix, power, rho) {
   # Checks to make sure matrix returned a matrix
   if (!is.matrix(matrix)) {

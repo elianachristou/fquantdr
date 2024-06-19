@@ -16,6 +16,7 @@
 #' @noRd
 #' @examples
 #' slprob(c(1,1,2,3,3,2,1,2),1:3)
+#'
 slprob <- function(y, H) {
   if (!is.vector(y)) {
     stop("y must be a vector.")
