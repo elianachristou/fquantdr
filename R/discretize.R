@@ -1,32 +1,32 @@
-# Discretize conversion of a continuous numeric vector
-#
-# \code{discretize} converts a continuous numeric vector into a discrete
-# vector with labels corresponding to different slices of the data.
-#
-# This function converts a continuous numeric vector into a discrete vector
-# by slicing the data and assigning a label to each value according to which
-# slice it is in.  The idea stems from Li (1991), who proposed sliced inverse
-# regression (SIR), a dimension reduction technique.  This function is
-# necessary when performing the extension of SIR to functional predictors,
-# introduced by Ferr\'e and Yao (2003).
-#
-# @param y A (continuous or discrete) vector.  If y is discrete, a small
-#     amount of noise is added to make it continuous.
-# @param H The number of slices
-#
-# @return A vector defining the slices each value of y corresponds to
-#
-# @references Li, K.-C. (1991) Sliced Inverse Regression for Dimension Reduction.
-#     \emph{Journal of the American Statistical Association}, 86(414), 316-327.
-#
-# Ferr\'e, L, and Yao, F. (2003) Function Sliced Inverse Regression
-# Analysis. \emph{Statistics}, 37(6), 475-488.
-#
-# @examples
-# y <-  c(2.5, 3.6, 1.2, 4.8, 2.9)
-# H <- 3
-# discretize(y, H)
-#
+#' Discretize conversion of a continuous numeric vector
+#'
+#' \code{discretize} converts a continuous numeric vector into a discrete
+#' vector with labels corresponding to different slices of the data.
+#'
+#' This function converts a continuous numeric vector into a discrete vector
+#' by slicing the data and assigning a label to each value according to which
+#' slice it is in.  The idea stems from Li (1991), who proposed sliced inverse
+#' regression (SIR), a dimension reduction technique.  This function is
+#' necessary when performing the extension of SIR to functional predictors,
+#' introduced by Ferr\'e and Yao (2003).
+#'
+#' @param y A (continuous or discrete) vector.  If y is discrete, a small
+#'     amount of noise is added to make it continuous.
+#' @param H The number of slices
+#'
+#' @return A vector defining the slices each value of y corresponds to
+#'
+#' @references Li, K.-C. (1991) Sliced Inverse Regression for Dimension Reduction.
+#'     \emph{Journal of the American Statistical Association}, 86(414), 316-327.
+#'
+#' Ferr\'e, L, and Yao, F. (2003) Function Sliced Inverse Regression
+#' Analysis. \emph{Statistics}, 37(6), 475-488.
+#'
+#' @examples
+#' y <-  c(2.5, 3.6, 1.2, 4.8, 2.9)
+#' H <- 3
+#' discretize(y, H)
+#'
 #'@noRd
 discretize <- function(y, H) {
 
