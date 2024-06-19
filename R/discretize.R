@@ -1,17 +1,22 @@
-#' Discretize Response
+#' Discretize conversion of a continuous numeric vector
 #'
-#' \code{discretize} converts the response into a discrete form by creating
-#' slices and assigning each part of the response to the slice it is in.
+#' \code{discretize} converts a continuous numeric vector into a discrete
+#' vector with labels corresponding to different slices of the data.
 #'
-#' This function converts a vector response into a vector of the slices each
-#' value in the response is a part of. This is important for the Functional
-#' Sliced Inverse Regression method which relies on using these slices for
-#' reducing the dimension of data.
+#' This function converts a continuous numeric vector into a discrete vector
+#' by slicing the data and assigning a label to each value according to which
+#' slice it is in.  The idea stems from Li (1991), who proposed sliced inverse
+#' regression (SIR), a dimension reduction technique.  This function is
+#' necessary when performing the extension of SIR to functional predictors,
+#' introduced by Ferr\'e and Yao (2003).
 #'
 #' @param y A vector representing the response variable
 #' @param yunit A vector defining the slices used
 #'
 #' @return A vector defining the slices each item in the response corresponds to
+#'
+#' @references Li, K.-C. (1991) Sliced Inverse Regression for Dimension Reduction.
+#'     \emphe{Journal of the American Statistical Association}, 86(414), 316-327.
 #'
 #' @noRd
 #' @examples
