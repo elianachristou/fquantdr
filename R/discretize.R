@@ -27,7 +27,7 @@
 # H <- 3
 # discretize(y, H)
 #
-#' @noRd
+#'@noRd
 discretize <- function(y, H) {
 
   # Check if y is a vector
