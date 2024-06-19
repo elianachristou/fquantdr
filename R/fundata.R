@@ -21,26 +21,27 @@
 #' @return \code{fundata} generates functional data based on Fourier
 #'    basis functions and returns:
 #'    \itemize{
-#'        \item \code{g}: the original functional predictors
-#'        \item \code{cg}: the centered functional predictors
+#'        \item \code{g}: The original functional predictors, an
+#'            \code{n * length(t) * p} array.
+#'        \item \code{cg}: The centered functional predictors, an
+#'            \code{n * length(t) * p} array.
 #'    }
 #'
-#' @references Wang, G., Liu, S., Han, F., and Di, C.-Z. (2022). Robust functional
-#'    principal component analysis via a functional pairwise spatial sign operator.
-#'    \emph{Biometrics} https://doi.org/10.1111/biom.13695.
-#'
-#' @import stats
 #' @examples
 #' # Example 1
 #' n <- 100
 #' p <- 5
-#' q <- 4 #(double check!)
+#' q <- 4
 #' t <- seq(0, 1, length.out = 101)
-#' eta <- matrix(rnorm(n * p * q), n, p * q)
-#'
+#' eta <- matrix(stats::rnorm(n * p * q), nrow = n, ncol = p * q)
 #' result <- fundata(n, p, q, t, eta)
-#' g <- result$g # Original functional predictors
-#' cg <- result$cg # Centered functional predictors
+#' # original functional predictors
+#' g <- result$g
+#' # centered functional predictors
+#' cg <- result$cg
+#' # plot the first functional predictor for illustration purposes
+#'  fda::matplot(t, t(g[, , 1]), type = "l", lty = 1, col = 1:n, xlab = "Time",
+#'  ylab = "Value", main = paste("Functional Predictor", 1))
 #'
 #' @export
 fundata <- function(n, p, q, t, eta) {
