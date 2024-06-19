@@ -43,5 +43,6 @@ Collate:
     'symmetry.R'
 Suggests: 
     knitr,
+    mvtnorm,
     rmarkdown
 VignetteBuilder: knitr
