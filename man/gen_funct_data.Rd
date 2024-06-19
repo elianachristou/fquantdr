@@ -21,11 +21,11 @@ or elliptical}
 }
 \value{
 \code{gen_funct_data} generates the functional data using Fourier
-   basis functions and returns:
-   \itemize{
-   \item{g: }{the original functional predictors}
-   \item{cg: }{the centered functional predictors}
-   }
+basis functions and returns:
+\itemize{
+\item{g: }{the original functional predictors}
+\item{cg: }{the centered functional predictors}
+}
 }
 \description{
 \code{gen_funct_data} generates noiseless functional data using Fourier
@@ -33,7 +33,7 @@ basis functions
 }
 \details{
 This function initializes arrays for the original and centered functional
-predictors and construct Fourier basis functions over the interval [0, 1].
+predictors and construct Fourier basis functions over the interval \link{0, 1}.
 For each predictor, it computes the functional data by multiplying the
 relevant scores with the evaluated basis functions and then centers this data
 by subtracting the mean of each time point across all observation.
@@ -53,6 +53,6 @@ cg <- result$cg # Centered functional predictors
 }
 \references{
 Wang, G., Liu, S., Han, F., and Di, C.-Z. (2022). Robust functional
-   principal component analysis via a functional pairwise spatial sign operator.
-   \emph{Biometrics} https://doi.org/10.1111/biom.13695.
+principal component analysis via a functional pairwise spatial sign operator.
+\emph{Biometrics} https://doi.org/10.1111/biom.13695.
 }

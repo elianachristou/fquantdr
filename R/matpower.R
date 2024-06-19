@@ -18,13 +18,11 @@
 #' eigenvalues and eigenvectors
 
 #' @noRd
-
 #' @examples
 #' matr <- matrix(c(6, 4, 8, 2, 5, 9), nrow = 2, ncol = 3)
 #' alpha <- 2
 #' matpower(matr, alpha)
-
-
+#'
 matpower <- function(a, alpha) {
   # Checks to make sure matrix returned a matrix
   if (!is.matrix(a)) {
