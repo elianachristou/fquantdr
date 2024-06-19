@@ -18,14 +18,14 @@ derivative penalty.}
 }
 \value{
 \code{sonf} computes a scalar-on-function regression and returns:
-   \itemize{
-   \item{beta_coef: }{The regression coefficients.}
+\itemize{
+\item{beta_coef: }{The regression coefficients.}
 
-   \item{beta_fd: }{The functional data objects for the beta coefficients.}
+\item{beta_fd: }{The functional data objects for the beta coefficients.}
 
-   \item{yhat: }{The predicted values of \code{y}}
+\item{yhat: }{The predicted values of \code{y}}
 
-   \item{X: }{The designed matrix used in the regression}}
+\item{X: }{The designed matrix used in the regression}}
 }
 \description{
 \code{sonf} estimates the relationship between a scalar response and
