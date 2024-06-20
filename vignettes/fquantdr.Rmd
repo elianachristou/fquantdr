@@ -14,6 +14,29 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Getting Started
+
+To get started you need to first install the package using the command
+```{r, eval = FALSE}
+install.packages("fquantdr")
+```
+
+and then use it during any 'R' session by issuing the command
 ```{r setup}
 library(fquantdr)
 ```
+
+For an overview of the available help files of the package use
+```{r, eval = FALSE}
+help(package = "fquantdr")
+```
+
+The package includes the following functions (update this part later):
+
+To get help on a specific function type 'help(function.name)' or '?function.name' for a convenient shorthand. Try
+```{r, eval = FALSE}
+help(fcqs)
+?cqs
+```
+
+For further examples, refer to the coding examples listed in the documentation for each 'fquantdr' function.
