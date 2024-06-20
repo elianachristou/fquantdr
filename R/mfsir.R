@@ -1,22 +1,21 @@
 #' mfsir: FSIR that can incorporate multivariate functional predictor
-
+#'
 #' \code{mfsir} Multivariate Functional Sliced Inverse Regression
-
+#'
 #' This function performs Multivariate Functional Sliced Inverse
 #' Regression (mfsir) on a given 3-dimensional data array and
 #' response vector.
-
+#'
 #' (X can be p-dimensional and must be centered)
-
+#'
 #' @param Xc is a (n x t x p) array, where n is the number of observations,
 #'  q is the number of time points, and p is the number of variables.
 #' @param y is the response vector of length n.
 #' @param H is an integer number of slices for the response variable.
 #' @param nbasis an integer number of basis functions for the B-spline basis.
-
+#'
 #' gx is the gram matrix of the basis functions
-
-
+#'
 #' @return the eigenvectors and the sufficient predictors
 #'  A list containing:
 #' \item{phi}{The eigenvectors of the transformation matrix.}
@@ -24,9 +23,7 @@
 #' \item{eigvalues}{The eigenvalues of the transformation matrix.}
 #' \item{xfd.coef}{The coordinates of the smoothed data.}
 #' \item{gx}{The block diagonal Gram matrix.}
-
-#' @noRd
-
+#'
 #' @examples
 #' # Load the fda package
 #' library(fda)
@@ -43,9 +40,7 @@
 #'
 #' # Run mfsir
 #' result <- mfsir(Xc, y, H, nbasis)
-
-
-
+#' @noRd
 mfsir <- function(Xc, y, H, nbasis) {
   # Check if Xc is a 3-dimensional array
   if (length(dim(Xc)) != 3) {
