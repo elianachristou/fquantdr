@@ -47,8 +47,8 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR) {
   }
 
   if (dim(Xc)[2] != length(time_points)) {
-    stop(paste('Xc needs to be an n x nt x p array, where n is the sample size,',
-               'nt is the number of time points, and p is the number of',
+    stop(paste('Xc needs to be an n x nt x p array, where n is the sample',
+               'size, nt is the number of time points, and p is the number of',
                'predictors'))
   }
 
