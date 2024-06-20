@@ -67,7 +67,7 @@ mfsir <- function(Xc, y, H, nbasis) {
   p <- dim(Xc)[3] # Number of variables
 
   # Creates a B-spline basis for smoothing
-  databasis <- create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
+  databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
 
   # Check if databasis is of class basisfd
   if (!inherits(databasis, "basisfd")) {
