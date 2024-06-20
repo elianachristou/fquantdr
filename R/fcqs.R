@@ -117,7 +117,7 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR) {
   # Use alternative method for bandwidth calculation on error
   if (h == 'NaN') {
     h <- 1.25 * max(n ^ (-1 / (d_tau + 4)), min(2, sd(y)) *
-                    n ^ (- 1 / (d_tau + 4)))
+                    n ^ (-1 / (d_tau + 4)))
   }
   # Scale bandwidth by 3
   h <- 3 * h
@@ -135,7 +135,7 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR) {
 
   # Initialize beta coefficients
   beta_vector <- initial_beta_coef
-  # Initialize innner product values
+  # Initialize inner product values
   inner_prod <- initial_inner_prod
   # Construct more vectors
   for (j in 1:(min(p * q, 40) - 1)) {
@@ -151,17 +151,17 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR) {
 
   # Eigenfunction decomposition
   # Compute Moore-Penrose inverse of gx to the .5 power
-  gx.half = mppower(gx, 0.5, 10^(-8))
+  gx.half = mppower(gx, 0.5, 1e-8)
   # Compute Moor-Penrose inverse of gx to the -.5 power
-  gx.inv.half = mppower(gx, -0.5, 10^(-8))
+  gx.inv.half = mppower(gx, -0.5, 1e-8)
   # Compute matrix A to find eigenvectors of M
-  A =  mppower(1/n*gx.half %*% t(xcoef) %*% xcoef %*% gx.half,-0.5,10^(-8))
+  A =  mppower(1 / n * gx.half %*% t(xcoef) %*% xcoef %*% gx.half, -0.5, 1e-8)
   M <- A %*% gx.half %*% beta_vector %*% t(beta_vector) %*% gx.half %*% A
   # Obtain eigenvectors and eigenvalues of symmetric M
   gg <- eigen(M, sym = T)$vectors
   # Compute directions of central quantile subspace
   vv <- gx.inv.half %*% A %*% gg[, 1:d_tau]
-  vv2 <- xcoef %*% gx.half %*% A %*% gg[,1:d_tau]
+  vv2 <- xcoef %*% gx.half %*% A %*% gg[, 1:d_tau]
 
   # Return directions of FCQS
   list(vv = vv, vv2 = vv2)
