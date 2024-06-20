@@ -21,18 +21,12 @@
 #' their corresponding eigenvectors
 
 #' @noRd
-
-
-#' References
-
 #' @examples
 #' matrix1 <- matrix(c(3, 4, 8, 2, 5, 1), nrow = 2, ncol = 3)
 #' power <- 3
 #' ignore <- .3
 #' mmpower(matrix1, power, ignore)
-
-
-
+#'
 mppower <- function(matrix, power, ignore) {
   # Checks if the matrix input is a matrix
   if (!is.matrix(matrix)){
