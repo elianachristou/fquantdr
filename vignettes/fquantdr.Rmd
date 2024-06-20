@@ -33,7 +33,21 @@ For an overview of the available help files of the package use
 help(package = "fquantdr")
 ```
 
-The package includes the following functions (update this part later):
+The package includes the following functions (Keep updated):
+
+* 'fundata' Generate functional data based on Fourier basis function
+* 'fcqs'
+* 'sonf'
+<!-- * 'discrete' Discretize conversion of a continuous numeric vector -->
+<!-- * 'gramatrix' Computes the center gram matrix -->
+<!-- * 'matpower' Power of a matrix -->
+<!-- * 'mcorr' Multiple correlation between two random vectors -->
+<!-- * 'mppower' Moore-Penrose type power -->
+<!-- * 'qmat' Computes a transformed identity matrix -->
+<!-- * 'rigpower' Ridge-regression type power -->
+<!-- * 'slav' Compute slice average  -->
+<!-- * 'slprob' Compute slice proportions  -->
+<!-- * 'symmetry' Symmtrize Matrix -->
 
 To get help on a specific function type 'help(function.name)' or '?function.name' for a convenient shorthand. Try
 ```{r, eval = FALSE}
