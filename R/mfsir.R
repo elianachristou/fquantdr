@@ -111,13 +111,13 @@ mfsir <- function(Xc, y, H, nbasis) {
   mucoef <- apply(xfd.coef, 2, mean)
 
   # Discretize the response variable into H slices
-  ydis <- discretize (y, 1:H)
+  ydis <- discretize (y, H)
 
   # Compute the slice probabilities
-  prob <- slprob(ydis, 1:H)
+  prob <- slprob(ydis, H)
 
   # Compute the average slice values
-  avg.slav <- slav(xfd.coef, ydis, 1:H)
+  avg.slav <- slav(xfd.coef, ydis, H)
 
   # Initialize Lambda1 matrix
   Lambda1 <- matrix(0, p * nbasis, p * nbasis)
