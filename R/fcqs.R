@@ -69,7 +69,7 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR) {
   p <- dim(Xc)[3]
 
   # Create basis for functional data using splines
-  databasis <- create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
+  databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
   # Initialize array of predictor coordinates (n x (p * q) dimension)
   xcoef <- numeric()
   # Retrieves the coefficients as a (q x n x p) array for the fRegress function
@@ -126,7 +126,7 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR) {
 
   # Fit a simple linear regression from qhat on xfd
   # Create functional data object
-  x.fd <- fd(xcoef_array, databasis)
+  x.fd <- fda::fd(xcoef_array, databasis)
   fcqs.out <- sonf(qhat, x.fd, dev2_penalty = TRUE, lambda = 1e-4)
   # Compute initial inner product
   initial_inner_prod <- fcqs.out$yhat
