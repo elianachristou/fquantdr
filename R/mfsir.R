@@ -54,7 +54,8 @@ mfsir <- function(Xc, y, H, nbasis) {
 
   # Check if y is a vector of appropriate length
   if (!is.vector(y) || length(y) != dim(Xc)[1]) {
-    stop("y must be a vector of length equal to the number of observations in Xc")
+    stop("y must be a vector of length equal to the number of
+         observations in Xc")
   }
 
   # Check if H is an integer
@@ -70,7 +71,7 @@ mfsir <- function(Xc, y, H, nbasis) {
   n <- dim(Xc)[1] # Number of observations
   p <- dim(Xc)[3] # Number of variables
 
-  # Create a B-spline basis for smoothing
+  # Creates a B-spline basis for smoothing
   databasis <- create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
 
   # Check if databasis is of class basisfd
@@ -79,7 +80,7 @@ mfsir <- function(Xc, y, H, nbasis) {
   }
 
   # Initialize an empty vector to store coefficients
-  xfd.coef <- numeric() #retrieves the coodinates as an n x (p * q) matrix
+  xfd.coef <- numeric() # retrieves the coordinates as an n x (p * q) matrix
 
   # Loop over each variable to smooth and center the data
   for (k in 1:p) {
