@@ -30,7 +30,7 @@
 #' @export
 #'
 #' @examples
-fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR){
+fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR) {
 
   if (!is.array(Xc)) {
     stop(paste('Xc needs to be an array; convert it to a n x nt x p array,',
@@ -46,7 +46,7 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR){
     stop("time_points should be a vector.")
   }
 
-  if (dim(Xc)[2] != length(time_points)){
+  if (dim(Xc)[2] != length(time_points)) {
     stop(paste('Xc needs to be an n x nt x p array, where n is the sample size,',
                'nt is the number of time points, and p is the number of',
                'predictors'))
@@ -117,7 +117,8 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR){
   # Use alternative method for bandwidth calculation on error
   if (h == 'NaN') {
     h <- 1.25 * max(n ^ (-1 / (d_tau + 4)), min(2, sd(y)) *
-                      n ^ (- 1 / (d_tau + 4)))  }
+                    n ^ (- 1 / (d_tau + 4)))
+  }
   # Scale bandwidth by 3
   h <- 3 * h
   # Get qhat through LLQR function
