@@ -1,6 +1,8 @@
 #' Preforms a power operation on a transformed input matrix
 
-#' \code{rigpower} This function takes in three values: a matrix, a power, and the value
+#' \code{rigpower} Computes a power transformation using scaled identity matrix
+
+#' This function takes in three values: a matrix, a power, and the value
 #' rho. Using those values the function computes the eigenvalues and eigenvectors
 #' of the matrix. It uses that information to then transform the original matrix
 #' using the matpower function.
