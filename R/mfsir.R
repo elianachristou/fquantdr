@@ -45,7 +45,7 @@
 #' result <- mfsir(Xc, y, H, nbasis)
 
 
-#
+
 mfsir <- function(Xc, y, H, nbasis) {
   # Check if Xc is a 3-dimensional array
   if (length(dim(Xc)) != 3) {
@@ -69,6 +69,7 @@ mfsir <- function(Xc, y, H, nbasis) {
 
   n <- dim(Xc)[1] # Number of observations
   p <- dim(Xc)[3] # Number of variables
+
   # Create a B-spline basis for smoothing
   databasis <- create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
 
@@ -79,6 +80,7 @@ mfsir <- function(Xc, y, H, nbasis) {
 
   # Initialize an empty vector to store coefficients
   xfd.coef <- numeric() #retrieves the coodinates as an n x (p * q) matrix
+
   # Loop over each variable to smooth and center the data
   for (k in 1:p) {
     xfdk <- fda::smooth.basis(t, t(Xc[, , k]), databasis)$fd
@@ -89,52 +91,70 @@ mfsir <- function(Xc, y, H, nbasis) {
 
   #compute block diagonal gram matrix gx
   gi <- gramatrix(nbasis, databasis)
-  #
   gx <- matrix(0, nrow = p * (nbasis), ncol = p * (nbasis))
+
   # Fill the block diagonal Gram matrix
   for (i in 1:p) {
     index <- ((i - 1) * (nbasis) + 1):(i * (nbasis))
     gx[index, index] <- gi
   }
+
   # Compute the covariance matrix of the smoothed data coefficients
   sigmaxx <- (t(xfd.coef) %*% xfd.coef) / n
+
   # Compute the square root of the Gram matrix
   gx.sqrt <- mppower(gx, 1/2, 10e-7)
+
   # Compute the product of gx.sqrt, sigmaxx, and gx.sqrt
   store <- gx.sqrt %*% sigmaxx %*% gx.sqrt
+
   # Compute the inverse square root of the product matrix
   store.inv.sqrt <- rigpower(store, -1/2, 0.05)
+
   # Compute the mean of the coefficients
   mucoef <- apply(xfd.coef, 2, mean)
+
   # Discretize the response variable into H slices
   ydis <- discretize (y, 1:H)
+
   # Compute the slice probabilities
   prob <- slprob(ydis, 1:H)
+
   # Compute the average slice values
   avg.slav <- slav(xfd.coef, ydis, 1:H)
+
   # Initialize Lambda1 matrix
   Lambda1 <- matrix(0, p * nbasis, p * nbasis)
+
   # Compute Lambda1 using the slice probabilities and average slice values
   for(i in 1:H) {
     Lambda1 <- Lambda1 + prob[i] * avg.slav[i, ] %*% t(avg.slav[i, ])}
+
   # Compute the cross-covariance matrix
   sigmaxxy <- Lambda1 - mucoef %*% (t(mucoef))
+
   # Compute the transformation matrix
   mat <- store.inv.sqrt %*% gx.sqrt
+
   # Compute the matrix to be decomposed
   out <- mat %*% sigmaxxy %*% t(mat)
+
   # Ensure the matrix is symmetric
   out <- symmetry(out)
+
   # Perform eigen decomposition
   eigendecom <- eigen(out)
+
   # Extract eigenvalues and eigenvectors
   eigvalues <- eigendecom$values
-
   phi <- eigendecom$vec
+
   # Compute the inverse square root of the Gram matrix
   gx.inv.sqrt <- rigpower(gx, -1/2, 0.05)
+
   # Compute the regression coefficients
   betas <- gx.inv.sqrt %*% store.inv.sqrt %*% phi
+
   # Return the results as a list
   return(list(phi = phi, betas = betas, eigvalues = eigvalues, xfd.coef = xfd.coef, gx = gx))
 }
