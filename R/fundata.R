@@ -61,32 +61,51 @@
 #'
 #' @export
 fundata <- function(n, p, q, t, eta) {
+
+  # compatibility checks
+  # checks if n is an integer and n > p
+  if (length(n) != 1 | n != round(n)) {
+    stop("Parameter 'n' must be a single integer number.")
+  }
+
+  if (n <= 0 | n <= p) {
+    stop("Parameter 'n' must be a positive integer and greater than 'p'.")
+  }
+
+  # checks that p is a single number
+  if (length(p) != 1) {
+    stop("Parameter 'p' must be a single number.")
+  }
+
+  # checks that q is a single number
+  if (length(q) != 1) {
+    stop("Parameter 'q' must be a single number.")
+  }
+
+  # checks that p is a positive integer
+  if (p != round(p) | p <=0) {
+    stop("Parameter 'p' must be integer and positive number.")
+  }
+
+  # checks that q is a positive integer
+  if (q != round(q) | q <=0) {
+    stop("Parameter 'q' must be integer and positive number.")
+  }
+
+  # check if t is a vector
+  if (is.vector(t) | length(t) == 1) {
+    stop("t is a vector of length more than 1.")
+  }
+
+  # checks if the dimension of eta is n * (p * q)
+  if (!is.matrix(eta) | nrow(eta) != n | ncol(eta) != (p * q)) {
+    stop("Parameter 'eta' must be a numeric matrix with dimensions n x (p * q).")
+  }
+
   # define the parameters
   Time <- length(t)
   g <- array(0, dim = c(n, Time, p))
   cg <- array(0, dim = c(n, Time, p))
-
-  # compatibility checks
-  # checks if the dimension of eta is n * (p * q)
-  if (!is.matrix(eta) || nrow(eta) != n || ncol(eta) != (p * q)) {
-    stop("Parameter 'eta' must be a numeric matrix with dimensions n x (p * q).")
-  }
-
-  # checks if n is an integer and n > p
-  if (n != round(n) || length(n) != 1 || n <= 0 || n <= p) {
-    stop("Parameter 'n' must be a positive integer and greater than 'p'.")
-  }
-
-  # checks that p and q are positive integers
-  if (p != round(p) || length(p) != 1 || p <=0 || q != round(q) ||
-      length(q) != 1 || q <= 0){
-    stop("Parameters 'p' and 'q' must be positive integers.")
-  }
-
-  # check if t is a vector
-  if (is.vector(t) || length(t) == 1){
-    stop("t is a vector of length more than 1.")
-  }
 
   ## Create a Fourier basis with q basis functions over the interval [0, 1]
   f.ans <- fda::create.fourier.basis(rangeval = c(0, 1), nbasis = q,
