@@ -15,16 +15,24 @@
 #'     matrix.
 #'
 #' @examples
+#' # Example 1
 #' K <- 4
 #' x <- seq(0, 10, length.out = 5)
 #' databasis <- fda::create.bspline.basis(rangeval = c(0, 10), nbasis = K,
 #'     norder = 4)
 #' gramatrix(K, databasis)
 #'
+#' \dontrun{
+#' Example 2
+#' x <- seq(0, 10, length.out = 5)
+#' databasis <- bs(x, degree = 3, knots = c(3, 7))
+#' gramatrix(K, databasis)
+#' }
+#'
 #' @noRd
 gramatrix <- function(K, databasis) {
 
-  # compatability checks for both K and databasis
+  # compatibility checks for both K and databasis
   if (!is.numeric(K) | K <= 0 | K != round(K)) {
     stop("K must be a positive integer.")
   }
