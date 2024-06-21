@@ -36,18 +36,13 @@ discretize <- function(y, H) {
   }
 
   # Check if H is numeric
-  if (!is.numeric(H)) {
-    stop("H must be numeric.")
+  if (H != round(H) | H <= 0) {
+    stop("H must be a positive integer.")
   }
 
   # Check if H is just one number
   if (length(H) > 1) {
     stop("H must be one number.")
-  }
-
-  # Check if H is a positive number
-  if (H <= 0) {
-    stop("H must be a positive number.")
   }
 
   # define the parameters
