@@ -1,19 +1,19 @@
-#' Computes an inner product matrix
-
-#' \code{gramatrix} calculates the inner product of a spline and forms a matrix
-
-
-#' This function computes the center gram matrix from the inner products of
-#' databasis functions. That inner product is taken and used as an input
-#' for the qmat function to return a matrix where the sum of each row and column
-#' is zero.
-
-#' @param databasis a spline object that is a representation of data as a
-#' smoothed function
-#' @param K the number of elements in the basis
-
-#' @return A K x K matrix that has been scaled by its inner product
-
+#' Gram matrix
+#'
+#' \code{gramatrix} calculates the inner products of basis functions.
+#'
+#' This function computes a centered Gram matrix from the inner products
+#' of a given basis object, which is often utilized in functional data
+#' analysis.
+#'
+#' @param K The number of elements in the basis, which must be a positive
+#'     integer.
+#' @param databasis A basis object that is a representation of data as a
+#' smoothed function.
+#'
+#' @return A centered K x K inner product matrix, representing the Gram
+#'     matrix.
+#'
 #' @noRd
 #' @examples
 #' K <- 3
