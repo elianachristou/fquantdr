@@ -1,22 +1,21 @@
 #' Transformation of a matrix
-
+#'
 #' matpower: Power of a matrix
-
+#'
 #' \code{matpower} symmetries a matrix using eigen decomposition
-
+#'
 #' This function takes in a matrix and an alpha value and proceeds to
 #' transform the matrix by computing its eignvectors and eigenvalues, creating a
 #' new matrix based on the transpose of a, and then transforming the matrix by
 #' creating new matrixs using its eignvectors and eigenvalues and multiply them
 #' by themselves.
-
-
+#'
 #' @param a input square matrix
 #' @param alpha an exponent to raise the matrix
 #'
 #' @return returns a matrix that has been raised to a certain power based on its
 #' eigenvalues and eigenvectors
-
+#'
 #' @noRd
 #' @examples
 #' matr <- matrix(c(6, 4, 8, 2, 5, 9), nrow = 2, ncol = 3)
