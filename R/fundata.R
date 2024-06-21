@@ -72,8 +72,8 @@ fundata <- function(n, p, q, t, eta) {
     stop("Parameter 'eta' must be a numeric matrix with dimensions n x (p * q).")
   }
 
-  # checks if n is an interger and n > p
-  if (!is.numeric(n) || length(n) != 1 || n <= 0 || n <= p) {
+  # checks if n is an integer and n > p
+  if (n != round(n) || length(n) != 1 || n <= 0 || n <= p) {
     stop("Parameter 'n' must be a positive integer and greater than 'p'.")
   }
 
