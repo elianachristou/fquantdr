@@ -23,23 +23,25 @@
 #' matpower(mat, alpha)
 #'
 matpower <- function(a, alpha) {
-  # Checks to make sure matrix returned a matrix
+  # Checks if 'a' ia a matrix
   if (!is.matrix(a)) {
-    stop("The first input has not returned a matrix.")
+    stop("The first 'a' must be a matrix.")
   }
-  # Checks if alpha is a positive integer
+  # Checks if 'alpha' is a positive integer
   if (!is.numeric(alpha) || alpha <= 0 || alpha != as.integer(alpha)) {
-    stop("The second value has to be an integer exponenet. ")
+    stop("The exponent 'alpha' must be a positive integer. ")
   }
-  # Computes the transpose of a matrix and then adds it to the original
-  # matrix. The new matrix is then divided by two and then rounded to the 5th
-  # decimal place.
+
+  # Symmetrize the input matrix 'a'
   a <- round((a + t(a)) / 2, 5)
-  # tmp is assigned the eigenvalues and eigenvectors of a
+
+  # Compute eigen decomposition
   tmp <- eigen(a)
-  # Returns the eigenvectors being multiplied by a diagonal matrix of the
-  # eigenvalues where all values on the diagonal have been raised to the power of
-  # alpha. This is then multiplied by the transpose of the eigenvectors
-  return(tmp$vectors %*% diag((tmp$values)^alpha) %*%
-           t(tmp$vectors))}
+
+  # Calculate the matrix raised to the power of 'alphaa' based on eigen
+  # decomposition
+  result <- tmp$vectors %*% diag((tmp$values)^alpha) %*%
+           t(tmp$vectors)
+  result
+}
 
