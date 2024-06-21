@@ -28,6 +28,11 @@ matpower <- function(a, alpha) {
     stop("The input 'a' must be a matrix.")
   }
 
+  # Checks is 'a' is a square matrix
+  if (dim(a)[1] != dim(a)[2]) {
+    stop("The input 'a' must be a square matrix.")
+  }
+
   # Checks if 'alpha' is a positive integer
   if (!is.numeric(alpha) | alpha <= 0 | alpha != round(alpha)) {
     stop("The exponent 'alpha' must be a positive integer. ")
