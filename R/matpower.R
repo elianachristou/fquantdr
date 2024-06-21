@@ -23,12 +23,13 @@
 #' matpower(mat, alpha)
 #'
 matpower <- function(a, alpha) {
-  # Checks if 'a' ia a matrix
+  # Checks if 'a' is a matrix
   if (!is.matrix(a)) {
-    stop("The first 'a' must be a matrix.")
+    stop("The input 'a' must be a matrix.")
   }
+
   # Checks if 'alpha' is a positive integer
-  if (!is.numeric(alpha) || alpha <= 0 || alpha != as.integer(alpha)) {
+  if (!is.numeric(alpha) | alpha <= 0 | alpha != round(alpha)) {
     stop("The exponent 'alpha' must be a positive integer. ")
   }
 
