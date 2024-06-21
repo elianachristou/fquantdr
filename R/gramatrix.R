@@ -1,23 +1,23 @@
-#' Gram matrix
+#' Compute the Gram matrix
 #'
 #' \code{gramatrix} calculates the inner products of basis functions.
 #'
-#' This function computes a centered Gram matrix from the inner products
-#' of a given basis object, which is often utilized in functional data
-#' analysis.
+#' This function computes the centered Gram matrix from the inner products
+#' of given basis functions, commonly used in functional data analysis.
 #'
 #' @param K The number of elements in the basis, which must be a positive
 #'     integer.
 #' @param databasis A basis object that is a representation of data as a
 #' smoothed function.
 #'
-#' @return A centered K x K inner product matrix, representing the Gram
+#' @return A centered \code{K x K} inner product matrix, representing the Gram
 #'     matrix.
 #'
 #' @noRd
 #' @examples
 #' K <- 3
 #' x <- seq(0, 10, length.out = 5)
+#' databasis <- fda::creat.bspline.basis(rangevl = c(0, 10), nbasis = K, norder = 4)
 #' b_spline <- bs(x, degree = 3, knots = c(3, 7))
 #' databasis <- b_spline
 #' grammatrix(K, databasis)
