@@ -48,5 +48,5 @@ gramatrix <- function(K, databasis) {
   Gmat <- qmat(K) %*% kernmat %*% qmat(K)
 
   # returns a centered inner product matrix
-  return(Gmat = Gmat)
+  Gmat
 }
