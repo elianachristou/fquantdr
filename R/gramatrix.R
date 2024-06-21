@@ -8,7 +8,8 @@
 #' @param K The number of elements in the basis, which must be a positive
 #'     integer.
 #' @param databasis A basis object that is a representation of data as a
-#' smoothed function.
+#'     smoothed function.  It must be an object of class \code{"basisfd"},
+#'     typically created using functions from the `fda` package.
 #'
 #' @return A centered \code{K x K} inner product matrix, representing the Gram
 #'     matrix.
@@ -17,10 +18,10 @@
 #' @examples
 #' K <- 3
 #' x <- seq(0, 10, length.out = 5)
-#' databasis <- fda::creat.bspline.basis(rangevl = c(0, 10), nbasis = K, norder = 4)
+#' databasis <- fda::create.bspline.basis(rangeval = c(0, 10), nbasis = K, norder = 4)
 #' b_spline <- bs(x, degree = 3, knots = c(3, 7))
 #' databasis <- b_spline
-#' grammatrix(K, databasis)
+#' gramatrix(K, databasis)
 #'
 gramatrix <- function(K, databasis) {
 
@@ -28,6 +29,7 @@ gramatrix <- function(K, databasis) {
   if (!is.numeric(K) | K <= 0 | K != round(K)) {
     stop("K must be a positive integer.")
   }
+
   if (!inherits(databasis, "basisfd")) {
     stop("databasis must be a 'basisfd' object.")
   }
@@ -39,5 +41,5 @@ gramatrix <- function(K, databasis) {
   Gmat <- qmat(K) %*% kernmat %*% qmat(K)
 
   # returns a centered inner product matrix
-  return(Gmat)
+  return(Gmat = Gmat)
 }
