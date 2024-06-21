@@ -82,6 +82,10 @@ fundata <- function(n, p, q, t, eta) {
                                      dropind = 1)
   st <- as.matrix(fda::eval.basis(t, f.ans))
 
+  # when q is even, the dimension of st is n x q, but when q is odd,
+      # the dimension of st is n x (q - 1)
+  q <- dim(st)[2]
+
   ## Generate functional predictors
   # g and cg are the original and centered functional predictors
   for(j in 1:p) {
