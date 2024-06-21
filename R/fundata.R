@@ -77,14 +77,14 @@ fundata <- function(n, p, q, t, eta) {
     stop("Parameter 'p' must be a single number.")
   }
 
-  # checks that q is a single number
-  if (length(q) != 1) {
-    stop("Parameter 'q' must be a single number.")
-  }
-
   # checks that p is a positive integer
   if (p != round(p) | p <=0) {
     stop("Parameter 'p' must be integer and positive number.")
+  }
+
+  # checks that q is a single number
+  if (length(q) != 1) {
+    stop("Parameter 'q' must be a single number.")
   }
 
   # checks that q is a positive integer
