@@ -18,7 +18,7 @@
 #'
 #' @noRd
 #' @examples
-#' mat <- matrix(c(6, 4, 8, 2, 5, 9), nrow = 2, ncol = 3)
+#' mat <- matrix(c(6, 4, 8, 2, 5, 9, 3, 1, 7), nrow = 3, ncol = 3)
 #' alpha <- 2
 #' matpower(mat, alpha)
 #'
@@ -31,6 +31,11 @@ matpower <- function(a, alpha) {
   # Checks is 'a' is a square matrix
   if (dim(a)[1] != dim(a)[2]) {
     stop("The input 'a' must be a square matrix.")
+  }
+
+  # Checks if 'alpha' is a single number
+  if (length(alpha) != 1) {
+    stop("The exponent 'alpha' must be a single number.")
   }
 
   # Checks if 'alpha' is a positive integer
