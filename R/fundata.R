@@ -31,7 +31,7 @@
 #' # Example 1
 #' n <- 100
 #' p <- 5
-#' q <- 4
+#' q <- 3
 #' t <- seq(0, 1, length.out = 101)
 #' eta <- matrix(stats::rnorm(n * p * q), nrow = n, ncol = p * q)
 #' result <- fundata(n, p, q, t, eta)
@@ -93,7 +93,7 @@ fundata <- function(n, p, q, t, eta) {
   }
 
   # check if t is a vector
-  if (is.vector(t) | length(t) == 1) {
+  if (!is.vector(t) | length(t) == 1) {
     stop("t is a vector of length more than 1.")
   }
 
