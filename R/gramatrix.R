@@ -23,8 +23,9 @@
 #' grammatrix(K, databasis)
 #'
 gramatrix <- function(K, databasis) {
+
   # compatability checks for both K and databasis
-  if (!is.numeric(K) || K <= 0 || K != as.integer(K)) {
+  if (!is.numeric(K) | K <= 0 | K != round(K)) {
     stop("K must be a positive integer.")
   }
   if (!inherits(databasis, "basisfd")) {
@@ -34,10 +35,6 @@ gramatrix <- function(K, databasis) {
   # Kernmat is assigned a K x K matrix of the inner products
   kernmat <- fda::inprod(databasis, databasis)
 
-  # Checks to make sure inprod returned a matrix
-  if (!is.matrix(kernmat)) {
-    stop("The inprod function has not returned a matrix.")
-  }
   # Computes a K x K matrix using the qmat function for centering
   Gmat <- qmat(K) %*% kernmat %*% qmat(K)
 
