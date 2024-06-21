@@ -1,26 +1,26 @@
-#' Transformation of a matrix
+#' Matrix power transformation
 #'
-#' matpower: Power of a matrix
+#' \code{matpower} computes the power of a square matrix using eigen
+#'     decomposition.
 #'
-#' \code{matpower} symmetries a matrix using eigen decomposition
+#' This function takes a square matrix \code{a} and an exponent \code{alpha}
+#'     and transforms the matrix by performing eigen decomposition.  It
+#'     computes the eigenvectors and eigenvalues of the matrix, raises the
+#'     eigenvalues to the power of \code{alpha}, and then reconstructs the
+#'     matrix using the transformed eigenvectors and adjusted eigenvalues.
+#'     The resulting matrix is symmetric (rounded to five decimal places).
 #'
-#' This function takes in a matrix and an alpha value and proceeds to
-#' transform the matrix by computing its eignvectors and eigenvalues, creating a
-#' new matrix based on the transpose of a, and then transforming the matrix by
-#' creating new matrixs using its eignvectors and eigenvalues and multiply them
-#' by themselves.
+#' @param a The input square matrix.
+#' @param alpha The exponent to which the matrix is raised.
 #'
-#' @param a input square matrix
-#' @param alpha an exponent to raise the matrix
-#'
-#' @return returns a matrix that has been raised to a certain power based on its
-#' eigenvalues and eigenvectors
+#' @return The matrix raised to the power of \code{alpha} based on its
+#'     eigenvalues and eigenvectors.
 #'
 #' @noRd
 #' @examples
-#' matr <- matrix(c(6, 4, 8, 2, 5, 9), nrow = 2, ncol = 3)
+#' mat <- matrix(c(6, 4, 8, 2, 5, 9), nrow = 2, ncol = 3)
 #' alpha <- 2
-#' matpower(matr, alpha)
+#' matpower(mat, alpha)
 #'
 matpower <- function(a, alpha) {
   # Checks to make sure matrix returned a matrix
