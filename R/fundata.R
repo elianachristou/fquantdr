@@ -77,6 +77,17 @@ fundata <- function(n, p, q, t, eta) {
     stop("Parameter 'n' must be a positive integer and greater than 'p'.")
   }
 
+  # checks that p and q are positive integers
+  if (p != round(p) || length(p) != 1 || p <=0 || q != round(q) ||
+      length(q) != 1 || q <= 0){
+    stop("Parameters 'p' and 'q' must be positive integers.")
+  }
+
+  # check if t is a vector
+  if (is.vector(t) || length(t) == 1){
+    stop("t is a vector of length more than 1.")
+  }
+
   ## Create a Fourier basis with q basis functions over the interval [0, 1]
   f.ans <- fda::create.fourier.basis(rangeval = c(0, 1), nbasis = q,
                                      dropind = 1)
