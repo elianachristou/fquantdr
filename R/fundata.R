@@ -31,7 +31,7 @@
 #' # Example 1
 #' n <- 100
 #' p <- 5
-#' q <- 4
+#' q <- 3
 #' t <- seq(0, 1, length.out = 101)
 #' eta <- matrix(stats::rnorm(n * p * q), nrow = n, ncol = p * q)
 #' result <- fundata(n, p, q, t, eta)
@@ -61,26 +61,60 @@
 #'
 #' @export
 fundata <- function(n, p, q, t, eta) {
+
+  # compatibility checks
+  # checks if n is an integer and n > p
+  if (length(n) != 1 | n != round(n)) {
+    stop("Parameter 'n' must be a single integer number.")
+  }
+
+  if (n <= 0 | n <= p) {
+    stop("Parameter 'n' must be a positive integer and greater than 'p'.")
+  }
+
+  # checks that p is a single number
+  if (length(p) != 1) {
+    stop("Parameter 'p' must be a single number.")
+  }
+
+  # checks that p is a positive integer
+  if (p != round(p) | p <=0) {
+    stop("Parameter 'p' must be integer and positive number.")
+  }
+
+  # checks that q is a single number
+  if (length(q) != 1) {
+    stop("Parameter 'q' must be a single number.")
+  }
+
+  # checks that q is a positive integer
+  if (q != round(q) | q <=0) {
+    stop("Parameter 'q' must be integer and positive number.")
+  }
+
+  # check if t is a vector
+  if (!is.vector(t) | length(t) == 1) {
+    stop("t is a vector of length more than 1.")
+  }
+
+  # checks if the dimension of eta is n * (p * q)
+  if (!is.matrix(eta) | nrow(eta) != n | ncol(eta) != (p * q)) {
+    stop("Parameter 'eta' must be a numeric matrix with dimensions n x (p * q).")
+  }
+
   # define the parameters
   Time <- length(t)
   g <- array(0, dim = c(n, Time, p))
   cg <- array(0, dim = c(n, Time, p))
 
-  # compatibility checks
-  # checks if the dimension of eta is n * (p * q)
-  if (!is.matrix(eta) || nrow(eta) != n || ncol(eta) != (p * q)) {
-    stop("Parameter 'eta' must be a numeric matrix with dimensions n x (p * q).")
-  }
-
-  # checks if n is an interger and n > p
-  if (!is.numeric(n) || length(n) != 1 || n <= 0 || n <= p) {
-    stop("Parameter 'n' must be a positive integer and greater than 'p'.")
-  }
-
   ## Create a Fourier basis with q basis functions over the interval [0, 1]
   f.ans <- fda::create.fourier.basis(rangeval = c(0, 1), nbasis = q,
                                      dropind = 1)
   st <- as.matrix(fda::eval.basis(t, f.ans))
+
+  # when q is even, the dimension of st is n x q, but when q is odd,
+      # the dimension of st is n x (q - 1)
+  q <- dim(st)[2]
 
   ## Generate functional predictors
   # g and cg are the original and centered functional predictors

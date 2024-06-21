@@ -14,6 +14,59 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Introduction
+
+# Getting Started
+
+To get started you need to first install the package using the command
+```{r, eval = FALSE}
+install.packages("fquantdr")
+```
+
+and then use it during any 'R' session by issuing the command
 ```{r setup}
 library(fquantdr)
 ```
+
+For an overview of the available help files of the package use
+```{r, eval = FALSE}
+help(package = "fquantdr")
+```
+
+The package includes the following functions (Keep updated):
+
+* `fundata` Generate functional data based on Fourier basis function
+* `fcqs`
+* `sonf`
+
+<!-- * `discrete` Discretize conversion of a continuous numeric vector -->
+<!-- * `gramatrix` Computes the center gram matrix -->
+<!-- * `matpower` Power of a matrix -->
+<!-- * `mcorr` Multiple correlation between two random vectors -->
+<!-- * `mppower` Moore-Penrose type power -->
+<!-- * `qmat` Computes a transformed identity matrix -->
+<!-- * `rigpower` Ridge-regression type power -->
+<!-- * `slav` Compute slice average  -->
+<!-- * `slprob` Compute slice proportions  -->
+<!-- * `symmetry` Symmtrize Matrix -->
+
+To get help on a specific function type `help(function.name)` or `?function.name` for a convenient shorthand. Try
+```{r, eval = FALSE}
+help(fcqs)
+?cqs
+```
+
+For further examples, refer to the coding examples listed in the documentation for each `fquantdr` function.
+
+# Functional central quantile subspace
+## Overview
+
+The overall goal of the `fcqs` function is to identify a finite linear operator $L_\tau(X)$, where $L_{\tau} \in \mathscr{B}(\mathscr{H}, \mathbb{R}^{d_\tau})$ and $d_{\tau} \in \mathbb{N}$, such that the functional central quantile subspace is $\overline{\mathrm{ran}}(L_\tau^*)$. This allows us to replace the random function $X$, defined as $X = (X^1, \dots, X^p): \Omega \rightarrow \bigoplus_{i=1}^{p} \mathcal{H}_i$, with the lower-dimensional linear operator $L_\tau(X)$. To achieve this, Christou et al. (2024+) proved two important results:
+
+* $\beta_\tau^* \in \mathcal{S}_{Q_{\tau}(Y|X)}$, where $\beta_\tau^*$ is the slope vector from regressing the conditional quantile on $X$, i.e.,
+
+\begin{eqnarray*}
+(\alpha_{\tau}^*, \beta_{\tau}^*) = \arg \min_{(a_{\tau}, b_{\tau})} E [Q_{\tau}\{Y|L(X)\} - a_{\tau} - \langle b_{\tau}, X \rangle_{\mathscr{H}}]^2
+\end{eqnarray*}
+where $L \in \mathscr{B}(\mathscr{H}, \mathbb{R}^d)$, such that the functional central subspace is $\overline{\mathrm{ran}}(L^*)$ (Li and Song, 2022). This implies an initial dimension reduction using $L(X)$, making the nonparametric estimation of $Q_\tau(Y|L(X))$ tractable. 
+

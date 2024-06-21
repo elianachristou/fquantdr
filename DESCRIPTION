@@ -3,7 +3,7 @@ Type: Package
 Title: Dimension Reduction Techniques for Conditional Quantiles for 
     Functional Data
 Version: 0.0.0.9000
-Author: c(person("Eliana", "Christou", email="echris15@uncc.edu",
+Author: c(person("Eliana", "Christou", email="echris15@charlotte.edu",
     role = c("aut", "cre"), comment = c(ORCID = "https://orcid.org/0000-0001-5044-0969"),
     person("Precious", "Donkoer", role = "aut"),
     person("Nathan", "Hogshead", role = "aut"),
@@ -34,6 +34,7 @@ Collate:
     'gramatrix.R'
     'matpower.R'
     'mcorr.R'
+    'mfsir.R'
     'mppower.R'
     'qmat.R'
     'rigpower.R'
