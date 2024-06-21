@@ -14,15 +14,14 @@
 #' @return A centered \code{K x K} inner product matrix, representing the Gram
 #'     matrix.
 #'
-#' @noRd
 #' @examples
-#' K <- 3
+#' K <- 4
 #' x <- seq(0, 10, length.out = 5)
-#' databasis <- fda::create.bspline.basis(rangeval = c(0, 10), nbasis = K, norder = 4)
-#' b_spline <- bs(x, degree = 3, knots = c(3, 7))
-#' databasis <- b_spline
+#' databasis <- fda::create.bspline.basis(rangeval = c(0, 10), nbasis = K,
+#'     norder = 4)
 #' gramatrix(K, databasis)
 #'
+#' @noRd
 gramatrix <- function(K, databasis) {
 
   # compatability checks for both K and databasis
