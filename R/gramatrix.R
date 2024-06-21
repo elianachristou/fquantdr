@@ -14,6 +14,7 @@
 #' @return A centered \code{K x K} inner product matrix, representing the Gram
 #'     matrix.
 #'
+#' @noRd
 #' @examples
 #' # Example 1
 #' K <- 4
@@ -29,7 +30,6 @@
 #' gramatrix(K, databasis)
 #' }
 #'
-#' @noRd
 gramatrix <- function(K, databasis) {
 
   # compatibility checks for both K and databasis
