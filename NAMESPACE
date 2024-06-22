@@ -3,4 +3,3 @@
 export(fundata)
 export(mcorr)
 export(sonf)
-import(stats)

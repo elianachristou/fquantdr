@@ -2,33 +2,31 @@
 % Please edit documentation in R/mcorr.R
 \name{mcorr}
 \alias{mcorr}
-\title{multiple correlation}
+\title{Multiple correlation}
 \usage{
 mcorr(u, v)
 }
 \arguments{
-\item{u}{A numeric vector or matrix. The first variable for the correlation
-measure}
-
-\item{v}{A numeric vector or matrix. The second variable for the correlation
-measure}
+\item{uv}{Numeric vectors or matrices.}
 }
 \value{
 \code{mcorr} computes the multiple correlation between \code{u}
-and \code{v}
+and \code{v}.
 }
 \description{
 \code{mcorr} computes the multiple correlation between two random vectors
-\code{u} and \code{v}
+\code{u} and \code{v}.
 }
 \details{
 This function computes the multiple correlation between two random vectors
 \code{u} and \code{v} of the same dimension. Let C_{uu}, C_{uv}, and C_{vu}
-represent the sample covariance matrices, the multiple correlation between
-\code{u} and \code{v} is
+represent the sample covariance matrices. The multiple correlation between
+\code{u} and \code{v} is given by:
 \deqn{
-mcorr(u, v) = tr(C_{vv}^{-1/2} C_{vu} C_{uu}^{-1} C_{uv} C_{vv}^{-1/2})
+mcorr(u, v) = tr(C_{vv}^{-1/2} C_{vu} C_{uu}^{-1} C_{uv} C_{vv}^{-1/2}).
 }
+This measure was used, for example, in Li and Song (2022) and Solea et
+al. (2024).
 }
 \examples{
 set.seed(1234)
@@ -41,4 +39,8 @@ mcorr(u, v)
 Li, B, and Song, J. (2022). Dimension reduction for functional
 data based on weak conditional moments. \emph{The Annals of Statistics}
 50(1), 107--128.
+
+Solea, E., Christou, E., and Song, J. (2024). Robust Inverse Regression for
+Multivariate Elliptical Functional Data. \emph{Statistica Sinica}
+https://www3.stat.sinica.edu.tw/ss_newpaper/SS-2023-0341_na.pdf
 }

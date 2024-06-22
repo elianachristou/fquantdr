@@ -28,7 +28,7 @@ basis functions and returns:
 }
 }
 \description{
-\code{fundata} generates functional data based on Fourier basis functions
+\code{fundata} generates functional data based on Fourier basis functions.
 }
 \details{
 This function generates functional data for a given number of observations
