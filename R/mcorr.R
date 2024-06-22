@@ -23,7 +23,6 @@
 #'    data based on weak conditional moments. \emph{The Annals of Statistics}
 #'    50(1), 107--128.
 #'
-#' @import stats
 #' @include matpower.R
 #' @examples
 #' set.seed(1234)
@@ -53,10 +52,10 @@ mcorr <- function(u, v) {
   }
 
   if(dim(u)[2] != 1) {
-    suu.nhalf <- matpower(var(u), -1/2)
-    svv.inv <- solve(var(v))
-    result <- c(abs(sum(diag(suu.nhalf %*% cov(u, v) %*% svv.inv %*%
-                               cov(v, u) %*% suu.nhalf))))
+    suu.nhalf <- matpower(stats::var(u), -1/2)
+    svv.inv <- solve(stats::var(v))
+    result <- c(abs(sum(diag(suu.nhalf %*% stats::cov(u, v) %*% svv.inv %*%
+                               stats::cov(v, u) %*% suu.nhalf))))
     return(result)
     }
 }
