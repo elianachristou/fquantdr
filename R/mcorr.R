@@ -30,8 +30,7 @@
 #' v <- matrix(rnorm(100), ncol=2)
 #' mcorr(u, v)
 #'
-#' @noRd
-
+#' @export
 mcorr <- function(u, v) {
   u <- as.matrix(u)
   v <- as.matrix(v)
