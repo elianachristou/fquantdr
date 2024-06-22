@@ -39,8 +39,8 @@ matpower <- function(a, alpha) {
   }
 
   # Checks if 'alpha' is an integer
-  if (!is.numeric(alpha) | alpha != round(alpha)) {
-    stop("The exponent 'alpha' must be an integer. ")
+  if (!is.numeric(alpha)) {
+    stop("The exponent 'alpha' must be numeric. ")
   }
 
   # Symmetrize the input matrix 'a'
