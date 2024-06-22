@@ -45,15 +45,13 @@ mcorr <- function(u, v) {
 
   # checks if u and v have the same dimension
   if (dim(u)[2] != dim(v)[2]) {
-    stop("u and v must have the same dimension.")
+    stop("u and v must have the same number of columns.")
   }
 
   if(dim(u)[2] == 1) {
-    result <- c(abs(cor(u, v)))
+    result <- abs(cor(u, v))
     return(result)
-  }
-
-  if(dim(u)[2] != 1) {
+  } else {
     suu.nhalf <- matpower(stats::var(u), -1/2)
     svv.inv <- solve(stats::var(v))
     result <- c(abs(sum(diag(suu.nhalf %*% stats::cov(u, v) %*% svv.inv %*%
