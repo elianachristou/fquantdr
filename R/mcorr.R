@@ -1,22 +1,23 @@
-#' multiple correlation
+#' Multiple correlation
 #'
 #' \code{mcorr} computes the multiple correlation between two random vectors
-#' \code{u} and \code{v}
+#' \code{u} and \code{v}.
 #'
 #' This function computes the multiple correlation between two random vectors
 #' \code{u} and \code{v} of the same dimension. Let C_{uu}, C_{uv}, and C_{vu}
 #' represent the sample covariance matrices, the multiple correlation between
 #' \code{u} and \code{v} is
 #' \deqn{
-#' mcorr(u, v) = tr(C_{vv}^{-1/2} C_{vu} C_{uu}^{-1} C_{uv} C_{vv}^{-1/2})
+#' mcorr(u, v) = tr(C_{vv}^{-1/2} C_{vu} C_{uu}^{-1} C_{uv} C_{vv}^{-1/2}).
 #' }
+#' This was used, for example, in Li and Song (2022) and Solea et al. (2024).
 #'
 #' @param u A numeric vector or matrix. The first variable for the correlation
-#'    measure
+#'    measure.
 #' @param v A numeric vector or matrix. The second variable for the correlation
-#'    measure
+#'    measure.
 #' @return \code{mcorr} computes the multiple correlation between \code{u}
-#'    and \code{v}
+#'    and \code{v}.
 #'
 #' @references Li, B, and Song, J. (2022). Dimension reduction for functional
 #'    data based on weak conditional moments. \emph{The Annals of Statistics}
