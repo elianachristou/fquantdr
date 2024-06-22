@@ -13,7 +13,7 @@
 #' This measure was used, for example, in Li and Song (2022) and Solea et
 #'     al. (2024).
 #'
-#' @param uv Numeric vectors or matrices.
+#' @param u,v Numeric vectors or matrices.
 #' @return \code{mcorr} computes the multiple correlation between \code{u}
 #'    and \code{v}.
 #'

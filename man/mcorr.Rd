@@ -7,7 +7,7 @@
 mcorr(u, v)
 }
 \arguments{
-\item{uv}{Numeric vectors or matrices.}
+\item{u, v}{Numeric vectors or matrices.}
 }
 \value{
 \code{mcorr} computes the multiple correlation between \code{u}
