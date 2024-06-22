@@ -48,11 +48,15 @@ mcorr <- function(u, v) {
   }
 
   if(dim(u)[2] == 1) {
-    return(c(abs(cor(u, v))))
+    result <- c(abs(cor(u, v)))
+    return(result)
   }
 
   if(dim(u)[2] != 1) {
     suu.nhalf <- matpower(var(u), -1/2)
     svv.inv <- solve(var(v))
-    return(c(abs(sum(diag(suu.nhalf %*% cov(u, v) %*% svv.inv %*% cov(v, u) %*% suu.nhalf)))))}
+    result <- c(abs(sum(diag(suu.nhalf %*% cov(u, v) %*% svv.inv %*%
+                               cov(v, u) %*% suu.nhalf))))
+    return(result)
+    }
 }
