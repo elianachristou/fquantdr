@@ -152,7 +152,7 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR) {
   # Eigenfunction decomposition
   # Compute Moore-Penrose inverse of gx to the .5 power
   gx.half = mppower(gx, 0.5, 1e-8)
-  # Compute Moor-Penrose inverse of gx to the -.5 power
+  # Compute Moore-Penrose inverse of gx to the -.5 power
   gx.inv.half = mppower(gx, -0.5, 1e-8)
   # Compute matrix A to find eigenvectors of M
   A =  mppower(1 / n * gx.half %*% t(xcoef) %*% xcoef %*% gx.half, -0.5, 1e-8)
