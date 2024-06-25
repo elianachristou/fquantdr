@@ -49,7 +49,7 @@ mcorr <- function(u, v) {
   }
 
   if(dim(u)[2] == 1) {
-    result <- abs(cor(u, v))
+    result <- abs(stats::cor(u, v))
     return(result)
   } else {
     suu.nhalf <- matpower(stats::var(u), -1/2)

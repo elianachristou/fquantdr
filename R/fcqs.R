@@ -146,10 +146,10 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR) {
   # Get initial bandwidth
   h <- KernSmooth::dpill(vv[index_y, ], y[index_y])
   # Transform bandwidth for given quantile
-  h <- 4 * h * (tau * (1 - tau) / (dnorm(qnorm(tau))) ^ 2) ^ 0.2
+  h <- 4 * h * (tau * (1 - tau) / (stats::dnorm(stats::qnorm(tau))) ^ 2) ^ 0.2
   # Use alternative method for bandwidth calculation on error
   if (h == 'NaN') {
-    h <- 1.25 * max(n ^ (-1 / (d_tau + 4)), min(2, sd(y)) *
+    h <- 1.25 * max(n ^ (-1 / (d_tau + 4)), min(2, stats::sd(y)) *
                     n ^ (-1 / (d_tau + 4)))
   }
   # Scale bandwidth by 3
