@@ -33,7 +33,7 @@
 #' # Parameters for generating functional data
 #' n <- 100
 #' p <- 5
-#' q <- 3
+#' q <- 4
 #' time_points <- seq(0, 1, length.out = 101)
 #' eta <- matrix(stats::rnorm(n * p * q), nrow = n, ncol = p * q)
 #'
@@ -48,7 +48,7 @@
 #' tau <- 0.1
 #' K <- 1
 #' d_tau <- 1
-#' nbasis <- 15
+#' nbasis <- 10
 #' d_DR <- d_tau + 1
 #' P <- eigen(cov(eta))$vectors
 #' Q <- diag(eigen(cov(eta))$values)
