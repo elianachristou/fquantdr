@@ -20,6 +20,9 @@ knitr::opts_chunk$set(
 
 The goal of fquantdr is to take in discrete numerical inputs, transform them into functional data take that functional data and ... to use dimention reduction to take away key factors from the data ...that we will then apply quantile regression.
 
+
+Features of the package:
+
 ## Installation
 
 You can install the development version of fcqs from [GitHub](https://github.com/) with:
