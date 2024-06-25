@@ -10,7 +10,7 @@
 #'
 #' @param xcoefs Coordinates of X
 #' @param y The discretized vector for the response variable
-#' @param yunit A vector defining the slices used
+#' @param H The number of slices used
 #'
 #' @return Matrix of slice average
 #'
@@ -19,8 +19,7 @@
 #' xcoefs <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12),
 #'   nrow = 4, byrow= TRUE)
 #' y <- c(1, 2, 3, 2)
-#' yunit <- unique(y)
-#' slav(xcoefs, y, yunit)
+#' slav(xcoefs, y, 3)
 #'
 slav <- function(xcoefs, y, H) {
 
@@ -32,11 +31,11 @@ slav <- function(xcoefs, y, H) {
   if (!is.vector(y)) {
     stop("y must be a vector.")
   }
-  if (!is.vector(yunit)) {
-    stop("yunit must be a vector.")
+  if (!is.numeric(H) | H <= 0 | as.integer(H) != H) {
+    stop("H must be a positive integer.")
   }
   for (i in y) {
-    if(!(i %in% yunit)) {
+    if(!(i %in% 1:H)) {
       stop(paste("y must be discretized such that all values in y are in",
                  "yunit. The value", i, "is not in yunit."))
     }
@@ -45,11 +44,9 @@ slav <- function(xcoefs, y, H) {
   n <- nrow(xcoefs)
   K <- ncol(xcoefs)
   yunit <- 1:H
-  # Get number of slices
-  nslice <- length(yunit)
   # Initialize matrix of mean coordinates for each slice
-  xcoefsgy <- matrix(0, nslice, K)
-  for(i in 1:nslice) {
+  xcoefsgy <- matrix(0, H, K)
+  for(i in yunit) {
     # Store predictors for each slice
     predictors <- xcoefs[y == yunit[i], ]
     # If vector, convert to horizontal matrix
