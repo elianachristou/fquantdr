@@ -30,6 +30,32 @@
 #' @export
 #'
 #' @examples
+#' n <- 100
+#' p <- 5
+#' q <- 3
+#' t <- seq(0, 1, length.out = 101)
+#' eta <- matrix(stats::rnorm(n * p * q), nrow = n, ncol = p * q)
+#' result <- fundata(n, p, q, t, eta)
+#' # original functional predictors
+#' g <- result$g
+#' # centered functional predictors
+#' xc <- result$cg
+#' H <- 10
+#' tau <- .1
+#' P <- eigen(cov(eta))$vectors
+#' Q <- diag(eigen(cov(eta))$values)
+#' # this is the inner products <b1, X>, <b2, X>, ...
+#' mfpca.scores <- eta %*% P
+#' # define true inner products for functional central subspace
+#' uu_fcs <- mfpca.scores[, 1:K]
+#' error <- rnorm(n)
+#' y <- 3 * mfpca.scores[, 1] + error
+#' K <- 1
+#' d_tau <- 1
+#' time_points <- 1:(dim(Xc)[2])
+#' nbasis <- 15
+#' d_DR <- d_tau + 1
+
 fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR) {
 
   if (!is.array(Xc)) {
