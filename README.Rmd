@@ -26,7 +26,7 @@ fquantdr is a package that takes discrete numerical inputs, transform the data i
 ## Installation
 
 
-You can install the development version of fquantdr from [GitHub](https://github.com/fquantdr) with:
+<!-- You can install the development version of fquantdr from --> <!-- [GitHub](https://github.com/fquantdr) with: -->
 
 ``` r
 # install.packages("devtools")
