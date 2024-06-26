@@ -29,6 +29,10 @@ fquantdr is a package that takes discrete numerical inputs, transform the data i
 <!-- You can install the development version of fquantdr from --> <!-- [GitHub](https://github.com/fquantdr) with: -->
 
 ``` r
+# To install the package 
+install.packages("fquantdr")
+
+# To install development version from Github
 # install.packages("devtools")
 devtools::install_github("elianachristou/fquantdr")
 ```
@@ -60,5 +64,5 @@ In that case, don't forget to commit and push the resulting figure files, so the
 
 ## Usage
 
-
+<!-- Include ADHD applications? -->
 
