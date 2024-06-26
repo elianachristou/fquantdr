@@ -1,6 +1,6 @@
 #' Functional data
 #'
-#' \code{fundata} generates functional data based on Fourier basis functions
+#' \code{fundata} generates functional data based on Fourier basis functions.
 #'
 #' This function generates functional data for a given number of observations
 #' ('n'), functional predictors ('p'), basis functions ('q'), and times points
