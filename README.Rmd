@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 <!-- badges: end -->
-
+# Overview
 The goal of fquantdr is to take in discrete numerical inputs, transform them into functional data take that functional data and ... to use dimention reduction to take away key factors from the data ...that we will then apply quantile regression.
 
 
