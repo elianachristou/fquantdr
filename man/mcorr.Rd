@@ -29,9 +29,8 @@ This measure was used, for example, in Li and Song (2022) and Solea et
 al. (2024).
 }
 \examples{
-set.seed(1234)
 u <- matrix(rnorm(100), ncol=2)
-v <- matrix(rnorm(100), ncol=2)
+v <- u + 0.1 * matrix(rnorm(100), ncol=2)
 mcorr(u, v)
 
 }
