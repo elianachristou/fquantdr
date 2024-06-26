@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-The goal of fquantdr is to take discrete numerical inputs, transform the data into functional data, and use dimension reduction to reduce the observations, after which we will apply quantile regression.
+fquantdr is a package that takes discrete numerical inputs, transform the data into functional data, and use dimension reduction to reduce the observations, after which we will apply quantile regression.
 
 
 Features of the package:
