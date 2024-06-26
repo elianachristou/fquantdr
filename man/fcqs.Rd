@@ -65,8 +65,8 @@ H <- 10
 tau <- 0.1
 K <- 1
 d_tau <- 1
-nbasis <- 10
-d_DR <- d_tau + 1
+nbasis <- q
+d_DR <- 1
 P <- eigen(cov(eta))$vectors
 Q <- diag(eigen(cov(eta))$values)
 # This is the inner products <b1, X>, <b2, X>, ...
