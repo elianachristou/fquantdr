@@ -28,9 +28,9 @@ rigpower <- function(matrix, power, rho) {
     stop("The first input has not returned a matrix.")
   }
   # Checks if power is a positive integer
-  if (!is.numeric(power) || power <= 0 || power != as.integer(power)) {
-    stop("The second value has to be an integer exponenet. ")
-  }
+  #if (!is.numeric(power) || power <= 0 || power != as.integer(power)) {
+  #  stop("The second value has to be an integer exponenet. ")
+  #}
   if (!is.numeric(rho)) {
     stop("Must be a real number.")
   }

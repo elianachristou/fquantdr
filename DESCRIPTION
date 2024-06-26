@@ -22,14 +22,17 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     fda,
+    KernSmooth,
     MASS,
-    Matrix
+    Matrix,
+    quantdr
 URL: https://github.com/elianachristou/fquantdr
 BugReports: https://github.com/elianachristou/fquantdr/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Collate: 
     'discretize.R'
+    'fcqs.R'
     'fundata.R'
     'gramatrix.R'
     'matpower.R'
@@ -45,5 +48,6 @@ Collate:
 Suggests: 
     knitr,
     mvtnorm,
-    rmarkdown
+    rmarkdown,
+    splines
 VignetteBuilder: knitr
