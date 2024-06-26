@@ -30,6 +30,39 @@
 #' @export
 #'
 #' @examples
+#' # Parameters for generating functional data
+#' n <- 100
+#' p <- 5
+#' q <- 4
+#' time_points <- seq(0, 1, length.out = 101)
+#' eta <- matrix(stats::rnorm(n * p * q), nrow = n, ncol = p * q)
+#'
+#' # Generate functional data
+#' result <- fundata(n, p, q, time_points, eta)
+#'
+#' # Centered functional predictors
+#' Xc <- result$cg
+#'
+#' # Further parameters for FCQS
+#' H <- 10
+#' tau <- 0.1
+#' K <- 1
+#' d_tau <- 1
+#' nbasis <- 10
+#' d_DR <- d_tau + 1
+#' P <- eigen(cov(eta))$vectors
+#' Q <- diag(eigen(cov(eta))$values)
+#' # This is the inner products <b1, X>, <b2, X>, ...
+#' mfpca.scores <- eta %*% P
+#' # Define true inner products for functional central subspace
+#' uu_fcs <- mfpca.scores[, 1:K]
+#' # Generate error for data
+#' error <- rnorm(n)
+#' # Generate response from functional data and error
+#' y <- 3 * mfpca.scores[, 1] + error
+#' # Run FCQS function
+#' fcqs(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR)
+
 fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR) {
 
   if (!is.array(Xc)) {
@@ -113,10 +146,10 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR) {
   # Get initial bandwidth
   h <- KernSmooth::dpill(vv[index_y, ], y[index_y])
   # Transform bandwidth for given quantile
-  h <- 4 * h * (tau * (1 - tau) / (dnorm(qnorm(tau))) ^ 2) ^ 0.2
+  h <- 4 * h * (tau * (1 - tau) / (stats::dnorm(stats::qnorm(tau))) ^ 2) ^ 0.2
   # Use alternative method for bandwidth calculation on error
   if (h == 'NaN') {
-    h <- 1.25 * max(n ^ (-1 / (d_tau + 4)), min(2, sd(y)) *
+    h <- 1.25 * max(n ^ (-1 / (d_tau + 4)), min(2, stats::sd(y)) *
                     n ^ (-1 / (d_tau + 4)))
   }
   # Scale bandwidth by 3
