@@ -22,10 +22,9 @@ The goal of fquantdr is to take in discrete numerical inputs, transform them int
 
 
 Features of the package:
-
 ## Installation
 
-You can install the development version of fcqs from [GitHub](https://github.com/) with:
+You can install the development version of fquantdr from [GitHub](https://github.com/fquantdr) with:
 
 ``` r
 # install.packages("devtools")
