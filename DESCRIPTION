@@ -48,5 +48,6 @@ Collate:
 Suggests: 
     knitr,
     mvtnorm,
-    rmarkdown
+    rmarkdown,
+    splines
 VignetteBuilder: knitr

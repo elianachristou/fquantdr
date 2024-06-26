@@ -33,9 +33,9 @@ mppower <- function(matrix, power, ignore) {
     stop("The first input must be a matrix.")
   }
   # Checks if power is a positive integer
-  if (!is.numeric(power) || power <= 0 || power != as.integer(power)) {
-    stop("The second value has to be an integer exponenet. ")
-  }
+  #if (!is.numeric(power) || power <= 0 || power != as.integer(power)) {
+  #  stop("The second value has to be an integer exponenet. ")
+  #}
   # Compatability check for ignore
   if (!is.numeric(ignore)) {
     stop("Must be a real number.")

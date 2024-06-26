@@ -1,17 +1,17 @@
 #' Multiple correlation
 #'
-#' \code{mcorr} computes the multiple correlation between two random vectors
-#' \code{u} and \code{v}.
+#' \code{mcorr} computes the multiple correlation between two vectors or
+#' matrices \code{u} and \code{v}.
 #'
-#' This function computes the multiple correlation between two random vectors
-#' \code{u} and \code{v} of the same dimension. Let C_{uu}, C_{uv}, and C_{vu}
-#' represent the sample covariance matrices. The multiple correlation between
-#' \code{u} and \code{v} is given by:
+#' This function computes the multiple correlation between two vectors or
+#' matrices \code{u} and \code{v} of the same dimension.  Let \eqn{C_{uu}},
+#' \eqn{C_{uv}}, and \eqn{C_{vu}} represent the sample covariance matrices.
+#' The multiple correlation between \code{u} and \code{v} is given by:
 #' \deqn{
 #' mcorr(u, v) = tr(C_{vv}^{-1/2} C_{vu} C_{uu}^{-1} C_{uv} C_{vv}^{-1/2}).
 #' }
 #' This measure was used, for example, in Li and Song (2022) and Solea et
-#'     al. (2024).
+#' al. (2024).
 #'
 #' @param u,v Numeric vectors or matrices.
 #' @return \code{mcorr} computes the multiple correlation between \code{u}
@@ -27,9 +27,8 @@
 #'
 #' @include matpower.R
 #' @examples
-#' set.seed(1234)
 #' u <- matrix(rnorm(100), ncol=2)
-#' v <- matrix(rnorm(100), ncol=2)
+#' v <- u + 0.1 * matrix(rnorm(100), ncol=2)
 #' mcorr(u, v)
 #'
 #' @export
@@ -39,23 +38,23 @@ mcorr <- function(u, v) {
 
   # compatibility checks
   # checks if the number of rows for u and v agree
-  if (dim(u)[1] != dim(v)[1]) {
+  if (nrow(u) != nrow(v)) {
     stop("u and v must have the same number of rows.")
   }
 
   # checks if u and v have the same dimension
-  if (dim(u)[2] != dim(v)[2]) {
+  if (ncol(u) != ncol(v)) {
     stop("u and v must have the same number of columns.")
   }
 
-  if(dim(u)[2] == 1) {
+  if(ncol(u) == 1) {
     result <- abs(stats::cor(u, v))
     return(result)
   } else {
     suu.nhalf <- matpower(stats::var(u), -1/2)
     svv.inv <- solve(stats::var(v))
-    result <- c(abs(sum(diag(suu.nhalf %*% stats::cov(u, v) %*% svv.inv %*%
-                               stats::cov(v, u) %*% suu.nhalf))))
+    result <- abs(sum(diag(suu.nhalf %*% stats::cov(u, v) %*% svv.inv %*%
+                               stats::cov(v, u) %*% suu.nhalf)))
     return(result)
     }
 }

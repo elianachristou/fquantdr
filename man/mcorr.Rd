@@ -14,14 +14,14 @@ mcorr(u, v)
 and \code{v}.
 }
 \description{
-\code{mcorr} computes the multiple correlation between two random vectors
-\code{u} and \code{v}.
+\code{mcorr} computes the multiple correlation between two vectors or
+matrices \code{u} and \code{v}.
 }
 \details{
-This function computes the multiple correlation between two random vectors
-\code{u} and \code{v} of the same dimension. Let C_{uu}, C_{uv}, and C_{vu}
-represent the sample covariance matrices. The multiple correlation between
-\code{u} and \code{v} is given by:
+This function computes the multiple correlation between two vectors or
+matrices \code{u} and \code{v} of the same dimension.  Let \eqn{C_{uu}},
+\eqn{C_{uv}}, and \eqn{C_{vu}} represent the sample covariance matrices.
+The multiple correlation between \code{u} and \code{v} is given by:
 \deqn{
 mcorr(u, v) = tr(C_{vv}^{-1/2} C_{vu} C_{uu}^{-1} C_{uv} C_{vv}^{-1/2}).
 }
@@ -29,9 +29,8 @@ This measure was used, for example, in Li and Song (2022) and Solea et
 al. (2024).
 }
 \examples{
-set.seed(1234)
 u <- matrix(rnorm(100), ncol=2)
-v <- matrix(rnorm(100), ncol=2)
+v <- u + 0.1 * matrix(rnorm(100), ncol=2)
 mcorr(u, v)
 
 }
