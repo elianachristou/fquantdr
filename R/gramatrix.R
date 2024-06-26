@@ -24,9 +24,9 @@
 #' gramatrix(K, databasis)
 #'
 #' \dontrun{
-#' Example 2
+#' # Example 2
 #' x <- seq(0, 10, length.out = 5)
-#' databasis <- bs(x, degree = 3, knots = c(3, 7))
+#' databasis <- splines::bs(x, degree = 3, knots = c(3, 7))
 #' gramatrix(K, databasis)
 #' }
 #'
