@@ -27,7 +27,6 @@
 #'
 #' @include matpower.R
 #' @examples
-#' set.seed(1234)
 #' u <- matrix(rnorm(100), ncol=2)
 #' v <- matrix(rnorm(100), ncol=2)
 #' mcorr(u, v)
