@@ -4,9 +4,9 @@
 #' \code{u} and \code{v}.
 #'
 #' This function computes the multiple correlation between two random vectors
-#' \code{u} and \code{v} of the same dimension. Let C_{uu}, C_{uv}, and C_{vu}
-#' represent the sample covariance matrices. The multiple correlation between
-#' \code{u} and \code{v} is given by:
+#' \code{u} and \code{v} of the same dimension. Let \eqn{C_{uu}}, \eqn{C_{uv}},
+#' and \eqn{C_{vu}} represent the sample covariance matrices. The multiple
+#' correlation between \code{u} and \code{v} is given by:
 #' \deqn{
 #' mcorr(u, v) = tr(C_{vv}^{-1/2} C_{vu} C_{uu}^{-1} C_{uv} C_{vv}^{-1/2}).
 #' }
