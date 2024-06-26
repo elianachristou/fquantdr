@@ -28,7 +28,7 @@
 #' @include matpower.R
 #' @examples
 #' u <- matrix(rnorm(100), ncol=2)
-#' v <- matrix(rnorm(100), ncol=2)
+#' v <- u + 0.1 * matrix(rnorm(100), ncol=2)
 #' mcorr(u, v)
 #'
 #' @export
