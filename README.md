@@ -4,6 +4,10 @@
 # fquantdr
 
 <!-- badges: start -->
+
+[![Build
+Status](https://travis-ci.com/elianachristou/fquantdr.svg?branch=master)](https://travis-ci.com/elianachristou/fquantdr)
+
 <!-- badges: end -->
 
 ## Overview
