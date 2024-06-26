@@ -1,4 +1,4 @@
-#' mfsir: FSIR that can incorporate multivariate functional predictor
+#' Functional Sliced Inverse Regression
 #'
 #' \code{mfsir} Multivariate Functional Sliced Inverse Regression
 #'
