@@ -1,4 +1,4 @@
-#' mfsir: FSIR that can incorporate multivariate functional predictor
+#' Functional Sliced Inverse Regression
 #'
 #' \code{mfsir} Multivariate Functional Sliced Inverse Regression
 #'
@@ -79,7 +79,8 @@ mfsir <- function(Xc, y, H, nbasis) {
 
   # Loop over each variable to smooth and center the data
   for (k in 1:p) {
-    xfdk <- fda::smooth.basis(t, t(Xc[, , k]), databasis)$fd
+    xfdk <- fda::smooth.basis(seq(0, 1, length.out = dim(Xc)[2]), t(Xc[, , k]),
+                              databasis)$fd
     xfdk <- fda::center.fd(xfdk)
     xk.coef <- t(xfdk$coef)
     xfd.coef <- cbind(xfd.coef, xk.coef)
