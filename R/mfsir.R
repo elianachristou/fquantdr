@@ -1,10 +1,12 @@
 #' Functional Sliced Inverse Regression
 #'
-#' \code{mfsir} Multivariate Functional Sliced Inverse Regression
+#' \code{mfsir} performs dimension reduction for functional data and
+#' provides the new estimated predictors.
 #'
-#' This function performs Multivariate Functional Sliced Inverse
-#' Regression (mfsir) on a given 3-dimensional data array and
-#' response vector.
+#' This function performs functional sliced inverse regression (FSIR),
+#' introduced by Ferr\'e and Yao (2003). Specifically, the authors proved
+#' that \eqn{E(X|Y) - E(X)} belongs to \eqn{\Sigma_{XX} S_{Y|X}}, where
+#' \eqn{S_{Y|X}} denotes the functional central subspace.
 #'
 #' (X can be p-dimensional and must be centered)
 #'
