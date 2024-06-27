@@ -48,13 +48,13 @@ mcorr <- function(u, v) {
   }
 
   if(ncol(u) == 1) {
-    result <- abs(stats::cor(u, v))
+    result <- c(abs(stats::cor(u, v)))
     return(result)
   } else {
     suu.nhalf <- matpower(stats::var(u), -1/2)
     svv.inv <- solve(stats::var(v))
-    result <- abs(sum(diag(suu.nhalf %*% stats::cov(u, v) %*% svv.inv %*%
-                               stats::cov(v, u) %*% suu.nhalf)))
+    result <- c(abs(sum(diag(suu.nhalf %*% stats::cov(u, v) %*% svv.inv %*%
+                               stats::cov(v, u) %*% suu.nhalf))))
     return(result)
     }
 }
