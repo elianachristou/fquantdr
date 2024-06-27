@@ -24,32 +24,47 @@
 #' mat <- matrix(c(4, 1, 1, 3), 2, 2)
 #' result <- mppower(mat, 2)
 #'
-mppower <- function(matrix, power, epsilon = 0, ignore = 10^(-15)) {
-  # Checks if the matrix input is a matrix
-  if (!is.matrix(matrix)){
-    stop("The first input must be a matrix.")
+mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
+  # Checks if 'a' is a matrix
+  if (!is.matrix(a)) {
+    stop("The input 'a' must be a matrix.")
   }
-  # Checks if power is a positive integer
-  #if (!is.numeric(power) || power <= 0 || power != as.integer(power)) {
-  #  stop("The second value has to be an integer exponenet. ")
-  #}
-  # Compatability check for ignore
-  if (!is.numeric(ignore)) {
-    stop("Must be a real number.")
+
+  # Checks is 'a' is a square matrix
+  if (dim(a)[1] != dim(a)[2]) {
+    stop("The input 'a' must be a square matrix.")
   }
-  # Assigns eig the eigenvectors and eigenvalues of a symmetric matrix
-  eig <- eigen(matrix, symmetric = T)
-  # Assignes eval a vector of the eigenvalues
+
+  # Checks if 'alpha' is a single number
+  if (length(alpha) != 1) {
+    stop("The exponent 'alpha' must be a single number.")
+  }
+
+  # Checks if 'alpha' is an integer
+  if (!is.numeric(alpha)) {
+    stop("The exponent 'alpha' must be numeric. ")
+  }
+
+  # Check if 'epsilon is >= 0'
+  if (epsilon < 0){
+    stop("epsilon should be a nonnegative real number.")
+  }
+
+  # to ensure that the matrix is symmetric
+  B <- (t(a) + a) / 2
+
+  if (epsilon > 0) {
+    iden <- diag(nrow(a))
+    B <- B + epsilon * iden
+  }
+
+  # eigen decomposition
+  eig <- eigen(B, sym = T)
   eval <- eig$values
-  # Assigns evec a matrix of the eigenvectors
   evec <- eig$vectors
-  # Counts the number of values that have an abs greather than ignore
-  m <- length(eval[abs(eval) > ignore])
-  # reconstructs the matrix based on significant eigenvalues
-  tmp <- evec[, 1:m] %*% diag(eval[1:m]^power) %*% t(evec[, 1:m])
-  # Checks if the computation produced a matrix
-  if (!is.matrix(tmp)) {
-    stop("tmp must be a matrix.")
-  }
+
+  # Find indices where eigenvalues are greater than ignore threshold
+  m <- length(eval[eval > ignore])
+  tmp <- evec[, 1:m] %*% diag(eval[1:m]^alpha) %*% t(evec[, 1:m])
   return(tmp)
 }
