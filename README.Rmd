@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 # fquantdr
 
 <!-- badges: start -->
-[![Build Status](https://travis-ci.com/elianachristou/fquantdr.svg?branch=master)](https://travis-ci.com/elianachristou/fquantdr)
+<!-- [![Build Status](https://travis-ci.com/elianachristou/fquantdr.svg?branch=master)](https://travis-ci.com/elianachristou/fquantdr) -->
 
 <!-- badges: end -->
 
@@ -32,7 +32,7 @@ fquantdr is a package that takes discrete numerical inputs, transform the data i
 
 ``` r
 # To install the package 
-install.packages("fquantdr")
+# install.packages("fquantdr")
 
 # To install development version from Github
 # install.packages("devtools")
