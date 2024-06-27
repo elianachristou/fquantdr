@@ -4,27 +4,31 @@
 \alias{fundata}
 \title{Functional data}
 \usage{
-fundata(n, p, q, t, eta)
+fundata(n, p, nbasis, time, eta)
 }
 \arguments{
 \item{n}{The number of observations, i.e., sample size.}
 
 \item{p}{The number of functional predictors.}
 
-\item{q}{The number of Fourier basis functions.}
+\item{nbasis}{The number of Fourier basis functions.}
 
-\item{t}{A vector of time points at which the functional data is evaluated.}
+\item{time}{A vector of time points at which the functional data is
+evaluated.}
 
-\item{eta}{A matrix of coefficients with dimensions \code{n} by \code{p * q}.}
+\item{eta}{A matrix of coefficients with dimensions \code{n} by
+\code{p * nbasis}.}
 }
 \value{
 \code{fundata} generates functional data based on Fourier
 basis functions and returns:
 \itemize{
-\item \code{g}: The original functional predictors, an
-\code{n * length(t) * p} array.
-\item \code{cg}: The centered functional predictors, an
-\code{n * length(t) * p} array.
+\item \code{g}: The original functional predictors, a
+\code{n * nt * p} array, where \code{nt} denotes the number
+of time points.
+\item \code{cg}: The centered functional predictors, a
+\code{n * nt * p} array, where \code{nt} denotes the number
+of time points.
 }
 }
 \description{
@@ -32,45 +36,44 @@ basis functions and returns:
 }
 \details{
 This function generates functional data for a given number of observations
-('n'), functional predictors ('p'), basis functions ('q'), and times points
-('t').  It utilizes a specified coefficient matrix ('eta') to create the
-functional predictors.  Using these basis functions, it computes the
-original functional predictors ('g') by multiplying the coefficients
+('n'), functional predictors ('p'), basis functions ('nbasis'), and times
+points ('time').  It utilizes a specified coefficient matrix ('eta') to
+create the functional predictors.  Using these basis functions, it computes
+the original functional predictors ('g') by multiplying the coefficients
 with the basis functions. The function then centers these functional
-predictors ('cg') by subtracting the mean across observations for each
-time point.  The output is a list containing both the original and centered
+predictors ('cg') by subtracting the mean across observations for each time
+point.  The output is a list containing both the original and centered
 functional predictors.
 }
 \examples{
 # Example 1
 n <- 100
 p <- 5
-q <- 3
-t <- seq(0, 1, length.out = 101)
-eta <- matrix(stats::rnorm(n * p * q), nrow = n, ncol = p * q)
-result <- fundata(n, p, q, t, eta)
-# original functional predictors
+nbasis <- 3
+time <- seq(0, 1, length.out = 101)
+eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
+result <- fundata(n, p, nbasis, time, eta)
+# original and centered functional predictors
 g <- result$g
-# centered functional predictors
 cg <- result$cg
 # plot the first functional predictor for illustration purposes
- fda::matplot(t, t(g[, , 1]), type = "l", lty = 1, col = 1:n, xlab = "Time",
- ylab = "Value", main = paste("Functional Predictor", 1))
+ fda::matplot(time, t(g[, , 1]), type = "l", lty = 1, col = 1:n,
+ xlab = "Time", ylab = "Value", main = paste("Functional Predictor", 1))
 
 # Example 2
 n <- 100
 p <- 5
-q <- 4
-t <- seq(0, 1, length.out = 101)
-SigmaCov <- matrix(0, nrow = p * q, ncol = p * q)
+nbasis <- 4
+time <- seq(0, 1, length.out = 101)
+SigmaCov <- matrix(0, nrow = p * nbasis, ncol = p * nbasis)
 for (j in 1:p) {
- index.j <-(((j - 1) * q + 1):(j * q))
+ index.j <-(((j - 1) * nbasis + 1):(j * nbasis))
  diag(SigmaCov[index.j, index.j]) <- c(2, 1, 1/2, 1/4)
 }
-eta <- mvtnorm::rmvnorm(n, mean = rep(0, p * q), sigma = SigmaCov)
-result <- fundata(n, p, q, t, eta)
+eta <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis), sigma = SigmaCov)
+result <- fundata(n, p, nbasis, time, eta)
 # plot the first functional predictor for illustration purposes
-fda::matplot(t, t(result$g[, , 1]), type = "l", lty = 1, col = 1:n,
+fda::matplot(time, t(result$g[, , 1]), type = "l", lty = 1, col = 1:n,
     xlab = "Time", ylab = "Value", main = paste("Functional Predictor", 1))
 
 }
