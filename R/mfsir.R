@@ -55,6 +55,8 @@
 #' # Plot the first sufficient predictor against the true one
 #' plot(result$sufpred[, 1], mfpca.scores[, 1], xlab = 'First
 #'     Sufficient Predictor', ylab = 'True Predictor')
+#' # Calculate the correlation between the estimated and true predictors
+#' mcorr(result$sufpred[, 1], mfpca.scores[, 1])
 #'
 #' @noRd
 mfsir <- function(X, y, H, nbasis) {
