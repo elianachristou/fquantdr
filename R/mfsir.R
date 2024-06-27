@@ -28,6 +28,9 @@
 #' \item{sufpred}{The estimated sufficient predictors of the functional
 #'     central subspace.}
 #'
+#' @references Ferr\'e, L, and Yao, F. (2003) Function Sliced Inverse Regression
+#' Analysis. \emph{Statistics}, 37(6), 475-488.
+#'
 #' @examples
 #' # set the parameters
 #' n <- 100
