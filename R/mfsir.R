@@ -8,18 +8,16 @@
 #' that \eqn{E(X|Y) - E(X)} belongs to \eqn{\Sigma_{XX} S_{Y|X}}, where
 #' \eqn{S_{Y|X}} denotes the functional central subspace.
 #'
-#' (X can be p-dimensional and must be centered)
+#' @param Xc A \code{n x t x p} array, where n is the number of observations,
+#'  t is the number of time points, and p is the number of variables.
+#' @param y A numeric vector of length \code{n} representing the response
+#'     variable.
+#' @param H An integer representing the number of slices for the response
+#'     variable.
+#' @param nbasis An integer representing the number of basis functions for
+#'     the B-spline basis.
 #'
-#' @param Xc is a (n x t x p) array, where n is the number of observations,
-#'  q is the number of time points, and p is the number of variables.
-#' @param y is the response vector of length n.
-#' @param H is an integer number of slices for the response variable.
-#' @param nbasis an integer number of basis functions for the B-spline basis.
-#'
-#' gx is the gram matrix of the basis functions
-#'
-#' @return the eigenvectors and the sufficient predictors
-#'  A list containing:
+#' @return \code{mfsir} computes the new sufficient predictors and returns:
 #' \item{phi}{The eigenvectors of the transformation matrix.}
 #' \item{betas}{The regression coefficients in the B-spline basis.}
 #' \item{eigvalues}{The eigenvalues of the transformation matrix.}
@@ -27,21 +25,34 @@
 #' \item{gx}{The block diagonal Gram matrix.}
 #'
 #' @examples
-#' # Load the fda package
-#' library(fda)
-#'
-#' # Example data
+#' # set the parameters
 #' n <- 100
-#' q <- 20
 #' p <- 5
-#' t <- seq(0, 1, length.out = q)
-#' Xc <- array(runif(n * q * p), dim = c(n, q, p))
-#' y <- sample(1:3, n, replace = TRUE)
-#' H <- 3
-#' nbasis <- 10
+#' nbasis <- 4
+#' H <- 10
+#' time_points <- seq(0, 1, length.out = 101)
+#' eta <- matrix(stats::rnorm(n * p * q), nrow = n, ncol = p * q)
+#'
+#' # Generate functional data
+#' result <- fundata(n, p, q, time_points, eta)
+#'
+#' # Centered functional predictors
+#' Xc <- result$cg
+#'
+#' P <- eigen(cov(eta))$vectors
+#' Q <- diag(eigen(cov(eta))$values)
+#' # This is the inner products <b1, X>, <b2, X>, ...
+#' mfpca.scores <- eta %*% P
+#' # Define true inner products for functional central subspace
+#' uu_fcs <- mfpca.scores[, 1:K]
+#' # Generate error for data
+#' error <- rnorm(n)
+#' # Generate response from functional data and error
+#' y <- 3 * mfpca.scores[, 1] + error
 #'
 #' # Run mfsir
 #' result <- mfsir(Xc, y, H, nbasis)
+#'
 #' @noRd
 mfsir <- function(Xc, y, H, nbasis) {
   # Check if Xc is a 3-dimensional array
