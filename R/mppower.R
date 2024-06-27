@@ -18,7 +18,9 @@
 #'     (default is 10^(-15)).
 #'
 #' @return The matrix raised to the power of \code{alpha}.
-
+#'
+#' @seealso \code{\link{matpower}}
+#'
 #' @noRd
 #' @examples
 #' mat <- matrix(c(4, 1, 1, 3), 2, 2)
