@@ -62,7 +62,7 @@ mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
   }
 
   # eigen decomposition
-  eig <- eigen(B, sym = T)
+  eig <- eigen(B, symmetric = T)
   eval <- eig$values
   evec <- eig$vectors
 
