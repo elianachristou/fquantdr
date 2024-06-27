@@ -87,7 +87,7 @@ mfsir <- function(X, y, H, nbasis) {
   # center X
   Xc <- array(0, dim = c(n, nt, p))
   for(k in 1:p) {
-  Xc[, , j] <- X[, , j] - matrix(rep(apply(X[, , j], 2, mean), n),
+  Xc[, , k] <- X[, , k] - matrix(rep(apply(X[, , k], 2, mean), n),
                                  nrow = n, byrow = T)
   }
 
