@@ -41,7 +41,7 @@
 #'
 #' # Generate the functional data
 #' result <- fundata(n, p, nbasis, time, eta)
-#' Xc <- result$cg
+#' X <- result$cg
 #' P <- eigen(stats::cov(eta))$vectors
 #' mfpca.scores <- eta %*% P
 #'
@@ -50,7 +50,7 @@
 #' y <- 3 * mfpca.scores[, 1] + error
 #'
 #' # Run mfsir
-#' result <- mfsir(Xc, y, H, nbasis)
+#' result <- mfsir(X, y, H, nbasis)
 #'
 #' @noRd
 mfsir <- function(X, y, H, nbasis) {
