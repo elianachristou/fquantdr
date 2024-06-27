@@ -1,33 +1,30 @@
-#' Transformation of a matrix
-
-#' mppower: Moore-Penrose type power
-
-#' \code{mppower} Reconstructs matrix on the basis of significant eigenvalues
-
-#' This code takes an input of a matrix and computes it eigenvalues and
-#' eigenvectors. Once computed, it transforms the original matrix by selecting
-#' the first m eigen vectors from the matrix eig$vectors and another m eigenvalues
-#' from eig$values and then creates a diagonal matrix where the values on the
-#' diagonal are the eigenvalues being raised to a power. Matrix multiplication
-#' is then preformed to get a transformed matrix that captures the important
-#' characteristics of the original matrix.
-
-#' @param matrix an input of a matrix
-#' @param power the power we will raise the matrix of eigenvalues to
-#' @param ignore a threshold value that denotes to what scale we can ignore the
-#' significant vs insignificant eigenvalues
+#' Matrix power transformation
 #'
-#' @return returns a transformed matrix on the basis of eigenvalues and
-#' their corresponding eigenvectors
+#' \code{mppower} computes the power of a square matrix using eigen
+#'     decomposition.
+#'
+#' This function takes a square matrix \code{a} and an exponent \code{alpha}
+#' and transforms the matrix by performing eigen decomposition.  It differs
+#' from the function \code{matpower} since it includes a parameter
+#' \code{epsilon}, which, if provided, it is added to the diagonal elements
+#' to stabilize computations.  Moreover, it includes a parameter \code{ignore},
+#' which provides a threshold below which eigenvalues are ignored.
+#'
+#' @param a The input square matrix.
+#' @param alpha The exponent to which the matrix is raised.
+#' @param epsilon A nonnegative numeric value added to the diagonal elements
+#'     of the matrix to stabilize computations (default is 0).
+#' @param ignore A numeric threshold below which eigenvalues are ignored
+#'     (default is 10^(-15)).
+#'
+#' @return The matrix raised to the power of \code{alpha}.
 
 #' @noRd
 #' @examples
-#' matrix1 <- matrix(c(3, 4, 8, 2, 5, 1), nrow = 2, ncol = 3)
-#' power <- 3
-#' ignore <- .3
-#' mmpower(matrix1, power, ignore)
+#' mat <- matrix(c(4, 1, 1, 3), 2, 2)
+#' result <- mppower(mat, 2)
 #'
-mppower <- function(matrix, power, ignore) {
+mppower <- function(matrix, power, epsilon = 0, ignore = 10^(-15)) {
   # Checks if the matrix input is a matrix
   if (!is.matrix(matrix)){
     stop("The first input must be a matrix.")
