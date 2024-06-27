@@ -1,58 +1,73 @@
-#' Transformation of a matrix
-
-#' mppower: Moore-Penrose type power
-
-#' \code{mppower} Reconstructs matrix on the basis of significant eigenvalues
-
-#' This code takes an input of a matrix and computes it eigenvalues and
-#' eigenvectors. Once computed, it transforms the original matrix by selecting
-#' the first m eigen vectors from the matrix eig$vectors and another m eigenvalues
-#' from eig$values and then creates a diagonal matrix where the values on the
-#' diagonal are the eigenvalues being raised to a power. Matrix multiplication
-#' is then preformed to get a transformed matrix that captures the important
-#' characteristics of the original matrix.
-
-#' @param matrix an input of a matrix
-#' @param power the power we will raise the matrix of eigenvalues to
-#' @param ignore a threshold value that denotes to what scale we can ignore the
-#' significant vs insignificant eigenvalues
+#' Matrix power transformation
 #'
-#' @return returns a transformed matrix on the basis of eigenvalues and
-#' their corresponding eigenvectors
-
+#' \code{mppower} computes the power of a square matrix using eigen
+#'     decomposition.
+#'
+#' This function takes a square matrix \code{a} and an exponent \code{alpha}
+#' and transforms the matrix by performing eigen decomposition.  It differs
+#' from the function \code{matpower} since it includes a parameter
+#' \code{epsilon}, which, if provided, it is added to the diagonal elements
+#' to stabilize computations.  Moreover, it includes a parameter \code{ignore},
+#' which provides a threshold below which eigenvalues are ignored.
+#'
+#' @param a The input square matrix.
+#' @param alpha The exponent to which the matrix is raised.
+#' @param epsilon A nonnegative numeric value added to the diagonal elements
+#'     of the matrix to stabilize computations (default is 0).
+#' @param ignore A numeric threshold below which eigenvalues are ignored
+#'     (default is 10^(-15)).
+#'
+#' @return The matrix raised to the power of \code{alpha}.
+#'
+#' @seealso \code{\link{matpower}}
+#'
 #' @noRd
 #' @examples
-#' matrix1 <- matrix(c(3, 4, 8, 2, 5, 1), nrow = 2, ncol = 3)
-#' power <- 3
-#' ignore <- .3
-#' mmpower(matrix1, power, ignore)
+#' mat <- matrix(c(6, 4, 8, 2, 5, 9, 3, 1, 7), nrow = 3, ncol = 3)
+#' alpha <- 2
+#' result <- mppower(mat, alpha)
 #'
-mppower <- function(matrix, power, ignore) {
-  # Checks if the matrix input is a matrix
-  if (!is.matrix(matrix)){
-    stop("The first input must be a matrix.")
+mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
+  # Checks if 'a' is a matrix
+  if (!is.matrix(a)) {
+    stop("The input 'a' must be a matrix.")
   }
-  # Checks if power is a positive integer
-  #if (!is.numeric(power) || power <= 0 || power != as.integer(power)) {
-  #  stop("The second value has to be an integer exponenet. ")
-  #}
-  # Compatability check for ignore
-  if (!is.numeric(ignore)) {
-    stop("Must be a real number.")
+
+  # Checks is 'a' is a square matrix
+  if (dim(a)[1] != dim(a)[2]) {
+    stop("The input 'a' must be a square matrix.")
   }
-  # Assigns eig the eigenvectors and eigenvalues of a symmetric matrix
-  eig <- eigen(matrix, symmetric = T)
-  # Assignes eval a vector of the eigenvalues
+
+  # Checks if 'alpha' is a single number
+  if (length(alpha) != 1) {
+    stop("The exponent 'alpha' must be a single number.")
+  }
+
+  # Checks if 'alpha' is an integer
+  if (!is.numeric(alpha)) {
+    stop("The exponent 'alpha' must be numeric. ")
+  }
+
+  # Check if 'epsilon is >= 0'
+  if (epsilon < 0){
+    stop("epsilon should be a nonnegative real number.")
+  }
+
+  # to ensure that the matrix is symmetric
+  B <- (t(a) + a) / 2
+
+  if (epsilon > 0) {
+    iden <- diag(nrow(a))
+    B <- B + epsilon * iden
+  }
+
+  # eigen decomposition
+  eig <- eigen(B, symmetric = T)
   eval <- eig$values
-  # Assigns evec a matrix of the eigenvectors
   evec <- eig$vectors
-  # Counts the number of values that have an abs greather than ignore
-  m <- length(eval[abs(eval) > ignore])
-  # reconstructs the matrix based on significant eigenvalues
-  tmp <- evec[, 1:m] %*% diag(eval[1:m]^power) %*% t(evec[, 1:m])
-  # Checks if the computation produced a matrix
-  if (!is.matrix(tmp)) {
-    stop("tmp must be a matrix.")
-  }
+
+  # Find indices where eigenvalues are greater than ignore threshold
+  m <- length(eval[eval > ignore])
+  tmp <- evec[, 1:m] %*% diag(eval[1:m]^alpha) %*% t(evec[, 1:m])
   return(tmp)
 }
