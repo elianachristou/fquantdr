@@ -4,11 +4,11 @@
 #'     decomposition.
 #'
 #' This function takes a square matrix \code{a} and an exponent \code{alpha}
-#'     and transforms the matrix by performing eigen decomposition.  It
-#'     computes the eigenvectors and eigenvalues of the matrix, raises the
-#'     eigenvalues to the power of \code{alpha}, and then reconstructs the
-#'     matrix using the transformed eigenvectors and adjusted eigenvalues.
-#'     The resulting matrix is symmetric (rounded to five decimal places).
+#' and transforms the matrix by performing eigen decomposition.  It
+#' computes the eigenvectors and eigenvalues of the matrix, raises the
+#' eigenvalues to the power of \code{alpha}, and then reconstructs the
+#' matrix using the transformed eigenvectors and adjusted eigenvalues.
+#' The resulting matrix is symmetric (rounded to five decimal places).
 #'
 #' @param a The input square matrix.
 #' @param alpha The exponent to which the matrix is raised.
