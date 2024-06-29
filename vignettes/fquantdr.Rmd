@@ -104,3 +104,6 @@ For this we use the `sonf` function of the presented package.
 
 1. After obtaining $\widehat{\beta}_{\tau 0}, \widehat{\beta}_{\tau 1}, \dots, \widehat{\beta}_{\tau m}$, we set $\widehat{B}_{\tau} = \sum_{j=0}^{m} \widehat{\beta}_{\tau j} \otimes \widehat{\beta}_{\tau j}$ and focus on the eigenvalue problem (should we include more details in this step?)
 
+## Ouput of `fcqs`
+
+
