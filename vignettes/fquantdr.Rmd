@@ -105,5 +105,10 @@ For this we use the `sonf` function of the presented package.
 1. After obtaining $\widehat{\beta}_{\tau 0}, \widehat{\beta}_{\tau 1}, \dots, \widehat{\beta}_{\tau m}$, we set $\widehat{B}_{\tau} = \sum_{j=0}^{m} \widehat{\beta}_{\tau j} \otimes \widehat{\beta}_{\tau j}$ and focus on the eigenvalue problem (should we include more details in this step?)
 
 ## Ouput of `fcqs`
+In this section, we begin by simulating data from the homoscedastic single-index model.
+\begin{eqnarray*}
+\quad Y &= \frac{1}{0.5 + (\langle \beta_1, X \rangle_{\mathscr{H}} +1)^2} + 0.2\varepsilon, \ \text{where} \ \mathcal{S}_{Q_{\tau}(Y|X)} = \mathrm{span} \{\beta_1\}
+\end{eqnarray*}
+where \(\beta_1(t)=\psi_1(t)\) is the first eigenfunction of \(\Sigma_{XX}\). The predictor \(X\) is generated using the Karhunen-Loève expansion. The error term \(\varepsilon\) is generated from three different distributions: (1) standard normal \(\mathcal{N}(0, 1)\), (2) chi-square with three degrees of freedom \(\mathcal{X}_3^2\), and (3) exponential with rate of 0.5 (Exp(0.5)) distribution
 
 
