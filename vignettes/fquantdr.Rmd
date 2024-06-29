@@ -70,3 +70,13 @@ The overall goal of the `fcqs` function is to identify a finite linear operator 
 \end{eqnarray*}
 where $L \in \mathscr{B}(\mathscr{H}, \mathbb{R}^d)$, such that the functional central subspace is $\overline{\mathrm{ran}}(L^*)$ (Li and Song, 2022). This implies an initial dimension reduction using $L(X)$, making the nonparametric estimation of $Q_\tau(Y|L(X))$ tractable. 
 
+* $E({\langle b_\tau, X \rangle}_\mathscr{H} X ) \in \Sigma_{XX} \mathcal{S}_{Q_\tau (Y|X)}$, where $b_\tau \in \mathcal{S}_{Q_\tau (Y|X)}$
+
+The above two results imply the following:
+
+1. If the dimension of the $\tau$-FCQS is known to be one, then we can fit a linear quantile regression model of $Q_\tau\{Y|L(X)\}$ on $X$ and report the 
+slope vector $\beta_\tau^*$ as the basis vector (double check it).
+
+1. If the dimension of the $\tau$-FCQS is known to be greater than one, then we can set $b_{\tau 0} = \beta_\tau^*$ as the initial vector and then create more vectors using $b_{\tau j} = E(\langle b_{\tau j-1}, X \rangle_\mathscr{H} X)$ for $j = 1, ..., m$, where $m = pq-1$ (double check). In order to obtain more linear independent vector, we can let $B_\tau = \sum_{j=0}^m b_{\tau j} \otimes b_{\tau j}$, then perform the generalized eigenvalue problem $B_\tau v_{\tau j} = \lambda \Sigma_{XX} v_{\tau j}$ and choose the $v_{\tau 1}, ..., v_{\tau d_\tau}$ be the set of solutions. 
+
+All of the above are incorporated in the `fcqs` function.
