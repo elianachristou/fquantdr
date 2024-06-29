@@ -3,7 +3,7 @@ Type: Package
 Title: Dimension Reduction Techniques for Conditional Quantiles for 
     Functional Data
 Version: 0.0.0.9000
-Author: c(person("Eliana", "Christou", email="echris15@uncc.edu",
+Author: c(person("Eliana", "Christou", email="echris15@charlotte.edu",
     role = c("aut", "cre"), comment = c(ORCID = "https://orcid.org/0000-0001-5044-0969"),
     person("Precious", "Donkoer", role = "aut"),
     person("Nathan", "Hogshead", role = "aut"),
@@ -22,18 +22,22 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     fda,
+    KernSmooth,
     MASS,
-    Matrix
+    Matrix,
+    quantdr
 URL: https://github.com/elianachristou/fquantdr
 BugReports: https://github.com/elianachristou/fquantdr/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Collate: 
     'discretize.R'
+    'fcqs.R'
     'fundata.R'
     'gramatrix.R'
     'matpower.R'
     'mcorr.R'
+    'mfsir.R'
     'mppower.R'
     'qmat.R'
     'rigpower.R'
@@ -44,5 +48,6 @@ Collate:
 Suggests: 
     knitr,
     mvtnorm,
-    rmarkdown
+    rmarkdown,
+    splines
 VignetteBuilder: knitr
