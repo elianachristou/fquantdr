@@ -70,3 +70,79 @@ The overall goal of the `fcqs` function is to identify a finite linear operator 
 \end{eqnarray*}
 where $L \in \mathscr{B}(\mathscr{H}, \mathbb{R}^d)$, such that the functional central subspace is $\overline{\mathrm{ran}}(L^*)$ (Li and Song, 2022). This implies an initial dimension reduction using $L(X)$, making the nonparametric estimation of $Q_\tau(Y|L(X))$ tractable. 
 
+* $E({\langle b_\tau, X \rangle}_\mathscr{H} X ) \in \Sigma_{XX} \mathcal{S}_{Q_\tau (Y|X)}$, where $b_\tau \in \mathcal{S}_{Q_\tau (Y|X)}$
+
+The above two results imply the following:
+
+1. If the dimension of the $\tau$-FCQS is known to be one, then we can fit a linear quantile regression model of $Q_\tau\{Y|L(X)\}$ on $X$ and report the 
+slope vector $\beta_\tau^*$ as the basis vector (double check it).
+
+1. If the dimension of the $\tau$-FCQS is known to be greater than one, then we can set $b_{\tau 0} = \beta_\tau^*$ as the initial vector and then create more vectors using $b_{\tau j} = E(\langle b_{\tau j-1}, X \rangle_\mathscr{H} X)$ for $j = 1, ..., m$, where $m = pq-1$ (double check). In order to obtain more linear independent vector, we can let $B_\tau = \sum_{j=0}^m b_{\tau j} \otimes b_{\tau j}$, then perform the generalized eigenvalue problem $B_\tau v_{\tau j} = \lambda \Sigma_{XX} v_{\tau j}$ and choose the $v_{\tau 1}, ..., v_{\tau d_\tau}$ be the set of solutions. 
+
+All of the above are incorporated in the `fcqs` function.
+
+## The algorithm at a glance
+
+The first step of the algorithm requires to fit a linear regression model of $Q_\tau \{Y|L(X) \}$ on $L(X)$ (or X?), which implies the non-parametric estimation of the conditional quantile. The second step of the algorithm relies on estimating an expectation and performing a generalized eigenvalue problem.  Specifically,
+
+1. For $u=1, \dots, n$, let $Y_u$ be an independent and identically distributed (iid) sample from $Y$, and let $X_1, \dots, X_n$ be an independent sample from the random element $X = (X^1, \dots, X^p)$, such that $X_u = (X_u^1, \dots, X_u^p)^{\top}$.
+
+1. We apply a standard dimension reduction technique to replace \( X \) with \( L(X) \). Specifically, we use Functional Sliced Inverse Regression (FSIR) as proposed by Ferré and Yao (2003). Using the `mfsir` function of the presented package, we estimate the \( d \)-dimensional predictors \(\widehat{L}(X_u)\), for \( u = 1, \dots, n \)
+
+1. For each $u=1, \dots, n$, we use the local linear quantile estimation method of Guerre and Sabbah (2012) to estimate $\widehat{Q}_{\tau}\{Y| \widehat{L}(X_u)\}$
+
+1. We set $\widehat{\beta}_{\tau}$ to be 
+\begin{eqnarray*}
+(\widehat{\alpha}_{\tau}, \widehat{\beta}_{\tau}) = \arg \min_{(a_{\tau}, b_{\tau})} \sum_{u=1}^{n} [\widehat{Q}_{\tau}\{Y | \widehat{L}(X_u)\} - a_{\tau} - \langle b_{\tau}, X_u \rangle_{\mathscr{H}}]^2,
+\end{eqnarray*}
+For this we use the `sonf` function of the presented package.
+
+1. We set $\widehat{\beta}_{\tau 0} = \widehat{\beta}_{\tau}$, and, for $j=1, \dots, m$, we form
+\begin{eqnarray*}
+\widehat{\beta}_{\tau j} = n^{-1} \sum_{u=1}^{n}\langle \widehat{\beta}_{\tau j-1}, X_u \rangle_{\mathscr{H}}X_u.
+\end{eqnarray*}
+
+1. After obtaining $\widehat{\beta}_{\tau 0}, \widehat{\beta}_{\tau 1}, \dots, \widehat{\beta}_{\tau m}$, we set $\widehat{B}_{\tau} = \sum_{j=0}^{m} \widehat{\beta}_{\tau j} \otimes \widehat{\beta}_{\tau j}$ and focus on the eigenvalue problem (should we include more details in this step?)
+
+## Ouput of `fcqs`
+In this section, we begin by simulating data from the homoscedastic single-index model.
+\begin{eqnarray*}
+\quad Y &= \frac{1}{0.5 + (\langle \beta_1, X \rangle_{\mathscr{H}} +1)^2} + 0.2\varepsilon, \ \text{where} \ \mathcal{S}_{Q_{\tau}(Y|X)} = \mathrm{span} \{\beta_1\}
+\end{eqnarray*}
+where \(\beta_1(t)=\psi_1(t)\) is the first eigenfunction of \(\Sigma_{XX}\). The predictor \(X\) is generated using the Karhunen-Loève expansion. The error term \(\varepsilon\) is generated from three different distributions: (1) standard normal \(\mathcal{N}(0, 1)\), (2) chi-square with three degrees of freedom \(\mathcal{X}_3^2\), and (3) exponential with rate of 0.5 (Exp(0.5)) distribution. We focus on the estimation of the 0.5-FCQS
+```{r}
+set.seed(1234)
+# Parameters for generating functional data
+n <- 100
+p <- 5
+q <- 4
+time_points <- seq(0, 1, length.out = 101)
+eta <- matrix(stats::rnorm(n * p * q), nrow = n, ncol = p * q)
+
+# Generate functional data according to KL expanasion
+Xc <- fundata(n, p, q, time_points, eta)$cg
+P <- eigen(cov(eta))$vectors
+Q <- diag(eigen(cov(eta))$values)
+
+# Further parameters for FCQS
+nbasis <- q
+H <- 10
+tau <- 0.5
+d_tau <- 1
+d_DR <- 1
+
+# this is the inner products <b1, X>, <b2, X>, ... 
+mfpca.scores <- eta %*% P
+
+# define true inner products for functional central subspace
+uu_fcs <- mfpca.scores[, 1:d_DR]
+
+# Generate error for data
+error <- rnorm(n)
+
+y <- 1 / (0.5 + (mfpca.scores[, 1] + 1)^2) + 0.2 * error
+```
+We now discuss the output of the `fcqs` function
+```{r}
+
+```
