@@ -37,7 +37,7 @@
 slav <- function(x, y, H) {
 
   # Check to ensure x is a matrix
-  if (!is.matrix(xcoefs)){
+  if (!is.matrix(x)){
     stop("The input 'x' must be a matrix")
   }
 
