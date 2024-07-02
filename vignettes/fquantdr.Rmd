@@ -1,5 +1,8 @@
 ---
 title: "Dimension Reduction Techniques for Conditional Quantiles for Functional Data in R: A Vignette"
+author: 
+- name: Eliana Christou, Shanshan Wang (keep updated)
+  affiliation: University of North Carolina at Charlotte
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{fquantdr}
