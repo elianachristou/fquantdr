@@ -13,8 +13,7 @@
 #' @param a The input square matrix.
 #' @param alpha The exponent to which the matrix is raised.
 #'
-#' @return The matrix raised to the power of \code{alpha} based on its
-#'     eigenvalues and eigenvectors.
+#' @return The square matrix raised to the power of \code{alpha}.
 #'
 #' @noRd
 #' @examples
@@ -23,22 +22,23 @@
 #' matpower(mat, alpha)
 #'
 matpower <- function(a, alpha) {
-  # Checks if 'a' is a matrix
+
+  # Check if 'a' is a matrix
   if (!is.matrix(a)) {
     stop("The input 'a' must be a matrix.")
   }
 
-  # Checks is 'a' is a square matrix
+  # Check if 'a' is a square matrix
   if (dim(a)[1] != dim(a)[2]) {
     stop("The input 'a' must be a square matrix.")
   }
 
-  # Checks if 'alpha' is a single number
+  # Check if 'alpha' is a single number
   if (length(alpha) != 1) {
     stop("The exponent 'alpha' must be a single number.")
   }
 
-  # Checks if 'alpha' is an integer
+  # Check if 'alpha' is numeric
   if (!is.numeric(alpha)) {
     stop("The exponent 'alpha' must be numeric. ")
   }
@@ -49,7 +49,7 @@ matpower <- function(a, alpha) {
   # Compute eigen decomposition
   tmp <- eigen(a)
 
-  # Calculate the matrix raised to the power of 'alphaa' based on eigen
+  # Calculate the matrix raised to the power of 'alpha' based on eigen
   # decomposition
   result <- tmp$vectors %*% diag((tmp$values)^alpha) %*%
            t(tmp$vectors)
