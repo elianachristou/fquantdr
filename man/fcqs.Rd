@@ -58,7 +58,7 @@ eta <- matrix(stats::rnorm(n * p * q), nrow = n, ncol = p * q)
 result <- fundata(n, p, q, time_points, eta)
 
 # Centered functional predictors
-Xc <- result$cg
+Xc <- result$xc
 
 # Further parameters for FCQS
 H <- 10
