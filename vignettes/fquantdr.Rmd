@@ -1,5 +1,5 @@
 ---
-title: "fquantdr"
+title: "Dimension Reduction Techniques for Conditional Quantiles for Functional Data in R: A Vignette"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{fquantdr}
