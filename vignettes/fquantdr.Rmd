@@ -54,11 +54,12 @@ For an overview of the available help files of the package use
 help(package = "fquantdr")
 ```
 
-The package includes the following functions (Keep updated):
+The package includes the following functions:
 
-* `fundata` Generate functional data based on Fourier basis function
-* `fcqs`
-* `sonf`
+* `fundata` Functional data
+* `fcqs` Functional central quantile subspace
+* `mcorr` Multiple correlation
+* `sonf` Scalar-on-function regression
 
 <!-- * `discrete` Discretize conversion of a continuous numeric vector -->
 <!-- * `gramatrix` Computes the center gram matrix -->
