@@ -1,10 +1,22 @@
 ---
-title: "fquantdr"
+title: "Dimension Reduction Techniques for Conditional Quantiles for Functional Data in R: A Vignette"
+author: # double check this part 
+- name: Eliana Christou, Precious Donkoer, Austin Stitz,          Shanshan Wang
+  affiliation: University of North Carolina at Charlotte
+- name: Jun Song
+  affiliation: Korea University
+- name: Eftychia Solea
+  affiliation: Queen Mary University of London
+- name: Nathan Hogshead
+  affiliation: Miami University
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{fquantdr}
+  %\VignetteIndexEntry{Dimension Reduction Techniques for Conditional Quantiles for Functional Data in R: A Vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+abstract: "Functional data analysis has received increasing attention in recent years due to its ability to handle infinite-dimensional functional predictors, which require dimension reduction techniques. However, existing research primarily relies on traditional mean regression methods, with limited focus on quantile regression. `fquantdr` is an `R` package that addresses this gap by performing dimension reduction for conditional quantiles in functional data, identifying the directions that span the Functional Central Quantile Subspace (FCQS)."
+keywords: "functional central quantile subspace, dimension reduction, conditional quantiles, functional data analysis"
+
 ---
 
 ```{r, include = FALSE}
@@ -16,6 +28,15 @@ knitr::opts_chunk$set(
 
 # Introduction
 
+Functional data analysis (FDA) is a field of statistics that considers data as realizations of random functions. It was first formally introduced by Ramsay and Dalzell (1991). The challenge with functional data lies in their *infinite-dimensional* space, which requires the use of dimension reduction techniques to replace them with finite data. For references, see Ferré and Yao (2003), Lian and Li (2004), Wang et al. (2013), and Li and Song (2022). Many functional data sets exhibit characteristics such as skewness and outliers, which make quantile regression (QR) a more suitable approach in these cases.
+
+Quantile regression (QR) has gained significant attention since its inception by Koenker and Bassett (1978), becoming a valuable tool in research areas where non-central parts of the data are important. Despite its extensive use, QR has seen limited application in the context of functional data. For reference, see Cardot et al. (2005), Kato (2012), and Chen and Müller (2012).
+
+
+Recently, Christou et al. (2024+) proposed a novel technique to identify a finite linear operator that captures all the information about the conditional quantile for functional data. Specifically, for a univariate response $Y$ and a random element $X = (X^1, \ldots, X^p)$ in a Hilbert space $\mathscr{H}$, the method aims to find a finite linear operator $L_\tau \in \mathscr{B}(\mathscr{H}, \mathbb{R}^{d_\tau})$ for $\tau \in (0, 1)$ and $d_\tau \leq p$, such that $Y$ and $Q_\tau(Y|X)$ are conditionally independent given $L_\tau(X)$. Here, $Q_\tau(Y|X)$ denotes the $\tau$th conditional quantile of $Y$ given $X$. The space $\overline{\text{ran}}(L_\tau^*)$ is referred to as the *$\tau$th functional quantile dimension reduction subspace* for the regression of $Y$ on $X$. The intersection of all $\tau$th dimension reduction subspaces is called the *$\tau$th functional central quantile subspace* ($\tau$-FCQS) and is denoted by $\mathcal{S}_{Q_\tau(Y|X)}$.
+
+The purpose of this vignette is to demonstrate the implementation of the functions available in the fquantdr package through various examples. The main function of the package `fcqs` returns the estimated directions of the $\tau$-FCQS.
+
 # Getting Started
 
 To get started you need to first install the package using the command
@@ -23,7 +44,7 @@ To get started you need to first install the package using the command
 install.packages("fquantdr")
 ```
 
-and then use it during any 'R' session by issuing the command
+and then use it during any `R` session by issuing the command
 ```{r setup}
 library(fquantdr)
 ```
@@ -33,11 +54,12 @@ For an overview of the available help files of the package use
 help(package = "fquantdr")
 ```
 
-The package includes the following functions (Keep updated):
+The package includes the following functions:
 
-* `fundata` Generate functional data based on Fourier basis function
-* `fcqs`
-* `sonf`
+* `fundata` Functional data
+* `fcqs` Functional central quantile subspace
+* `mcorr` Multiple correlation
+* `sonf` Scalar-on-function regression
 
 <!-- * `discrete` Discretize conversion of a continuous numeric vector -->
 <!-- * `gramatrix` Computes the center gram matrix -->
@@ -53,7 +75,7 @@ The package includes the following functions (Keep updated):
 To get help on a specific function type `help(function.name)` or `?function.name` for a convenient shorthand. Try
 ```{r, eval = FALSE}
 help(fcqs)
-?cqs
+?fcqs
 ```
 
 For further examples, refer to the coding examples listed in the documentation for each `fquantdr` function.
