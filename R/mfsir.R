@@ -8,13 +8,13 @@
 #' that \eqn{E(X|Y) - E(X)} belongs to \eqn{\Sigma_{XX} S_{Y|X}}, where
 #' \eqn{S_{Y|X}} denotes the functional central subspace.
 #'
-#' @param X A \code{n x t x p} array, where n is the number of observations,
-#'     t is the number of time points, and p is the number of predictor
+#' @param X A \code{n x nt x p} array, where n is the number of observations,
+#'     nt is the number of time points, and p is the number of predictor
 #'     variables.
 #' @param y A numeric vector of length \code{n} representing the response
 #'     variable.
 #' @param H The number of slices.
-#' @param nbasis The number of basis functions for smoothing functional data.
+#' @param nbasis The number of basis functions for smoothed functional data.
 #'
 #' @return \code{mfsir} computes the new sufficient predictors and returns
 #' \item{xcoef}{The coefficients of the smoothed functional data.}
