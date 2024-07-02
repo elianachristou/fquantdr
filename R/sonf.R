@@ -6,29 +6,37 @@
 #'
 #' This function performs scalar-on-function regression, predicting a scalar
 #' response \code{y} using one or more functional predictors \code{xfd}. It
-#' centralizes the data, constructs a design matrix based on the different
-#' type of basis functions, and calculates the regression coefficients with
-#' or without a second derivative penalty. The function returns the regression
+#' centralizes the data, constructs a design matrix based on the type of
+#' basis functions, and calculates the regression coefficients with or
+#' without a second derivative penalty. The function returns the regression
 #' coefficients, functional data objects for these coefficients, estimated
-#' response value, and the designed matrix X.
+#' response values, and the designed matrix X.
 #'
 #' @param y A numeric vector of length n, representing the scalar response.
-#' @param xfd A functional data object
+#' @param xfd A functional data object.
 #' @param dev2_penalty A logical flag indicating whether to apply a second
-#'    derivative penalty.
+#'    derivative penalty (the default value is 'FALSE').
 #' @param lambda A penalty parameter (used if \code{dev2_penalty} is 'TRUE')
 #'
 #' @return \code{sonf} computes a scalar-on-function regression and returns:
-#'    \itemize{
-#'    \item \code{beta_coef}: The regression coefficients.
-#'    \item \code{beta_fd}: The functional data objects for the beta
-#'    coefficients.
-#'    \item \code{yhat}: The predicted values of \code{y}.
-#'    \item \code{X}: The designed matrix used in the regression.
-#'    }
+#'    \item{beta_coef}{The regression coefficients.}
+#'    \item{beta_fd}{The functional data objects for the beta coefficients.}
+#'    \item{yhat}{The predicted values of \code{y}.}
+#'    \item{X}{The designed matrix used in the regression.}
+#'
+#' @examples
+#' # Create a functional data object
+#' basis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = 10)
+#' fdobj <- fd(matrix(rnorm(100), 10, 10), basis)
+#' # Create a scalar response vector
+#' y <- rnorm(10)
+#' # Perform scalar-on-function regression without penalty
+#' result <- sonf(y, fdobj, dev2_penalty = FALSE)
+#' # Print the regression coefficients
+#' print(result$beta_coef)
 #'
 #' @export
-sonf = function(y, xfd, dev2_penalty = FALSE, lambda=NULL) {
+sonf = function(y, xfd, dev2_penalty = FALSE, lambda = NULL) {
 
   y <- as.matrix(y) # double check!
 
@@ -43,14 +51,14 @@ sonf = function(y, xfd, dev2_penalty = FALSE, lambda=NULL) {
     stop("xfd must be a functional data object of class 'fd'")
   }
 
-  # Check if xfd is an array
+  # Check if xfd is a 3-dimensional array
   if (length(dim(xfd$coef)) != 3) {
-    stop("xfd$coef must be an array with dimensions (nbasis, n, p)")
+    stop("xfd$coef must be an array with dimensions (nbasis, n, p).")
   }
 
   # Check if the number of observations for xfd and y agree
   if (length(y) != dim(xfd$coef)[2]) {
-    stop("The length of y and the number of observations in xfd must agree")
+    stop("The length of y and the number of observations in xfd must agree.")
   }
 
   # Check if n > p
@@ -71,6 +79,7 @@ sonf = function(y, xfd, dev2_penalty = FALSE, lambda=NULL) {
     B <- diag(nbasis)
     DB <- fda::fourierpen(basis, 2)
   }
+
   tmp <- dim(xfd$coef)
   n <- tmp[2]
   nbasis <- tmp[1]
@@ -83,7 +92,8 @@ sonf = function(y, xfd, dev2_penalty = FALSE, lambda=NULL) {
   }
 
   if (p == 1) {
-    xcoef <- t(as.matrix(xfd$coef[, , 1])) # because originally it is an array
+    # Convert to. matrix if p = 1
+    xcoef <- t(as.matrix(xfd$coef[, , 1]))
   } else {
     # block diagonal of B - p times
     B <- Matrix::bdiag(lapply(as.list(rep("B", p)),
@@ -96,10 +106,15 @@ sonf = function(y, xfd, dev2_penalty = FALSE, lambda=NULL) {
     xcoef <- matrix(xcoef, nrow = n)
     #(xvec[1,] == as.vector(xcoef[1,,]))
   }
+
+  # Center the functional predictors and the response
   xcoef_cen <- xcoef-colMeans(xcoef)
   my <- mean(y)
   y_cen <- y - my
+
+  # Construct the design matrix
   X <- as.matrix(xcoef_cen %*% B)
+
   if (dev2_penalty == FALSE) {
     beta_coef <- MASS::ginv(as.matrix(t(X) %*% X)) %*% t(X) %*% y_cen
   } else {

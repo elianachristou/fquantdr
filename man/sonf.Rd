@@ -9,22 +9,19 @@ sonf(y, xfd, dev2_penalty = FALSE, lambda = NULL)
 \arguments{
 \item{y}{A numeric vector of length n, representing the scalar response.}
 
-\item{xfd}{A functional data object}
+\item{xfd}{A functional data object.}
 
 \item{dev2_penalty}{A logical flag indicating whether to apply a second
-derivative penalty.}
+derivative penalty (the default value is 'FALSE').}
 
 \item{lambda}{A penalty parameter (used if \code{dev2_penalty} is 'TRUE')}
 }
 \value{
 \code{sonf} computes a scalar-on-function regression and returns:
-\itemize{
-\item \code{beta_coef}: The regression coefficients.
-\item \code{beta_fd}: The functional data objects for the beta
-coefficients.
-\item \code{yhat}: The predicted values of \code{y}.
-\item \code{X}: The designed matrix used in the regression.
-}
+\item{beta_coef}{The regression coefficients.}
+\item{beta_fd}{The functional data objects for the beta coefficients.}
+\item{yhat}{The predicted values of \code{y}.}
+\item{X}{The designed matrix used in the regression.}
 }
 \description{
 \code{sonf} estimates the relationship between a scalar response and
@@ -34,9 +31,21 @@ a second derivative penalty or not.
 \details{
 This function performs scalar-on-function regression, predicting a scalar
 response \code{y} using one or more functional predictors \code{xfd}. It
-centralizes the data, constructs a design matrix based on the different
-type of basis functions, and calculates the regression coefficients with
-or without a second derivative penalty. The function returns the regression
+centralizes the data, constructs a design matrix based on the type of
+basis functions, and calculates the regression coefficients with or
+without a second derivative penalty. The function returns the regression
 coefficients, functional data objects for these coefficients, estimated
-response value, and the designed matrix X.
+response values, and the designed matrix X.
+}
+\examples{
+# Create a functional data object
+basis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = 10)
+fdobj <- fd(matrix(rnorm(100), 10, 10), basis)
+# Create a scalar response vector
+y <- rnorm(10)
+# Perform scalar-on-function regression without penalty
+result <- sonf(y, fdobj, dev2_penalty = FALSE)
+# Print the regression coefficients
+print(result$beta_coef)
+
 }
