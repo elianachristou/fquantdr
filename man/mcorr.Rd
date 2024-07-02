@@ -36,8 +36,8 @@ v <- u + 0.1 * matrix(rnorm(100), ncol = 2)
 mcorr(u, v)
 
 # Example 2
-u <- matrix(rnorm(100), ncol = 3)
-v <- matrix(rnorm(100), ncol = 3)
+u <- matrix(rnorm(150), ncol = 3)
+v <- matrix(rnorm(150), ncol = 3)
 mcorr(u, v)
 
 }
