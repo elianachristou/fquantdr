@@ -11,7 +11,7 @@ author: # double check this part
   affiliation: Miami University
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{fquantdr}
+  %\VignetteIndexEntry{Dimension Reduction Techniques for Conditional Quantiles for Functional Data in R: A Vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 abstract: "Functional data analysis has received increasing attention in recent years due to its ability to handle infinite-dimensional functional predictors, which require dimension reduction techniques. However, existing research primarily relies on traditional mean regression methods, with limited focus on quantile regression. `fquantdr` is an `R` package that addresses this gap by performing dimension reduction for conditional quantiles in functional data, identifying the directions that span the Functional Central Quantile Subspace (FCQS)."
