@@ -3,12 +3,12 @@
 #' \code{fundata} generates functional data based on Fourier basis functions.
 #'
 #' This function generates functional data for a given number of observations
-#' ('n'), functional predictors ('p'), basis functions ('nbasis'), and times
+#' ('n'), functional predictors ('p'), basis functions ('nbasis'), and time
 #' points ('time').  It utilizes a specified coefficient matrix ('eta') to
 #' create the functional predictors.  Using these basis functions, it computes
-#' the original functional predictors ('g') by multiplying the coefficients
+#' the original functional predictors ('x') by multiplying the coefficients
 #' with the basis functions. The function then centers these functional
-#' predictors ('cg') by subtracting the mean across observations for each time
+#' predictors ('xc') by subtracting the mean across observations for each time
 #' point.  The output is a list containing both the original and centered
 #' functional predictors.
 #'
@@ -23,30 +23,32 @@
 #' @return \code{fundata} generates functional data based on Fourier
 #'    basis functions and returns:
 #'    \itemize{
-#'        \item \code{g}: The original functional predictors, a
+#'        \item \code{x}: The original functional predictors, a
 #'            \code{n * nt * p} array, where \code{nt} denotes the number
 #'            of time points.
-#'        \item \code{cg}: The centered functional predictors, a
+#'        \item \code{xc}: The centered functional predictors, a
 #'            \code{n * nt * p} array, where \code{nt} denotes the number
 #'            of time points.
 #'    }
 #'
 #' @examples
 #' # Example 1
+#' # set the parameters
 #' n <- 100
 #' p <- 5
 #' nbasis <- 3
 #' time <- seq(0, 1, length.out = 101)
 #' eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
+#' # create the functional predictors
 #' result <- fundata(n, p, nbasis, time, eta)
-#' # original and centered functional predictors
-#' g <- result$g
-#' cg <- result$cg
-#' # plot the first functional predictor for illustration purposes
-#'  fda::matplot(time, t(g[, , 1]), type = "l", lty = 1, col = 1:n,
+#' x <- result$x
+#' xc <- result$xc
+#' # plot the first functional predictor for illustration
+#'  fda::matplot(time, t(x[, , 1]), type = "l", lty = 1, col = 1:n,
 #'  xlab = "Time", ylab = "Value", main = paste("Functional Predictor", 1))
 #'
 #' # Example 2
+#' # set the parameters
 #' n <- 100
 #' p <- 5
 #' nbasis <- 4
@@ -57,9 +59,12 @@
 #'  diag(SigmaCov[index.j, index.j]) <- c(2, 1, 1/2, 1/4)
 #' }
 #' eta <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis), sigma = SigmaCov)
+#' # create the functional predictors
 #' result <- fundata(n, p, nbasis, time, eta)
+#' x <- result$x
+#' xc <- result$xc
 #' # plot the first functional predictor for illustration purposes
-#' fda::matplot(time, t(result$g[, , 1]), type = "l", lty = 1, col = 1:n,
+#' fda::matplot(time, t(x[, , 1]), type = "l", lty = 1, col = 1:n,
 #'     xlab = "Time", ylab = "Value", main = paste("Functional Predictor", 1))
 #'
 #' @export
@@ -108,8 +113,8 @@ fundata <- function(n, p, nbasis, time, eta) {
 
   # define the parameters
   nt <- length(time)
-  g <- array(0, dim = c(n, nt, p))
-  cg <- array(0, dim = c(n, nt, p))
+  x <- array(0, dim = c(n, nt, p))
+  xc <- array(0, dim = c(n, nt, p))
 
   ## Create a Fourier basis with nbasis functions over the interval [0, 1]
   f.ans <- fda::create.fourier.basis(rangeval = c(0, 1), nbasis = nbasis,
@@ -124,9 +129,9 @@ fundata <- function(n, p, nbasis, time, eta) {
   # g and cg are the original and centered functional predictors
   for(j in 1:p) {
     index.j <- (((j - 1) * nbasis + 1):(j * nbasis))
-    g[, , j] <- eta[, index.j] %*% t(st)
-    cg[, , j] <- g[, , j] - matrix(rep(apply(g[, , j], 2, mean), n),
+    x[, , j] <- eta[, index.j] %*% t(st)
+    xc[, , j] <- x[, , j] - matrix(rep(apply(x[, , j], 2, mean), n),
                                    nrow = n, byrow = T)
   }
-  return(list(g = g, cg = cg))
+  return(list(x = x, xc = xc))
 }
