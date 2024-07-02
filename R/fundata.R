@@ -63,49 +63,49 @@
 #' result <- fundata(n, p, nbasis, time, eta)
 #' x <- result$x
 #' xc <- result$xc
-#' # plot the first functional predictor for illustration purposes
+#' # plot the first functional predictor for illustration
 #' fda::matplot(time, t(x[, , 1]), type = "l", lty = 1, col = 1:n,
 #'     xlab = "Time", ylab = "Value", main = paste("Functional Predictor", 1))
 #'
 #' @export
 fundata <- function(n, p, nbasis, time, eta) {
 
-  # compatibility checks
-  # checks if n is an integer and n > p
+  # Check if n is a single integer number
   if (length(n) != 1 | n != round(n)) {
     stop("Parameter 'n' must be a single integer number.")
   }
 
+  # Check if n is positive and greater than p
   if (n <= 0 | n <= p) {
     stop("Parameter 'n' must be a positive integer and greater than 'p'.")
   }
 
-  # checks that p is a single number
+  # Check that p is a single number
   if (length(p) != 1) {
     stop("Parameter 'p' must be a single number.")
   }
 
-  # checks that p is a positive integer
+  # Check that p is a positive integer
   if (p != round(p) | p <=0) {
-    stop("Parameter 'p' must be integer and positive number.")
+    stop("Parameter 'p' must be a positive integer number.")
   }
 
-  # checks that nbasis is a single number
+  # Check that nbasis is a single number
   if (length(nbasis) != 1) {
     stop("Parameter 'nbasis' must be a single number.")
   }
 
-  # checks that nbasis is a positive integer
+  # Check that nbasis is a positive integer
   if (nbasis != round(nbasis) | nbasis <=0) {
-    stop("Parameter 'nbasis' must be integer and positive number.")
+    stop("Parameter 'nbasis' must be a positive integer number.")
   }
 
-  # check if time is a vector
+  # Check if time is a vector
   if (!is.vector(time) | length(time) == 1) {
     stop("time is a vector of length more than 1.")
   }
 
-  # checks if the dimension of eta is n * (p * nbasis)
+  # Check if the dimension of eta is n * (p * nbasis)
   if (!is.matrix(eta) | nrow(eta) != n | ncol(eta) != (p * nbasis)) {
     stop("Parameter 'eta' must be a numeric matrix with dimensions
          n x (p * nbasis).")
@@ -126,7 +126,7 @@ fundata <- function(n, p, nbasis, time, eta) {
   nbasis <- dim(st)[2]
 
   ## Generate functional predictors
-  # g and cg are the original and centered functional predictors
+  # x and xc are the original and centered functional predictors
   for(j in 1:p) {
     index.j <- (((j - 1) * nbasis + 1):(j * nbasis))
     x[, , j] <- eta[, index.j] %*% t(st)
