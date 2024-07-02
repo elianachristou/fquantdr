@@ -1,15 +1,14 @@
 #' Regularized matrix power transformation
-
+#'
 #' \code{rigpower} performs a regularized matrix power transformation using
 #' eigen decomposition
-
-#' This function takes a matrix. and applies a transformation that includes
-#' adding a scaled identity matrix to the input matrix and then raising the
-#' resultant matrix to a specified power.  The regularization parameter
-#' \code{rho} controls the scaling of the identity matrix.
-
-
-#' @param a A square matrix to be transformed.
+#'
+#' This function takes a matrix \code{a} and applies a transformation that
+#' includes adding a scaled identity matrix to the input matrix and then
+#' raising the resulting matrix to a specified power.  The regularization
+#' parameter \code{rho} controls the scaling of the identity matrix.
+#'
+#' @param a The input square matrix.
 #' @param alpha The exponent to which the matrix is raised.
 #' @param rho A numeric value used as the regularization parameter to scale
 #' the identity matrix.
@@ -42,7 +41,7 @@ rigpower <- function(a, alpha, rho) {
     stop("The exponent 'alpha' must be a single number.")
   }
 
-  # Check if 'alpha' is an integer
+  # Check if 'alpha' is numeric
   if (!is.numeric(alpha)) {
     stop("The exponent 'alpha' must be numeric. ")
   }
