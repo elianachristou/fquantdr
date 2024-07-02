@@ -7,8 +7,8 @@
 #' by slicing the data and assigning a label to each value according to which
 #' slice it is in.  The idea stems from Li (1991), who proposed sliced inverse
 #' regression (SIR), a dimension reduction technique.  This function is
-#' necessary when performing the extension of SIR to functional predictors,
-#' introduced by Ferr\'e and Yao (2003).
+#' necessary for this package when performing the extension of SIR to
+#' functional predictors, introduced by Ferr\'e and Yao (2003).
 #'
 #' @param y A (continuous or discrete) vector.  If y is discrete, a small
 #'     amount of noise is added to make it continuous.
@@ -16,11 +16,12 @@
 #'
 #' @return A vector defining the slices each value of y corresponds to.
 #'
-#' @references Li, K.-C. (1991) Sliced Inverse Regression for Dimension Reduction.
-#'     \emph{Journal of the American Statistical Association}, 86(414), 316-327.
+#' @references Li, K.-C. (1991) Sliced Inverse Regression for Dimension
+#' Reduction.  \emph{Journal of the American Statistical Association},
+#' 86(414), 316-327.
 #'
-#' Ferr\'e, L, and Yao, F. (2003) Function Sliced Inverse Regression
-#' Analysis. \emph{Statistics}, 37(6), 475-488.
+#' Ferr\'e, L, and Yao, F. (2003) Function Sliced Inverse Regression Analysis.
+#' \emph{Statistics}, 37(6), 475-488.
 #'
 #' @noRd
 #' @examples
@@ -35,12 +36,12 @@ discretize <- function(y, H) {
     stop("y must be a vector.")
   }
 
-  # Check if H is numeric
+  # Check if H is a positive integer
   if (H != round(H) | H <= 0) {
     stop("H must be a positive integer.")
   }
 
-  # Check if H is just one number
+  # Check if H is one number
   if (length(H) > 1) {
     stop("H must be one number.")
   }
@@ -55,14 +56,12 @@ discretize <- function(y, H) {
 
   # Order y values in ascending order
   yord <- y[order(y)]
-  # nwdith represents the approximate number of data points per slice
+  # Calculate the approximate number of data points per slice
   nwidth <- floor(n / nsli)
-
-  # Instantiate vector of division points between slices
-  divpt <- rep(0, nsli - 1)
 
   # Set each division point to the values of yord that represent the boundaries
   # between slices
+  divpt <- rep(0, nsli - 1)
   for(i in 1:(nsli - 1)) {
     divpt[i] <- yord[i * nwidth + 1]
   }
@@ -76,6 +75,7 @@ discretize <- function(y, H) {
   for(i in 2:(nsli - 1)) {
     y1[(y >= divpt[i - 1]) & (y < divpt[i])] <- i
   }
+
   # Return discretized y
   y1
 }

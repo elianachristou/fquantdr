@@ -25,12 +25,19 @@ The multiple correlation between \code{u} and \code{v} is given by:
 \deqn{
 mcorr(u, v) = tr(C_{vv}^{-1/2} C_{vu} C_{uu}^{-1} C_{uv} C_{vv}^{-1/2}).
 }
-This measure was used, for example, in Li and Song (2022) and Solea et
-al. (2024).
+This number ranges from 0 to d, the dimension of \code{u} and \code{v},
+where a number closer to d indicates stronger correlation.  This measure
+was used, for example, in Li and Song (2022) and Solea et al. (2024).
 }
 \examples{
-u <- matrix(rnorm(100), ncol=2)
-v <- u + 0.1 * matrix(rnorm(100), ncol=2)
+# Example 1
+u <- matrix(rnorm(100), ncol = 2)
+v <- u + 0.1 * matrix(rnorm(100), ncol = 2)
+mcorr(u, v)
+
+# Example 2
+u <- matrix(rnorm(150), ncol = 3)
+v <- matrix(rnorm(150), ncol = 3)
 mcorr(u, v)
 
 }

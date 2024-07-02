@@ -23,10 +23,10 @@ evaluated.}
 \code{fundata} generates functional data based on Fourier
 basis functions and returns:
 \itemize{
-\item \code{g}: The original functional predictors, a
+\item \code{x}: The original functional predictors, a
 \code{n * nt * p} array, where \code{nt} denotes the number
 of time points.
-\item \code{cg}: The centered functional predictors, a
+\item \code{xc}: The centered functional predictors, a
 \code{n * nt * p} array, where \code{nt} denotes the number
 of time points.
 }
@@ -36,31 +36,33 @@ of time points.
 }
 \details{
 This function generates functional data for a given number of observations
-('n'), functional predictors ('p'), basis functions ('nbasis'), and times
+('n'), functional predictors ('p'), basis functions ('nbasis'), and time
 points ('time').  It utilizes a specified coefficient matrix ('eta') to
 create the functional predictors.  Using these basis functions, it computes
-the original functional predictors ('g') by multiplying the coefficients
+the original functional predictors ('x') by multiplying the coefficients
 with the basis functions. The function then centers these functional
-predictors ('cg') by subtracting the mean across observations for each time
+predictors ('xc') by subtracting the mean across observations for each time
 point.  The output is a list containing both the original and centered
 functional predictors.
 }
 \examples{
 # Example 1
+# set the parameters
 n <- 100
 p <- 5
 nbasis <- 3
 time <- seq(0, 1, length.out = 101)
 eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
+# create the functional predictors
 result <- fundata(n, p, nbasis, time, eta)
-# original and centered functional predictors
-g <- result$g
-cg <- result$cg
-# plot the first functional predictor for illustration purposes
- fda::matplot(time, t(g[, , 1]), type = "l", lty = 1, col = 1:n,
+x <- result$x
+xc <- result$xc
+# plot the first functional predictor for illustration
+ fda::matplot(time, t(x[, , 1]), type = "l", lty = 1, col = 1:n,
  xlab = "Time", ylab = "Value", main = paste("Functional Predictor", 1))
 
 # Example 2
+# set the parameters
 n <- 100
 p <- 5
 nbasis <- 4
@@ -71,9 +73,12 @@ for (j in 1:p) {
  diag(SigmaCov[index.j, index.j]) <- c(2, 1, 1/2, 1/4)
 }
 eta <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis), sigma = SigmaCov)
+# create the functional predictors
 result <- fundata(n, p, nbasis, time, eta)
-# plot the first functional predictor for illustration purposes
-fda::matplot(time, t(result$g[, , 1]), type = "l", lty = 1, col = 1:n,
+x <- result$x
+xc <- result$xc
+# plot the first functional predictor for illustration
+fda::matplot(time, t(x[, , 1]), type = "l", lty = 1, col = 1:n,
     xlab = "Time", ylab = "Value", main = paste("Functional Predictor", 1))
 
 }

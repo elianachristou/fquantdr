@@ -28,22 +28,23 @@
 #' result <- mppower(mat, alpha)
 #'
 mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
-  # Checks if 'a' is a matrix
+
+  # Check if 'a' is a matrix
   if (!is.matrix(a)) {
     stop("The input 'a' must be a matrix.")
   }
 
-  # Checks is 'a' is a square matrix
+  # Check is 'a' is a square matrix
   if (dim(a)[1] != dim(a)[2]) {
     stop("The input 'a' must be a square matrix.")
   }
 
-  # Checks if 'alpha' is a single number
+  # Check if 'alpha' is a single number
   if (length(alpha) != 1) {
     stop("The exponent 'alpha' must be a single number.")
   }
 
-  # Checks if 'alpha' is an integer
+  # Check if 'alpha' is numeric
   if (!is.numeric(alpha)) {
     stop("The exponent 'alpha' must be numeric. ")
   }

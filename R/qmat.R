@@ -8,8 +8,8 @@
 #' in various statistical and mathematical applications where centering or
 #' removing the mean is required.
 #'
-#' @param n An integer representing the number of rows and columns of the
-#' resulting square matrix.  It must be a positive integer.
+#' @param n A positive integer representing the number of rows and columns
+#' of the resulting square matrix.
 #'
 #' @return A \code{n x n} matrix representing the projection onto the
 #' orthogonal complement of the subspace spanned by the vector of ones.
