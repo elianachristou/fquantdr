@@ -7,7 +7,7 @@
 sonf(y, xfd, dev2_penalty = FALSE, lambda = NULL)
 }
 \arguments{
-\item{y}{A number vector of length n, representing the scalar response variable}
+\item{y}{A numeric vector of length n, representing the scalar response.}
 
 \item{xfd}{A functional data object}
 
@@ -20,25 +20,23 @@ derivative penalty.}
 \code{sonf} computes a scalar-on-function regression and returns:
 \itemize{
 \item \code{beta_coef}: The regression coefficients.
-
-\item \code{beta_fd}: The functional data objects for the beta coefficients.
-
+\item \code{beta_fd}: The functional data objects for the beta
+coefficients.
 \item \code{yhat}: The predicted values of \code{y}.
-
 \item \code{X}: The designed matrix used in the regression.
 }
 }
 \description{
 \code{sonf} estimates the relationship between a scalar response and
 functional predictors using basis functions, with options for applying
-a second derivative penalty or not. Test
+a second derivative penalty or not.
 }
 \details{
 This function performs scalar-on-function regression, predicting a scalar
 response \code{y} using one or more functional predictors \code{xfd}. It
-centralizes the data, constructs a design matrix based on the different type
-of basis functions, and calculates the regression coefficients with or without
-a second derivative penalty. The function returns the regression coefficients,
-functional data objects for these coefficients, estimated response value,
-and the designed matrix X.
+centralizes the data, constructs a design matrix based on the different
+type of basis functions, and calculates the regression coefficients with
+or without a second derivative penalty. The function returns the regression
+coefficients, functional data objects for these coefficients, estimated
+response value, and the designed matrix X.
 }
