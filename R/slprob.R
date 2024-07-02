@@ -1,47 +1,42 @@
 #' Slice Probabilities
 #'
-#' \code{slprob} calculates the probability that a given response will be in
-#' each slice.
+#' \code{slprob} calculates the proportion of observations that fall within
+#' each slice, where the number of slices is given by H.
 #'
-#' This function takes in a discretized y vector and a vector determining the
-#' values at each slice (usually a range 1:H where H is the number of slices)
-#' to determine the proportion of the observed responses in each slice to
-#' determine the probablity that a given y will be within that slice.
+#' @param y A numeric vector.
+#' @param H The number of slices.
 #'
-#' @param y The discretized vector for the response variable
-#' @param H The number of slices used
+#' @return A vector of proportion of observations that fall within each slice.
 #'
-#' @return A vector of probabilities that a response will be in each slice
-#'
+#'@seealso \code{\link{discretize}}, \code{\link{slav}}
 #' @noRd
 #' @examples
-#' slprob(c(1,1,2,3,3,2,1,2), 3)
+#' y <- rnorm(100)
+#' H <- 3
+#' slprob(y, H)
 #'
 slprob <- function(y, H) {
+
+  # Check if y is a vector
   if (!is.vector(y)) {
     stop("y must be a vector.")
   }
-  if (!is.numeric(H) | H <= 0 | as.integer(H) != H) {
+
+  # Check if H is a positive integer
+  if (H <= 0 | H != floor(H)) {
     stop("H must be a positive integer.")
   }
-  for (i in y) {
-    if(!(i %in% 1:H)) {
-      stop(paste("y must be discretized such that all values in y are in",
-                 "yunit. The value", i, "is not in yunit."))
-    }
-  }
 
-  # Get length of y vector
+  # Define the parameters
   n <- length(y)
   yunit <- 1:H
   ydis <- discretize(y, H)
 
-  # Define new vector for output
+  # Calculate the proportions
   out <- rep(0, H)
   for (i in yunit) {
     # Probabilty = number of points in slice / number of points
     out[i] <- length(ydis[ydis == yunit[i]]) / n
   }
-  # Return output vector
   out
 }
