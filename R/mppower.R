@@ -28,6 +28,7 @@
 #' result <- mppower(mat, alpha)
 #'
 mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
+
   # Check if 'a' is a matrix
   if (!is.matrix(a)) {
     stop("The input 'a' must be a matrix.")
@@ -43,7 +44,7 @@ mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
     stop("The exponent 'alpha' must be a single number.")
   }
 
-  # Check if 'alpha' is an integer
+  # Check if 'alpha' is numeric
   if (!is.numeric(alpha)) {
     stop("The exponent 'alpha' must be numeric. ")
   }
