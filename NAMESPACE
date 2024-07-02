@@ -3,4 +3,5 @@
 export(fcqs)
 export(fundata)
 export(mcorr)
+export(mfsir)
 export(sonf)
