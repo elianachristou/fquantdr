@@ -20,16 +20,16 @@ variable.}
 }
 \value{
 \code{mfsir} computes the new sufficient predictors and returns
-\item{xcoef}{A \code{n x nbasis} matrix of smoothed and centered coefficients
-for the functional predictors using B-spline basis functions.}
+\item{xcoef}{A \code{n x (p * nbasis)} matrix of smoothed and centered
+coefficients for the functional predictors using B-spline basis functions.}
 \item{eigvalues}{The eigenvalues resulting from the eigenvalue decomposition
 of the matrix of interest that is calculated during the dimension
 reduction process.}
-\item{phi}{The eigenvectors resulting from the eigenvalue decomposition
-of the matrix of interest that is calculated during the dimension
-reduction process.}
-\item{gx}{The \code{nbasis x nbasis} block diagonal Gram matrix of the
-B-spline basis functions.}
+\item{phi}{A \code{(p * nbasis) x (p * nbasis)} matrix of eigenvectors
+resulting from the eigenvalue decomposition of the matrix of interest
+that is calculated during the dimension reduction process.}
+\item{gx}{The \code{(p * nbasis) x (p * nbasis)} block diagonal Gram
+matrix of the B-spline basis functions.}
 \item{betas}{The coordinates of \eqn{\beta_1, \dots, \beta_d} resulting
 from the coordinate representation on the B-spline basis functions.}
 \item{sufpred}{The estimated sufficient predictors of the functional
