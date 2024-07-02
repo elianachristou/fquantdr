@@ -34,11 +34,13 @@ slprob <- function(y, H) {
   # Get length of y vector
   n <- length(y)
   yunit <- 1:H
+  ydis <- discretize(y, H)
+
   # Define new vector for output
   out <- rep(0, H)
   for (i in yunit) {
     # Probabilty = number of points in slice / number of points
-    out[i] <- length(y[y == yunit[i]]) / n
+    out[i] <- length(ydis[ydis == yunit[i]]) / n
   }
   # Return output vector
   out
