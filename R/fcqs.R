@@ -133,15 +133,15 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
   H <- max(10, 2 * p / n)
 
   # Create basis for functional data using splines
-  databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
-  # Initialize array of predictor coordinates (n x (p * q) dimension)
+  databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis,
+                                         norder = nbasis)
+
+  # Retrieve the coefficients as a (nbasis x n x p) array for the sonf function
   xcoef <- numeric()
-  # Retrieves the coefficients as a (q x n x p) array for the fRegress function
   xcoef_array <- array(0, c(nbasis, n, p))
-  # Loop for all predictors
   for (k in 1:p) {
     # Smooth functional predictor using given basis
-    xfdk <- fda::smooth.basis(time_points, t(x[, , k]), databasis)$fd
+    xfdk <- fda::smooth.basis(time, t(x[, , k]), databasis)$fd
     # Center data
     xfdk <- fda::center.fd(xfdk)
     # Get coefficients
@@ -154,29 +154,23 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
 
   # Compute block diagonal gram matrix gx
   gi <- gramatrix(nbasis, databasis)
-  # Initialize gx as (p * nbasis) x (p * nbasis) square matrix
   gx <- matrix(0, nrow = p * (nbasis), ncol = p * (nbasis))
-  # Loop through predictors
   for (i in 1:p) {
-    # Get indices for (nbasis x nbasis) block matrix for predictor in gx
     index <- ((i - 1) * (nbasis) + 1):(i * (nbasis))
-    # Add block matrix at diagonal index in gx
     gx[index, index] <- gi
   }
 
   # Run Functional Sliced Inverse Regression
   out.mfsir <- mfsir(x, y, H, nbasis)
-  beta.mfsir <- out.mfsir$betas[, 1:d_DR]
+  beta.mfsir <- out.mfsir$betas[, 1:d_tau]
   vv <- xcoef %*% gx %*% beta.mfsir
 
   # Run FCQS methodology to first find the initial vector
-  # Estimate the conditional quantile
-  red_dim <- floor(0.1 * n) # Find length of 10% of observations
-  # Get middle 80% of response
+  ## Calculate the bandwidth and estimate the conditional quantile
+  ## Trim the y for the bandwidth calculation
+  red_dim <- floor(0.1 * n)
   index_y <- order(y)[red_dim:(n - red_dim)]
-  # Get initial bandwidth
   h <- KernSmooth::dpill(vv[index_y, ], y[index_y])
-  # Transform bandwidth for given quantile
   h <- 4 * h * (tau * (1 - tau) / (stats::dnorm(stats::qnorm(tau))) ^ 2) ^ 0.2
   # Use alternative method for bandwidth calculation on error
   if (h == 'NaN') {
@@ -189,7 +183,6 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
   qhat <- quantdr::llqr(vv, y, tau = tau, h = h)$ll_est
 
   # Fit a simple linear regression from qhat on xfd
-  # Create functional data object
   x.fd <- fda::fd(xcoef_array, databasis)
   fcqs.out <- sonf(qhat, x.fd, dev2_penalty = TRUE, lambda = 1e-4)
   # Compute initial inner product
@@ -197,29 +190,26 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
   # Compute initial beta coefficients
   initial_beta_coef <- fcqs.out$beta_coef
 
-  # Initialize beta coefficients
+  # Initialize quantities for the loop
   beta_vector <- initial_beta_coef
-  # Initialize inner product values
   inner_prod <- initial_inner_prod
   # Construct more vectors
-  for (j in 1:(min(p * q, 40) - 1)) {
+  for (j in 1:(min(p * nbasis, 40) - 1)) {
     # Construct new beta vector using the inner product and x coefficients
-    new_beta <- apply(matrix(rep(as.vector(inner_prod), 2), n, p * q) * xcoef,
-                      2, mean)
-    # Combine new beta vector and initial beta vector
+    new_beta <- apply(matrix(rep(as.vector(inner_prod), 2), n, p * nbasis) *
+                        xcoef, 2, mean)
     beta_vector <- cbind(beta_vector, new_beta)
-
-    # Need to create the new inner_prod
     inner_prod <- xcoef %*% gx %*% new_beta
   }
 
   # Eigenfunction decomposition
-  # Compute Moore-Penrose inverse of gx to the .5 power
+  ## Compute Moore-Penrose inverse of gx to the .5 power
   gx.half = mppower(gx, 0.5, 1e-8)
-  # Compute Moore-Penrose inverse of gx to the -.5 power
+  ## Compute Moore-Penrose inverse of gx to the -.5 power
   gx.inv.half = mppower(gx, -0.5, 1e-8)
-  # Compute matrix A to find eigenvectors of M
-  A =  mppower(1 / n * gx.half %*% t(xcoef) %*% xcoef %*% gx.half, -0.5, 1e-8)
+  ## Compute matrix A to find eigenvectors of M
+  A =  mppower(1 / n * gx.half %*% t(xcoef) %*% qmat(n) %*% xcoef %*%
+                 gx.half, -0.5, 1e-8)
   M <- A %*% gx.half %*% beta_vector %*% t(beta_vector) %*% gx.half %*% A
   # Obtain eigenvectors and eigenvalues of symmetric M
   gg <- eigen(M, symmetric = T)$vectors
