@@ -4,35 +4,32 @@
 \alias{fcqs}
 \title{Functional Central Quantile Subspace}
 \usage{
-fcqs(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR)
+fcqs(x, y, time, nbasis, tau = 0.5, d_tau)
 }
 \arguments{
-\item{Xc}{An n x t x p array of functional data where n represents the
-number of observations, t represents the number of time points, and p is the
-number of functional predictors}
+\item{x}{A 3-dimensional array (\code{n x nt x p}), where n is the number
+of observations, nt is the number of time points, and p is the number
+of predictor variables.}
 
-\item{y}{A vector representing the univariate response}
+\item{y}{A numeric vector of length \code{n} representing the response
+variable.}
 
-\item{time_points}{A vector of the time points spanned by the functional
-predictors}
+\item{time}{A numeric vector of length \code{nt} of time points at which
+the functional data is evaluated.}
 
-\item{q}{A number used to define the dimension during KL expansion}
+\item{nbasis}{The number of basis functions for smoothing functional data.}
 
-\item{nbasis}{The number of basis functions for smoothing functional data}
+\item{tau}{A quantile level, a number strictly between 0 and 1.}
 
-\item{tau}{The quantile level, between 0 and 1, which we are calculating
-the FCQS for}
-
-\item{d_tau}{The dimension of the functional central quantile subspace (FCQS)}
-
-\item{H}{The number of slices for functional sliced inverse regression}
-
-\item{d_DR}{The dimension of the functional central subspace (FCS)}
+\item{d_tau}{The dimension of the functional central quantile subspace.
+It should be an integer between 1 and \code{p}.}
 }
 \value{
-The directions of the functional central quantile subspace, which can
-be used to sufficiently reduce the dimension of the functional predictors for
-quantile regression
+\code{fcqs} computes the directions of the functional central quantile
+subspace (FCQS) and returns:
+\item{betacoef}{The functional parameters that span the FCQS}
+\item{yhat}{The estimated responses, resulting as the inner product
+between \code{betacoef} and \code{x}.}
 }
 \description{
 \code{fcqs} estimates the directions of the functional central quantile
@@ -51,14 +48,14 @@ data.
 n <- 100
 p <- 5
 q <- 4
-time_points <- seq(0, 1, length.out = 101)
+time <- seq(0, 1, length.out = 101)
 eta <- matrix(stats::rnorm(n * p * q), nrow = n, ncol = p * q)
 
 # Generate functional data
-result <- fundata(n, p, q, time_points, eta)
+result <- fundata(n, p, q, time, eta)
 
 # Centered functional predictors
-Xc <- result$xc
+xc <- result$xc
 
 # Further parameters for FCQS
 H <- 10
@@ -78,5 +75,5 @@ error <- rnorm(n)
 # Generate response from functional data and error
 y <- 3 * mfpca.scores[, 1] + error
 # Run FCQS function
-fcqs(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR)
+fcqs(xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR)
 }

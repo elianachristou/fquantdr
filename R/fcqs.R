@@ -23,9 +23,10 @@
 #'      It should be an integer between 1 and `p`.
 #'
 #' @return `fcqs` computes the directions of the functional central quantile
-#'      subspace and returns:
-#'      \item{ffun}{}
-#'      \item{yhat}{}
+#'      subspace (FCQS) and returns:
+#'      \item{betacoef}{The functional parameters that span the FCQS}
+#'      \item{yhat}{The estimated responses, resulting as the inner product
+#'      between `betacoef` and `x`.}
 #'
 #' @export
 #'
@@ -65,38 +66,46 @@
 
 fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
 
-  if (!is.array(x)) {
-    stop(paste('x needs to be an array; convert it to a n x nt x p array,',
-               'where n is the sample size, nt is the number of time points,',
-               'and p is the number of predictors'))
-  }
-
+  # Check if y is a univariate response
   if (!is.vector(y)) {
     stop("y should be a vector representing a univariate response.")
   }
 
+  # Check if x is an array
+  if (!is.array(x)) {
+    stop(paste('x needs to be an array; convert it to a (n x nt x p) array,
+               where n is the sample size, nt is the number of time points,
+               and p is the number of predictors.'))
+  }
+
+  # Check if x is a 3-dimensional array
+  if (length(dim(X)) != 3) {
+    stop("X must be a 3-dimensional array, where the first dimension
+         represent the number of observations, the second dimension
+         represent the number of time points, and the third dimension
+         reepresent the number of predictor variables.")
+  }
+
+  # Check if time is a univariate vector
   if (!is.vector(time)) {
-    stop("time_points should be a vector.")
+    stop("The input 'time' should be a vector.")
+  }
+
+  # Check that the dimensions agree
+  if(dim(x)[1] != length(y)) {
+    stop("y and x should have the same number of observations.")
   }
 
   if (dim(x)[2] != length(time)) {
-    stop(paste('x needs to be an n x nt x p array, where n is the sample',
-               'size, nt is the number of time points, and p is the number of',
-               'predictors'))
+    stop(paste("x and time should have the same number of time points."))
   }
 
-  if(dim(x)[1] != length(y)) {
-    stop("y and Xc should show the same number of observations.")
-  }
-
+  # Check if tau is between 0 and 1
   if(tau < 0 | tau > 1) {
-    stop("The quantile level, tau, must be between 0 and 1.")
+    stop("The quantile level, tau, must be strictly between 0 and 1.")
   }
 
-  # Get dimensions of predictors
-  # n = number of observations
-  # ntx = number of time points
-  # p = number of predictors
+  # Set the parameters
   n <- dim(x)[1]
   nt <- dim(x)[2]
   p <- dim(x)[3]
