@@ -7,20 +7,21 @@
 #'
 #' This function models the relationship between a scalar response variable
 #' and one or more functional predictor variables using basis functions.  The
-#' input `xfd' needs to be a functional object ('fd').  The function returns
+#' input `xfd` needs to be a functional object (`fd`).  The function returns
 #' the regression coefficients, the functional data objects for these
 #' coefficients, the estimated response values, and the design matrix.
 #'
-#' @param y A numeric vector of length `n', representing the scalar response.
-#' @param xfd A functional data object of class `fd'.
+#' @param y A numeric vector of length \code{n}, representing the scalar
+#'      response.
+#' @param xfd A functional data object of class \code{fd}.
 #' @param dev2_penalty A logical flag indicating whether to apply a second
-#'    derivative penalty (default is `FALSE').
-#' @param lambda A penalty parameter used if `dev2_penalty' is `TRUE'.
+#'    derivative penalty (default is `FALSE`).
+#' @param lambda A penalty parameter used if `dev2_penalty` is `TRUE`.
 #'
 #' @return \code{sonf} computes a scalar-on-function regression and returns:
 #'    \item{betacoef}{The regression coefficients.}
 #'    \item{betafd}{The functional data objects for the beta coefficients.}
-#'    \item{yhat}{The \code{n}-dimensional vector of predicted values for `y'.}
+#'    \item{yhat}{The \code{n}-dimensional vector of predicted values for `y`.}
 #'    \item{X}{The \code{n x (nbasis * p)} design matrix used in the
 #'         regression.}
 #'
@@ -30,7 +31,7 @@
 #' n <- 100
 #' nbasis <- 10
 #' p <- 3
-#' # Create a B-spline bsis
+#' # Create a B-spline basis
 #' basis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis,
 #'                norder = nbasis)
 #' # Generate random coefficients for the functional data object
@@ -87,39 +88,52 @@
 #' @export
 sonf = function(y, xfd, dev2_penalty = FALSE, lambda = NULL) {
 
-  y <- as.matrix(y) # double check!
-
   # Check if y is univariate response
-  if (dim(y)[2] > 1) {
-    stop(paste("y needs to be a univariate response. y is a",
-               dim(y)[2], "-dimensional response in this case."))
+  if (!is.vector(y)) {
+    stop(paste("y needs to be a univariate response."))
   }
 
   # Check if xfd is a functional object of class 'fd'
   if (!inherits(xfd, "fd")) {
-    stop("xfd must be a functional data object of class 'fd'")
+    stop("xfd must be a functional data object of class 'fd'.")
   }
 
   # Check if xfd is a 3-dimensional array
   if (length(dim(xfd$coef)) != 3) {
-    stop("xfd$coef must be an array with dimensions (nbasis, n, p).")
+    stop("The coefficients of the functional data object 'xfd' must be
+         a 3-dimensional array with dimensions (nbasis, n, p), i.e., check
+         the dimensions of 'xfd$coef'. If you only have one predictor
+         variable, convert xfd$coef into a (nbasis x n x 1) array.")
   }
 
   # Check if the number of observations for xfd and y agree
   if (length(y) != dim(xfd$coef)[2]) {
-    stop("The length of y and the number of observations in xfd must agree.")
+    stop("The number of observations of 'y' and the number of observations
+         in 'xfd' must agree.")
   }
 
   # Check if n > p
   if (length(y) <= dim(xfd$coef)[3]) {
-    stop(paste("number of observations of y (", length(y), ") should be
+    stop(paste("The number of observations of y (", length(y), ") should be
                greater than the number of predictors of xfd
                (", dim(xfd$coef)[3], ").", sep = ""))
   }
 
+  # Check if the number of basis agrees
+  if (dim(xfd$coef)[1] != xfd$basis$nbasis) {
+    stop(paste("The number of basis functions in the 'xfd$coef' object and
+               in the 'xfd$basis' object should agree.  Check
+               'dim(xfd$coef)[1]' and 'xfd$basis$nbasis'."))
+  }
+
+  # Set the parameters
+  n <- dim(xfd$coef)[2]
+  nbasis <- dim(xfd$coef)[1]
+  p <- dim(xfd$coef)[3]
+  if(is.na(p)) p <- 1
+
   # Extract basis information
   basis <- xfd$basis
-  nbasis <- basis$nbasis
   bname <- basis$type
 
   # Generate the B and DB matrices based on basis type
@@ -132,22 +146,9 @@ sonf = function(y, xfd, dev2_penalty = FALSE, lambda = NULL) {
     DB <- fda::fourierpen(basis, 2)
   }
 
-  # Set the parameters
-  tmp <- dim(xfd$coef)
-  n <- tmp[2]
-  nbasis <- tmp[1]
-  p <- tmp[3]
-  if(is.na(p)) p <- 1
-
-  # Check the number of functional predictors
-  if (p != floor(p) | p <= 0) {
-    stop("The number of functional predictors (p) must be a positive
-         integer.")
-  }
-
   # Prepare the coefficient matrix
   if (p == 1) {
-    # Convert to. matrix if p = 1
+    # Convert to matrix if p = 1
     xcoef <- t(as.matrix(xfd$coef[, , 1]))
   } else {
     # block diagonal of B - p times
@@ -159,11 +160,10 @@ sonf = function(y, xfd, dev2_penalty = FALSE, lambda = NULL) {
 
     xcoef <- aperm(xfd$coef, c(2, 1, 3)) # change dim- n X nbasis X p
     xcoef <- matrix(xcoef, nrow = n)
-    #(xvec[1,] == as.vector(xcoef[1,,]))
   }
 
   # Center the functional predictors and the response
-  xcoef_cen <- xcoef-colMeans(xcoef)
+  xcoef_cen <- xcoef - colMeans(xcoef)
   my <- mean(y)
   y_cen <- y - my
 

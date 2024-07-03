@@ -7,20 +7,21 @@
 sonf(y, xfd, dev2_penalty = FALSE, lambda = NULL)
 }
 \arguments{
-\item{y}{A numeric vector of length `n', representing the scalar response.}
+\item{y}{A numeric vector of length \code{n}, representing the scalar
+response.}
 
-\item{xfd}{A functional data object of class `fd'.}
+\item{xfd}{A functional data object of class \code{fd}.}
 
 \item{dev2_penalty}{A logical flag indicating whether to apply a second
-derivative penalty (default is `FALSE').}
+derivative penalty (default is \code{FALSE}).}
 
-\item{lambda}{A penalty parameter used if \verb{dev2_penalty' is }TRUE'.}
+\item{lambda}{A penalty parameter used if \code{dev2_penalty} is \code{TRUE}.}
 }
 \value{
 \code{sonf} computes a scalar-on-function regression and returns:
 \item{betacoef}{The regression coefficients.}
 \item{betafd}{The functional data objects for the beta coefficients.}
-\item{yhat}{The \code{n}-dimensional vector of predicted values for `y'.}
+\item{yhat}{The \code{n}-dimensional vector of predicted values for \code{y}.}
 \item{X}{The \code{n x (nbasis * p)} design matrix used in the
 regression.}
 }
@@ -33,7 +34,7 @@ coefficients.
 \details{
 This function models the relationship between a scalar response variable
 and one or more functional predictor variables using basis functions.  The
-input `xfd' needs to be a functional object ('fd').  The function returns
+input \code{xfd} needs to be a functional object (\code{fd}).  The function returns
 the regression coefficients, the functional data objects for these
 coefficients, the estimated response values, and the design matrix.
 }
@@ -43,7 +44,7 @@ coefficients, the estimated response values, and the design matrix.
 n <- 100
 nbasis <- 10
 p <- 3
-# Create a B-spline bsis
+# Create a B-spline basis
 basis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis,
                norder = nbasis)
 # Generate random coefficients for the functional data object
