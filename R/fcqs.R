@@ -65,7 +65,7 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
   }
 
   # Check if x is a 3-dimensional array
-  if (length(dim(X)) != 3) {
+  if (length(dim(x)) != 3) {
     stop("X must be a 3-dimensional array, where the first dimension
          represent the number of observations, the second dimension
          represent the number of time points, and the third dimension
