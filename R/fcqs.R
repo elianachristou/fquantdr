@@ -10,23 +10,23 @@
 #' information required for accurate quantile regression of the functional
 #' data.
 #'
-#' @param x An n x nt x p array of functional data where n represents the
-#' number of observations, nt represents the number of time points, and p is the
-#' number of functional predictors
-#' @param y A vector representing the univariate response
-#' @param time A vector of the time points spanned by the functional
-#' predictors
-#' @param q A number used to define the dimension during KL expansion
-#' @param nbasis The number of basis functions for smoothing functional data
-#' @param tau The quantile level, between 0 and 1, which we are calculating
-#' the FCQS for
-#' @param d_tau The dimension of the functional central quantile subspace (FCQS)
-#' @param H The number of slices for functional sliced inverse regression
-#' @param d_DR The dimension of the functional central subspace (FCS)
+#' @param x A 3-dimensional array (\code{n x nt x p}), where n is the number
+#'     of observations, nt is the number of time points, and p is the number
+#'     of predictor variables.
+#' @param y A numeric vector of length \code{n} representing the response
+#'     variable.
+#' @param time A numeric vector of length \code{nt} of time points at which
+#'     the functional data is evaluated.
+#' @param nbasis The number of basis functions for smoothing functional data.
+#' @param tau A quantile level, a number strictly between 0 and 1.
+#' @param d_tau The dimension of the functional central quantile subspace.
+#'      It should be an integer between 1 and `p`.
 #'
-#' @return The directions of the functional central quantile subspace, which can
-#' be used to sufficiently reduce the dimension of the functional predictors for
-#' quantile regression
+#' @return `fcqs` computes the directions of the functional central quantile
+#'      subspace and returns:
+#'      \item{ffun}{}
+#'      \item{yhat}{}
+#'
 #' @export
 #'
 #' @examples
@@ -63,7 +63,7 @@
 #' # Run FCQS function
 #' fcqs(xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR)
 
-fcqs <- function(x, y, time, q, nbasis, tau, d_tau, H, d_DR) {
+fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
 
   if (!is.array(x)) {
     stop(paste('x needs to be an array; convert it to a n x nt x p array,',
@@ -100,6 +100,7 @@ fcqs <- function(x, y, time, q, nbasis, tau, d_tau, H, d_DR) {
   n <- dim(x)[1]
   nt <- dim(x)[2]
   p <- dim(x)[3]
+  H <- max(10, 2 * p / n)
 
   # Create basis for functional data using splines
   databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
@@ -197,5 +198,5 @@ fcqs <- function(x, y, time, q, nbasis, tau, d_tau, H, d_DR) {
   vv2 <- xcoef %*% gx.half %*% A %*% gg[, 1:d_tau]
 
   # Return directions of FCQS
-  list(vv = vv, vv2 = vv2)
+  list(ffun = vv, yhat = vv2)
 }
