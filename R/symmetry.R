@@ -1,26 +1,31 @@
 #' Symmetrize Matrix
 #'
-#' \code{symmetry} makes a matrix symmetrical while retaining the most
-#' properties possible of the original matrix.
+#' \code{symmetry} transforms a given square matrix into a symmetric matrix.
 #'
-#' The function finds the average between a matrix and its transpose to create
-#' a symmetrical matrix while retaining properties such as the mean.
+#' This function symmetrizes the input matrix `a' by averaging it with its
+#' transpose.
 #'
-#' @param a The matrix to symmetrize
+#' @param a A square matrix
 #'
-#' @return A symmetric matrix based on the matrix \code{a}
+#' @return A symmetric square matrix
 #'
 #' @noRd
 #' @examples
-#' testMatrix <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), nrow = 3, ncol = 3)
-#' symmetry(testMatrix)
+#' sym.mat <- matrix(rnorm(9), nrow = 3, ncol = 3)
+#' sym.mat
+#' symmetry(sym.mat)
 #'
 symmetry <- function(a) {
+
+  # Check if a is a matrix
   if (!is.matrix(a)) {
     stop("a must be a matrix.")
   }
+
+  # Check if a is a square matrix
   if (nrow(a) != ncol(a)) {
     stop("a must be a square matrix.")
   }
+
   (a + t(a)) / 2
 }

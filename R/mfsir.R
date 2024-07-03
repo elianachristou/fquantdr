@@ -161,11 +161,10 @@ mfsir <- function(X, y, H, nbasis) {
   # Compute the mean of the coefficients
   mucoef <- apply(xfd.coef, 2, mean)
 
-  # Discretize the response variable into H slices and compute the slice
-  # probabilities and the means within each slice
-  ydis <- discretize (y, H)
-  prob <- slprob(ydis, H)
-  avg.slav <- slav(xfd.coef, ydis, H)
+  # Compute the proportion of observations and means within each slice
+  #ydis <- discretize (y, H)
+  prob <- slprob(y, H)
+  avg.slav <- slav(xfd.coef, y, H)
 
   # Calculate the target matrix for the eigenvalue decomposition
   Lambda1 <- matrix(0, p * nbasis, p * nbasis)
