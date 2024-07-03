@@ -33,7 +33,7 @@ between \code{betacoef} and \code{x}.}
 }
 \description{
 \code{fcqs} estimates the directions of the functional central quantile
-subspace, extending the central quantile subspace to functional data.
+subspace.
 }
 \details{
 This function computes the directions that span the \eqn{\tau}th functional

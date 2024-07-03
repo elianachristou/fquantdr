@@ -1,7 +1,7 @@
 #' Functional Central Quantile Subspace
 #'
 #' \code{fcqs} estimates the directions of the functional central quantile
-#' subspace, extending the central quantile subspace to functional data.
+#' subspace.
 #'
 #' This function computes the directions that span the \eqn{\tau}th functional
 #' central quantile subspace. These directions represent functions that can
@@ -81,13 +81,12 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
   if(dim(x)[1] != length(y)) {
     stop("y and x should have the same number of observations.")
   }
-
   if (dim(x)[2] != length(time)) {
     stop(paste("x and time should have the same number of time points."))
   }
 
   # Check if tau is between 0 and 1
-  if(tau < 0 | tau > 1) {
+  if(tau <= 0 | tau >= 1) {
     stop("The quantile level, tau, must be strictly between 0 and 1.")
   }
 
