@@ -10,11 +10,11 @@
 #' information required for accurate quantile regression of the functional
 #' data.
 #'
-#' @param Xc An n x t x p array of functional data where n represents the
-#' number of observations, t represents the number of time points, and p is the
+#' @param x An n x nt x p array of functional data where n represents the
+#' number of observations, nt represents the number of time points, and p is the
 #' number of functional predictors
 #' @param y A vector representing the univariate response
-#' @param time_points A vector of the time points spanned by the functional
+#' @param time A vector of the time points spanned by the functional
 #' predictors
 #' @param q A number used to define the dimension during KL expansion
 #' @param nbasis The number of basis functions for smoothing functional data
@@ -34,14 +34,14 @@
 #' n <- 100
 #' p <- 5
 #' q <- 4
-#' time_points <- seq(0, 1, length.out = 101)
+#' time <- seq(0, 1, length.out = 101)
 #' eta <- matrix(stats::rnorm(n * p * q), nrow = n, ncol = p * q)
 #'
 #' # Generate functional data
-#' result <- fundata(n, p, q, time_points, eta)
+#' result <- fundata(n, p, q, time, eta)
 #'
 #' # Centered functional predictors
-#' Xc <- result$xc
+#' xc <- result$xc
 #'
 #' # Further parameters for FCQS
 #' H <- 10
@@ -61,12 +61,12 @@
 #' # Generate response from functional data and error
 #' y <- 3 * mfpca.scores[, 1] + error
 #' # Run FCQS function
-#' fcqs(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR)
+#' fcqs(xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR)
 
-fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR) {
+fcqs <- function(x, y, time, q, nbasis, tau, d_tau, H, d_DR) {
 
-  if (!is.array(Xc)) {
-    stop(paste('Xc needs to be an array; convert it to a n x nt x p array,',
+  if (!is.array(x)) {
+    stop(paste('x needs to be an array; convert it to a n x nt x p array,',
                'where n is the sample size, nt is the number of time points,',
                'and p is the number of predictors'))
   }
@@ -75,17 +75,17 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR) {
     stop("y should be a vector representing a univariate response.")
   }
 
-  if (!is.vector(time_points)) {
+  if (!is.vector(time)) {
     stop("time_points should be a vector.")
   }
 
-  if (dim(Xc)[2] != length(time_points)) {
-    stop(paste('Xc needs to be an n x nt x p array, where n is the sample',
+  if (dim(x)[2] != length(time)) {
+    stop(paste('x needs to be an n x nt x p array, where n is the sample',
                'size, nt is the number of time points, and p is the number of',
                'predictors'))
   }
 
-  if(dim(Xc)[1] != length(y)) {
+  if(dim(x)[1] != length(y)) {
     stop("y and Xc should show the same number of observations.")
   }
 
@@ -97,9 +97,9 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR) {
   # n = number of observations
   # ntx = number of time points
   # p = number of predictors
-  n <- dim(Xc)[1]
-  ntx <- dim(Xc)[2]
-  p <- dim(Xc)[3]
+  n <- dim(x)[1]
+  nt <- dim(x)[2]
+  p <- dim(x)[3]
 
   # Create basis for functional data using splines
   databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
@@ -110,7 +110,7 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR) {
   # Loop for all predictors
   for (k in 1:p) {
     # Smooth functional predictor using given basis
-    xfdk <- fda::smooth.basis(time_points, t(Xc[, , k]), databasis)$fd
+    xfdk <- fda::smooth.basis(time_points, t(x[, , k]), databasis)$fd
     # Center data
     xfdk <- fda::center.fd(xfdk)
     # Get coefficients
@@ -134,7 +134,7 @@ fcqs <- function(Xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR) {
   }
 
   # Run Functional Sliced Inverse Regression
-  out.mfsir <- mfsir(Xc, y, H, nbasis)
+  out.mfsir <- mfsir(x, y, H, nbasis)
   beta.mfsir <- out.mfsir$betas[, 1:d_DR]
   vv <- xcoef %*% gx %*% beta.mfsir
 
