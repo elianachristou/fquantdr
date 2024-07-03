@@ -25,8 +25,8 @@
 #' @return `fcqs` computes the directions of the functional central quantile
 #'      subspace (FCQS) and returns:
 #'      \item{betacoef}{The functional parameters that span the FCQS}
-#'      \item{yhat}{The estimated responses, resulting as the inner product
-#'      between `betacoef` and `x`.}
+#'      \item{betax}{The resulting sufficient predictor, calculated as the
+#'      inner product between `betacoef` and `x`.}
 #'
 #' @export
 #'
@@ -48,7 +48,9 @@
 #' error <- rnorm(n)
 #' y <- 3 * mfpca.scores[, 1] + error
 #' # Run FCQS function
-#' fcqs(xc, y, time, nbasis, tau, d_tau)
+#' output <- fcqs(xc, y, time, nbasis, tau, d_tau)
+#' # Compare the true and estimated predictors
+#' mcorr(output$betax, mfpca.scores[, 1])
 
 fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
 
@@ -203,5 +205,5 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
   vv2 <- xcoef %*% gx.half %*% A %*% gg[, 1:d_tau]
 
   # Return directions of FCQS
-  list(ffun = vv, yhat = vv2)
+  list(ffun = vv, betax = vv2)
 }
