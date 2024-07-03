@@ -31,38 +31,24 @@
 #' @export
 #'
 #' @examples
-#' # Parameters for generating functional data
+#' # Set the parameters
 #' n <- 100
 #' p <- 5
-#' q <- 4
-#' time <- seq(0, 1, length.out = 101)
-#' eta <- matrix(stats::rnorm(n * p * q), nrow = n, ncol = p * q)
-#'
-#' # Generate functional data
-#' result <- fundata(n, p, q, time, eta)
-#'
-#' # Centered functional predictors
-#' xc <- result$xc
-#'
-#' # Further parameters for FCQS
-#' H <- 10
+#' nbasis <- 4
 #' tau <- 0.1
-#' K <- 1
 #' d_tau <- 1
-#' nbasis <- q
-#' d_DR <- 1
+#' time <- seq(0, 1, length.out = 101)
+#' eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
+#' # Generate functional data
+#' result <- fundata(n, p, nbasis, time, eta)
+#' xc <- result$xc
+#' # Generate y
 #' P <- eigen(cov(eta))$vectors
-#' Q <- diag(eigen(cov(eta))$values)
-#' # This is the inner products <b1, X>, <b2, X>, ...
 #' mfpca.scores <- eta %*% P
-#' # Define true inner products for functional central subspace
-#' uu_fcs <- mfpca.scores[, 1:K]
-#' # Generate error for data
 #' error <- rnorm(n)
-#' # Generate response from functional data and error
 #' y <- 3 * mfpca.scores[, 1] + error
 #' # Run FCQS function
-#' fcqs(xc, y, time_points, q, nbasis, tau, d_tau, H, d_DR)
+#' fcqs(xc, y, time, nbasis, tau, d_tau)
 
 fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
 
