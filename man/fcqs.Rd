@@ -28,12 +28,12 @@ It should be an integer between 1 and \code{p}.}
 \code{fcqs} computes the directions of the functional central quantile
 subspace (FCQS) and returns:
 \item{betacoef}{The functional parameters that span the FCQS}
-\item{yhat}{The estimated responses, resulting as the inner product
-between \code{betacoef} and \code{x}.}
+\item{betax}{The resulting sufficient predictor, calculated as the
+inner product between \code{betacoef} and \code{x}.}
 }
 \description{
 \code{fcqs} estimates the directions of the functional central quantile
-subspace, extending the central quantile subspace to functional data.
+subspace.
 }
 \details{
 This function computes the directions that span the \eqn{\tau}th functional
@@ -61,5 +61,7 @@ mfpca.scores <- eta \%*\% P
 error <- rnorm(n)
 y <- 3 * mfpca.scores[, 1] + error
 # Run FCQS function
-fcqs(xc, y, time, nbasis, tau, d_tau)
+output <- fcqs(xc, y, time, nbasis, tau, d_tau)
+# Compare the true and estimated predictors
+mcorr(output$betax, mfpca.scores[, 1])
 }
