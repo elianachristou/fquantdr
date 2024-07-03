@@ -105,6 +105,27 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
     stop("The quantile level, tau, must be strictly between 0 and 1.")
   }
 
+  # Check that nbasis is a single number
+  if (length(nbasis) != 1) {
+    stop("The input 'nbasis' must be a single number.")
+  }
+
+  # Check that nbasis is a positive integer
+  if (nbasis != round(nbasis) | nbasis <=0) {
+    stop("The input 'nbasis' must be a positive integer number.")
+  }
+
+  # Check if d_tau is an integer
+  if (floor(d_tau) != d_tau) {
+    stop("The input 'd_tau' must be an integer.")
+  }
+
+  # Check if d_tau is between 1 and p
+  if (d_tau < 1 | d_tau > dim(x)[3]) {
+    stop("The input 'd_tau' should be an integer between 1 and p, the
+         number of predictor variables.")
+  }
+
   # Set the parameters
   n <- dim(x)[1]
   nt <- dim(x)[2]
