@@ -7,45 +7,94 @@
 sonf(y, xfd, dev2_penalty = FALSE, lambda = NULL)
 }
 \arguments{
-\item{y}{A numeric vector of length n, representing the scalar response.}
+\item{y}{A numeric vector of length `n', representing the scalar response.}
 
-\item{xfd}{A functional data object.}
+\item{xfd}{A functional data object of class `fd'.}
 
 \item{dev2_penalty}{A logical flag indicating whether to apply a second
-derivative penalty (the default value is 'FALSE').}
+derivative penalty (default is `FALSE').}
 
-\item{lambda}{A penalty parameter (used if \code{dev2_penalty} is 'TRUE')}
+\item{lambda}{A penalty parameter used if \verb{dev2_penalty' is }TRUE'.}
 }
 \value{
 \code{sonf} computes a scalar-on-function regression and returns:
-\item{beta_coef}{The regression coefficients.}
-\item{beta_fd}{The functional data objects for the beta coefficients.}
-\item{yhat}{The predicted values of \code{y}.}
-\item{X}{The designed matrix used in the regression.}
+\item{betacoef}{The regression coefficients.}
+\item{betafd}{The functional data objects for the beta coefficients.}
+\item{yhat}{The \code{n}-dimensional vector of predicted values for `y'.}
+\item{X}{The \code{n x (nbasis * p)} design matrix used in the
+regression.}
 }
 \description{
-\code{sonf} estimates the relationship between a scalar response and
-functional predictors using basis functions, with options for applying
-a second derivative penalty or not.
+\code{sonf} models the relationship between a scalar response variable and
+one or more functional predictor variables.  The function offers the option
+to include a second derivative penalty to smooth the estimated regression
+coefficients.
 }
 \details{
-This function performs scalar-on-function regression, predicting a scalar
-response \code{y} using one or more functional predictors \code{xfd}. It
-centralizes the data, constructs a design matrix based on the type of
-basis functions, and calculates the regression coefficients with or
-without a second derivative penalty. The function returns the regression
-coefficients, functional data objects for these coefficients, estimated
-response values, and the designed matrix X.
+This function models the relationship between a scalar response variable
+and one or more functional predictor variables using basis functions.  The
+input `xfd' needs to be a functional object ('fd').  The function returns
+the regression coefficients, the functional data objects for these
+coefficients, the estimated response values, and the design matrix.
 }
 \examples{
-# Create a functional data object
-basis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = 10)
-fdobj <- fd(matrix(rnorm(100), 10, 10), basis)
+# Example 1
+# Set the parameters
+n <- 100
+nbasis <- 10
+p <- 3
+# Create a B-spline bsis
+basis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis,
+               norder = nbasis)
+# Generate random coefficients for the functional data object
+coef_matrix <- array(rnorm(n * nbasis * p), dim = c(nbasis, n, p))
+fdobj <- fda::fd(coef_matrix, basis)
 # Create a scalar response vector
-y <- rnorm(10)
+y <- rnorm(n)
 # Perform scalar-on-function regression without penalty
-result <- sonf(y, fdobj, dev2_penalty = FALSE)
-# Print the regression coefficients
-print(result$beta_coef)
+result_no_penalty <- sonf(y, fdobj, dev2_penalty = FALSE)
+print("Regression coefficients without penalty:")
+print(result_no_penalty$betacoef)
+# Perform scalar-on-function regression with penalty
+lambda <- 0.1
+result_with_penalty <- sonf(y, fdobj, dev2_penalty = TRUE,
+          lambda = lambda)
+print("Regression coefficients with penalty:")
+print(result_with_penalty$betacoef)
+print("Predicted values:")
+print(result_with_penalty$yhat)
+
+# Example 2
+# set the parameters
+n <- 100
+p <- 5
+nbasis <- 4
+nt <- 101
+time <- seq(0, 1, length.out = nt)
+eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n,
+    ncol = p * nbasis)
+# Generate the functional data
+gen_data <- fundata(n, p, nbasis, time, eta)
+Xc <- gen_data$xc
+P <- eigen(stats::cov(eta))$vectors
+mfpca.scores <- eta \%*\% P
+# Prepare the fd object
+databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis,
+norder = nbasis)
+xcoef_array <- array(0, c(nbasis, n, p))
+for (k in 1:p) {
+ xfdk <- fda::smooth.basis(time, t(Xc[, , k]), databasis)$fd
+ xfdk <- fda::center.fd(xfdk)
+ xk.coef <- t(xfdk$coef)
+ xcoef_array[, , k] <- t(xk.coef)
+ }
+x.fd <- fda::fd(xcoef_array, databasis)
+# Generate the model
+error <- rnorm(n)
+y <- 3 * mfpca.scores[, 1] + error
+# Perform scalar-on-function without penalty
+result_no_penalty <- sonf(y, x.fd, dev2_penalty = FALSE)
+print("Regression coefficients without penalty:")
+print(result_no_penalty$betacoef)
 
 }
