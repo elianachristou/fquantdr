@@ -13,53 +13,156 @@ knitr::opts_chunk$set(
 )
 ```
 
-# fquantdr
+#fquantdr
 
 <!-- badges: start -->
 <!-- [![Build Status](https://travis-ci.com/elianachristou/fquantdr.svg?branch=master)](https://travis-ci.com/elianachristou/fquantdr) -->
-
 <!-- badges: end -->
 
 ## Overview
 
-fquantdr is a package that takes discrete numerical inputs, transform the data into functional data, and use dimension reduction to reduce the observations, after which we will apply quantile regression.
-
+'__fquantdr__' is an R package designed for transforming discrete numerical inputs into functional data. It then uses dimension reduction techniques to reduce the observations and applies quantile regression. This package is useful for users dealing with high-dimensional data who need to simplify their analysis using functional data analysis techniques.
 
 ## Installation
-
-
-<!-- You can install the development version of fquantdr from --> <!-- [GitHub](https://github.com/fquantdr) with: -->
+<!-- You can install the stable version of fquantdr from CRAN with: -->
 
 ``` r
-# To install the package 
-# install.packages("fquantdr")
+# To install the package
+install.packages("fquantdr")
 
-# To install development version from Github
+# To install the development version from GitHub, you can use:
+# Ensure the devtools package installed
 # install.packages("devtools")
+
+# Then, install the development version of fquantdr
 devtools::install_github("elianachristou/fquantdr")
 ```
 
 ## Example
+This is a basic example which shows you how to solve a common problem using 'mfsir':
 
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
+```{r example data}
 library(fquantdr)
-## basic example code
+
+# Example data
+set.seed(123)
+X <- array(rnorm(1000), dim = c(100, 10, 2))  # 100 observations, 10 time points, 2 predictors
+y <- rnorm(100)  # response variable
+H <- 5  # number of slices
+nbasis <- 10  # number of basis functions
+
+# Running the FSIR function
+result_mfsir <- mfsir(X, y, H, nbasis)
+print(result_mfsir$phi)  # eigenvectors
+print(result_mfsir$betas)  # sufficient predictors
 ```
-
-
-<!-- You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN. -->
 
 ## Usage
+The fquantdr package can be used in various scenarios such as:
 
-<!-- Include ADHD applications? -->
+* Transforming high-dimensional discrete data into functional data
+* Applying dimension reduction techniques to simplify data analysis
+* Using quantile regression for robust statistical modeling
 
+
+### Functional Sliced Inverse Regression (FSIR)
+The mfsir function performs Functional Sliced Inverse Regression with multivariate functional predictors.
+
+```{r example of mfsir}
+# Example data for mfsir
+X <- array(rnorm(1000), dim = c(100, 10, 2))  # 100 observations, 10 time points, 2 predictors
+y <- rnorm(100)  # response variable
+H <- 5  # number of slices
+nbasis <- 10  # number of basis functions
+
+# Running the mfsir function
+result_mfsir <- mfsir(X, y, H, nbasis)
+print(result_mfsir$phi)  # eigenvectors
+print(result_mfsir$betas)  # sufficient predictors
+```
+
+### Functional Central Quantile Subspace (FCQS)
+__fcqs: FCQS with Multivariate Functional Predictors__
+
+The fcqs function incorporates multivariate functional predictors and fits a scalar-on-function regression for multivariate data.
+
+```{r example of fcqs}
+# Example data for fcqs
+X <- array(rnorm(1000), dim = c(100, 10, 2))  # 100 observations, 10 time points, 2 predictors
+y <- rnorm(100)  # response variable
+t <- seq(0, 1, length.out = 10)
+tau <- 0.5
+d_tau <- 2
+nbasis <- 10
+
+# Running the fcqs function
+result_fcqs <- fcqs(X, y, t, nbasis, tau, d_tau)
+print(result_fcqs$ffun)   # Functional parameters that span the FCQS
+print(result_fcqs$betax)  # Resulting sufficient predictor
+```
+
+### Example with Plots
+You can also embed plots in your analysis:
+
+```{r example}
+# Example plot
+plot(result_mfsir$betas[,1], type = 'l', main = "First Sufficient Predictor")
+```
+
+## Applications
+Potential applications of fquantdr include, but are not limited to, the following fields:
+
+* Biomedical data analysis
+* Financial data modeling
+* Environmental data analysis
+
+For more detailed examples, please refer to the package documentation.
+
+## Functions
+__mfsir: Functional Sliced Inverse Regression__
+
+Performs FSIR that can incorporate multivariate functional predictors.
+
+__Arguments:__
+
+* X: (n x t x p) array of functional elements (centered).
+* y: Response variable.
+* H: Number of slices.
+* nbasis: Number of basis functions.
+
+__Returns:__
+
+* phi: Eigenvectors.
+* betas: Sufficient predictors.
+* eigvalues: Eigenvalues.
+* xfd.coef: Coefficients of the functional data.
+* gx: Gram matrix of the basis functions.
+
+### fcqs: Functional Central Quantile Subspace
+Fits a scalar-on-function regression for multivariate functional data.
+
+__Arguments:__
+
+* x: (n x t x p) array of functional elements.
+* y: Response variable.
+* t: Vector of time points.
+* tau: Quantile level
+* d_tau: Dimension of the FCQS.
+* nbasis: Number of basis functions.
+
+__Returns:__
+
+* ffun: Functional parameters that span the FCQS..
+* betax: Resulting sufficient predictor.
+
+## Additional Utility Functions
+These utility functions support various operations related to functional data analysis:
+
+* __discretize__: Discretizes the response variable y into yunit slices, adding a small perturbation for stability.
+* __slprob__: Computes slice proportions for the response variable.
+* __slav__: Computes slice averages for the predictor coefficients.
+* __symmetry__: Symmetrizes a matrix.
+
+
+
+For more detailed examples and documentation, please refer to the package documentation and vignettes.
