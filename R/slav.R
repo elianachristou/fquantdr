@@ -1,64 +1,83 @@
-#' Compute slice average
+#' Group-wise mean calculation
 #'
-#' \code{slav} computes the slice average.
+#' \code{slav} computes the mean of the rows of \code{x} within each group
+#' determined by the \code{H} slices.
 #'
-#' Creates a matrix of slice average by using x coordinates, a discretized
-#' response, and number of slices. For each slice, the rows of x coefficients
-#' where y equals the current slice value of y unit at i get the mean function
-#' applied to them column-wise to compute the average of x coefficient for each
-#' slice.
+#' This function calculates the mean of the rows of \code{x} for each group
+#' defined by the unique elements of the sliced response \code{y}.  The
+#' resulting matrix contains the mean values for each group.  This is
+#' essential for applying sliced inverse regression (SIR) of Li (1991) and
+#' its functional counterpart of Ferr\'e and Yao (2003).
 #'
-#' @param xcoefs Coordinates of X
-#' @param y The discretized vector for the response variable
-#' @param yunit A vector defining the slices used
+#' @param x A \code{n x p} numeric matrix, where rows represent
+#'     observations and columns represent variables.  If the user is using
+#'     functional predictors, then \code{x} consists of the coefficients
+#'     of the functional object and is of \code{n x (p * nbasis)} dimension.
+#' @param y A numeric vector.
+#' @param H The number of slices.
 #'
-#' @return Matrix of slice average
+#' @return A \code{H x p} matrix, where rows represent the mean values of
+#'     \code{x} as determined by slicing the response \code{y}.
+#'
+#' @references Li, K.-C. (1991) Sliced Inverse Regression for Dimension
+#' Reduction. \emph{Journal of the American Statistical Association}, 86(414),
+#' 316-327.
+#'
+#' Ferr\'e, L, and Yao, F. (2003) Function Sliced Inverse Regression Analysis.
+#' \emph{Statistics}, 37(6), 475-488.
+#'
+#' @seealso \code{\link{discretize}}, \code{\link{slprob}}
 #'
 #' @noRd
 #' @examples
-#' xcoefs <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12),
-#'   nrow = 4, byrow= TRUE)
-#' y <- c(1, 2, 3, 2)
-#' yunit <- unique(y)
-#' slav(xcoefs, y, yunit)
+#' n <- 20
+#' p <- 5
+#' H <- 4
+#' x <- matrix(rnorm(100), nrow = n, ncol = p)
+#' y <- rnorm(n)
+#' slav(x, y, H)
 #'
-slav <- function(xcoefs, y, H) {
+slav <- function(x, y, H) {
 
-  # Check to ensure xcoefs is a matrix
-  if (!is.matrix(xcoefs)){
-    stop("The x coefficients are not in matrix form")
+  # Check if x is a matrix
+  if (!is.matrix(x)){
+    stop("The input 'x' must be a matrix.")
   }
 
+  # Check if y is a vector
   if (!is.vector(y)) {
-    stop("y must be a vector.")
+    stop("The input 'y' must be a vector.")
   }
-  if (!is.vector(yunit)) {
-    stop("yunit must be a vector.")
+
+  # Check if x and y have the same number of observations
+  if (length(y) != dim(x)[1]) {
+    stop("The number of observations of y must be the same as the number
+         of rows of x.")
   }
-  for (i in y) {
-    if(!(i %in% yunit)) {
-      stop(paste("y must be discretized such that all values in y are in",
-                 "yunit. The value", i, "is not in yunit."))
-    }
+
+  # Check if H is a positive integer
+  if (H <= 0 | H != floor(H)) {
+    stop("H must be a positive integer.")
   }
-  # Get dimensions of xcoefs
-  n <- nrow(xcoefs)
-  K <- ncol(xcoefs)
+
+  # Define the parameters
+  n <- nrow(x)
+  p <- ncol(x)
   yunit <- 1:H
-  # Get number of slices
-  nslice <- length(yunit)
-  # Initialize matrix of mean coordinates for each slice
-  xcoefsgy <- matrix(0, nslice, K)
-  for(i in 1:nslice) {
-    # Store predictors for each slice
-    predictors <- xcoefs[y == yunit[i], ]
+  ydis <- discretize (y, H)
+
+  # Initialize matrix to store group means
+  xgy <- matrix(0, H, p)
+
+  # Compute the mean of x for each group defined by yunit
+  for(i in yunit) {
+    predictors <- x[ydis == yunit[i], ]
     # If vector, convert to horizontal matrix
     if (is.vector(predictors)) {
       predictors <- t(as.matrix(predictors))
     }
-    # Calculate mean for each slice
-    xcoefsgy[i, ] <- apply(predictors, 2, mean)
+    xgy[i, ] <- apply(predictors, 2, mean)
   }
-  # Return mean coordinates for the predictors
-  xcoefsgy
+
+  xgy
 }

@@ -1,60 +1,69 @@
-#' Preforms a power operation on a transformed input matrix
-
-#' \code{rigpower} Computes a power transformation using scaled identity matrix
-
-#' This function takes in three values: a matrix, a power, and the value
-#' rho. Using those values the function computes the eigenvalues and eigenvectors
-#' of the matrix. It uses that information to then transform the original matrix
-#' using the matpower function.
-
-
-#' @param matrix a matrix input
-#' @param power an exponement that raises the modified matrix
-#' @param rho a scaling value that is multiplied by the maximum eigenvector
+#' Regularized matrix power transformation
 #'
-#' @return returns a modified version of the input matrix that has been altered
-#' by an scaled identity matrix
+#' \code{rigpower} performs a regularized matrix power transformation using
+#' eigen decomposition
+#'
+#' This function takes a matrix \code{a} and applies a transformation that
+#' includes adding a scaled identity matrix to the input matrix and then
+#' raising the resulting matrix to a specified power.  The regularization
+#' parameter \code{rho} controls the scaling of the identity matrix.
+#'
+#' @param a The input square matrix.
+#' @param alpha The exponent to which the matrix is raised.
+#' @param rho A numeric value used as the regularization parameter to scale
+#' the identity matrix.
+#'
+#' @return A matrix that has been regularized and raised to the specified
+#' power.
 #'
 #' @noRd
 #' @examples
-#' matx <- matrix(c(7, 3, 5, 2, 5, 1), nrow = 2, ncol = 3)
-#' power<- 2
-#' rho <- .1
-#' rigpower(matx, power, rho)
+#' a <- matrix(c(4, 1, 1, 3), nrow = 2, ncol = 2)
+#' alpha <- 2
+#' rho <- 0.1
+#' transformed_matrix <- rigpower(a, alpha, rho)
+#' transformed_matrix
 #'
-rigpower <- function(matrix, power, rho) {
-  # Checks to make sure matrix returned a matrix
-  if (!is.matrix(matrix)) {
-    stop("The first input has not returned a matrix.")
+rigpower <- function(a, alpha, rho) {
+
+  # Check if 'a' is a matrix
+  if (!is.matrix(a)) {
+    stop("The input 'a' must be a matrix.")
   }
-  # Checks if power is a positive integer
-  if (!is.numeric(power) || power <= 0 || power != as.integer(power)) {
-    stop("The second value has to be an integer exponenet. ")
+
+  # Check is 'a' is a square matrix
+  if (dim(a)[1] != dim(a)[2]) {
+    stop("The input 'a' must be a square matrix.")
   }
+
+  # Check if 'alpha' is a single number
+  if (length(alpha) != 1) {
+    stop("The exponent 'alpha' must be a single number.")
+  }
+
+  # Check if 'alpha' is numeric
+  if (!is.numeric(alpha)) {
+    stop("The exponent 'alpha' must be numeric. ")
+  }
+
+  # Check if 'rho' is a real number
   if (!is.numeric(rho)) {
-    stop("Must be a real number.")
+    stop("The input 'rho' must be numeric.")
   }
-  # eig is assigned the eigenvalues and vectors of the matrix
-  eig <- eigen(matrix)
-  # eval is assigned a vector of the eigenvalues
+
+  # define parameters
+  p <- nrow(a)
+
+  # Eigen decomposition
+  eig <- eigen(a)
   eval <- eig$values
-  # Assigned a matrix of the eigenvectors
   evec <- eig$vectors
-  # p is assigned the number of rows in the matrix
-  p <- nrow(matrix)
-  # Assigns matrix1 the value of the original matrix being incremented by a
-  # diagonal matrix that stores the values of the maximum eigenvalue being
-  # multiplied by rho
-  matrix1 <- matrix + rho * max(eval) * diag(p)
-  # Checks if the computation produced a matrix
-  if (!is.matrix(matrix1)) {
-    stop("matrix1 must be a matrix.")
-  }
-  # tmp is assigned the value of a transformed matrix from matpower
-  tmp <- matpower(matrix1, power)
-  # Checks if the computation produced a matrix
-  if (!is.matrix(tmp)) {
-    stop("tmp must be a matrix.")
-  }
-  # returns the matrix
-  return(tmp) }
+
+  # Regularize the matrix
+  a1 <- a + rho * max(eval) * diag(p)
+
+  # Apply the matrix power transformation
+  tmp <- matpower(a1, alpha)
+
+  return(tmp)
+}
