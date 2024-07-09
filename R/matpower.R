@@ -47,7 +47,7 @@ matpower <- function(a, alpha) {
   a <- round((a + t(a)) / 2, 5)
 
   # Compute eigen decomposition
-  tmp <- eigen(a)
+  tmp <- eigen(a, symmetric = T)
 
   # Calculate the matrix raised to the power of 'alpha' based on eigen
   # decomposition

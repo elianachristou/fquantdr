@@ -55,7 +55,7 @@ rigpower <- function(a, alpha, rho) {
   p <- nrow(a)
 
   # Eigen decomposition
-  eig <- eigen(a)
+  eig <- eigen(a, symmetric = T)
   eval <- eig$values
   evec <- eig$vectors
 
