@@ -38,7 +38,7 @@ To get started you need to first install the package using the command
 install.packages("fquantdr")
 ```
 
-and then use it during any `R` session by issuing the command
+After installation, you can load the package in any R session by issuing the command:
 ```{r setup}
 library(fquantdr)
 ```
@@ -67,7 +67,7 @@ The package includes the following functions:
 <!-- * `slprob` Compute slice proportions  -->
 <!-- * `symmetry` Symmtrize Matrix -->
 
-To get help on a specific function type `help(function.name)` or `?function.name` for a convenient shorthand. Try
+You can find detailed descriptions and examples for each function by using the `help()` function or the `?` operator in R, specifying the function name. For example, to get help on the `fcqs` function, use:
 ```{r, eval = FALSE}
 help(fcqs)
 ?fcqs
@@ -97,7 +97,7 @@ All of the above are incorporated in the `fcqs` function.
 
 ## The algorithm at a glance
 
-The first step of the algorithm requires to fit a linear regression model of $Q_\tau \{Y|L(X) \}$ on $L(X)$ (or X?), which implies the non-parametric estimation of the conditional quantile. The second step of the algorithm relies on estimating an expectation and performing a generalized eigenvalue problem.  Specifically,
+The first step of the algorithm requires to fit a linear regression model of $Q_\tau \{Y|L(X) \}$ on $X$, which implies the non-parametric estimation of the conditional quantile. The second step of the algorithm relies on estimating an expectation and performing a generalized eigenvalue problem.  Specifically,
 
 1. For $u=1, \dots, n$, let $Y_u$ be an independent and identically distributed (iid) sample from $Y$, and let $X_1, \dots, X_n$ be an independent sample from the random element $X = (X^1, \dots, X^p)$, such that $X_u = (X_u^1, \dots, X_u^p)^{\top}$.
 
