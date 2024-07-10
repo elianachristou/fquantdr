@@ -141,7 +141,6 @@ Q <- diag(eigen(cov(eta))$values)
 
 # Further parameters for FCQS
 nbasis <- q
-H <- 10
 tau <- 0.5
 d_tau <- 1
 d_DR <- 1
@@ -162,7 +161,21 @@ The `fcqs` function operates by specifying a three-dimensional $n \times nt \tim
 We now discuss the output of the `fcqs` function
 
 ```{r}
-output1 <- fcqs(xc, y, time, nbasis, tau, d_tau)
+output1 <- fcqs(Xc, y, time_points, nbasis, tau, d_tau)
+output1
+```
+The output of the `fcqs` function includes two primary components:
+1. `betacoef`: The functional parameters that span the FCQS. These are the estimated directions in the functional central quantile subspace, which reflect the significant functional predictors for the quantile regression.
+
+1. `betax`: The resulting sufficient predictor, calculated as the inner product between `betacoef` and `x`. This represents the reduced-dimensional representation of the functional data that retains the essential information for the quantile regression.
+
+To better understand the output, we can visualize the estimated functional central quantile subspace directions and the relationship between the true and estimated predictors.
+
+```{r}
+# Plotting the first estimated direction in the FCQS
+plot(time_points, output1$ffun[, 1], type = 'l', col = 'blue',
+     ylab = 'Estimated direction', xlab = 'Time', 
+     main = 'Estimated FCQS Direction')
 ```
 
 # References
