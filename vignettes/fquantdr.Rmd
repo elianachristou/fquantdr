@@ -103,7 +103,8 @@ The first step of the algorithm requires to fit a linear regression model of $Q_
 
 1. We apply a standard dimension reduction technique to replace \( X \) with \( L(X) \). Specifically, we use Functional Sliced Inverse Regression (FSIR) as proposed by Ferré and Yao (2003). Using the `mfsir` function of the presented package, we estimate the \( d \)-dimensional predictors \(\widehat{L}(X_u)\), for \( u = 1, \dots, n \)
 
-1. For each $u=1, \dots, n$, we use the local linear quantile estimation method of Guerre and Sabbah (2012) to estimate $\widehat{Q}_{\tau}\{Y| \widehat{L}(X_u)\}$
+1. For each $u=1, \dots, n$, we use the local linear quantile estimation method of Guerre and Sabbah (2012) to estimate $\widehat{Q}_{\tau}\{Y| \widehat{L}(X_u)\}$.
+For this we use `llqr` function of the `quantdr` package
 
 1. We set $\widehat{\beta}_{\tau}$ to be 
 \begin{eqnarray*}
@@ -116,7 +117,7 @@ For this we use the `sonf` function of the presented package.
 \widehat{\beta}_{\tau j} = n^{-1} \sum_{u=1}^{n}\langle \widehat{\beta}_{\tau j-1}, X_u \rangle_{\mathscr{H}}X_u.
 \end{eqnarray*}
 
-1. After obtaining $\widehat{\beta}_{\tau 0}, \widehat{\beta}_{\tau 1}, \dots, \widehat{\beta}_{\tau m}$, we set $\widehat{B}_{\tau} = \sum_{j=0}^{m} \widehat{\beta}_{\tau j} \otimes \widehat{\beta}_{\tau j}$ and focus on the eigenvalue problem (should we include more details in this step?)
+1. After obtaining $\widehat{\beta}_{\tau 0}, \widehat{\beta}_{\tau 1}, \dots, \widehat{\beta}_{\tau m}$, we set $\widehat{B}_{\tau} = \sum_{j=0}^{m} \widehat{\beta}_{\tau j} \otimes \widehat{\beta}_{\tau j}$ and focus on the eigenvalue problem and solving $\Sigma_{XX}^{\dagger 1/2} B_{\tau} \Sigma_{XX}^{\dagger 1/2} \eta_{\tau} = \lambda \eta_{\tau}, \quad v_{\tau} = \Sigma_{XX}^{\dagger 1/2} \eta_{\tau}$.
 
 ## Ouput of `fcqs`
 In this section, we begin by simulating data from the homoscedastic single-index model.
