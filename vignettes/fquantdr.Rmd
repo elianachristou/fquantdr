@@ -157,9 +157,12 @@ error <- rnorm(n)
 
 y <- 1 / (0.5 + (mfpca.scores[, 1] + 1)^2) + 0.2 * error
 ```
-We now discuss the output of the `fcqs` function
-```{r}
+The `fcqs` function operates by specifying a three-dimensional $n \times nt \times p$ array $X$, a vector of the response variable $Y$, a vector of time points $nt$ at which the functional data is evaluated, the number of basis functions for smoothing the functional data, and a quantile level $\tau$. The dimension of the $\tau$-FCQS is an integer between 1 and $p$. For this example, $d_{\tau} = 1$ for every quantile level $\tau$.
 
+We now discuss the output of the `fcqs` function
+
+```{r}
+output1 <- fcqs(xc, y, time, nbasis, tau, d_tau)
 ```
 
 # References
