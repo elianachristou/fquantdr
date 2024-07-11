@@ -152,75 +152,7 @@ mcorr(true.pred2, est.pred2)
 
 
 
-This is a basic example which shows you how to solve a common problem using 'mfsir':
 
-```{r example data}
-library(fquantdr)
-
-# Example data
-set.seed(123)
-X <- array(rnorm(1000), dim = c(100, 10, 2))  # 100 observations, 10 time points, 2 predictors
-y <- rnorm(100)  # response variable
-H <- 5  # number of slices
-nbasis <- 10  # number of basis functions
-
-# Running the FSIR function
-result_mfsir <- mfsir(X, y, H, nbasis)
-print(result_mfsir$phi)  # eigenvectors
-print(result_mfsir$betas)  # sufficient predictors
-```
-
-## Usage
-The fquantdr package can be used in various scenarios such as:
-
-* Transforming high-dimensional discrete data into functional data
-* Applying dimension reduction techniques to simplify data analysis
-* Using quantile regression for robust statistical modeling
-
-
-### Functional Sliced Inverse Regression (FSIR)
-The mfsir function performs Functional Sliced Inverse Regression with multivariate functional predictors.
-
-```{r example of mfsir}
-# Example data for mfsir
-X <- array(rnorm(1000), dim = c(100, 10, 2))  # 100 observations, 10 time points, 2 predictors
-y <- rnorm(100)  # response variable
-H <- 5  # number of slices
-nbasis <- 10  # number of basis functions
-
-# Running the mfsir function
-result_mfsir <- mfsir(X, y, H, nbasis)
-print(result_mfsir$phi)  # eigenvectors
-print(result_mfsir$betas)  # sufficient predictors
-```
-
-### Functional Central Quantile Subspace (FCQS)
-__fcqs: FCQS with Multivariate Functional Predictors__
-
-The fcqs function incorporates multivariate functional predictors and fits a scalar-on-function regression for multivariate data.
-
-```{r example of fcqs}
-# Example data for fcqs
-X <- array(rnorm(1000), dim = c(100, 10, 2))  # 100 observations, 10 time points, 2 predictors
-y <- rnorm(100)  # response variable
-t <- seq(0, 1, length.out = 10)
-tau <- 0.5
-d_tau <- 2
-nbasis <- 10
-
-# Running the fcqs function
-result_fcqs <- fcqs(X, y, t, nbasis, tau, d_tau)
-print(result_fcqs$ffun)   # Functional parameters that span the FCQS
-print(result_fcqs$betax)  # Resulting sufficient predictor
-```
-
-### Example with Plots
-You can also embed plots in your analysis:
-
-```{r example}
-# Example plot
-plot(result_mfsir$betas[,1], type = 'l', main = "First Sufficient Predictor")
-```
 
 ## Applications
 Potential applications of fquantdr include, but are not limited to, the following fields:
