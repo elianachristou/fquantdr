@@ -183,6 +183,21 @@ mcorr(true.pred, est.pred)
 #> [1] 0.7355172
 ```
 
+Another example where the $\tau$-th functional central quantile subspace
+is two-dimensional. Let
+$Y = \arctan(\pi \langle \beta_1, X \rangle) + 0.5 \sin(\pi \langle \beta_2, X \rangle / 6) + 0.1 \epsilon$.
+Then,
+
+``` r
+y <- atan(pi * mfpca.scores[, 1]) + 0.5 * sin(pi * mfpca.scores[, 2] / 6) + 0.1 * error
+result2 <- fcqs(xc, y, time, nbasis, tau, d_tau = 2)
+
+true.pred <- mfpca.scores[, 1:2]
+est.pred <- result2$betax
+mcorr(true.pred, est.pred)
+#> [1] 0.7327519
+```
+
 This is a basic example which shows you how to solve a common problem
 using ‘mfsir’:
 
