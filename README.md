@@ -46,7 +46,51 @@ and the development version from [GitHub](https://github.com/) with:
 devtools::install_github("elianachristou/fquantdr")
 ```
 
-## Example
+## Introducing `fcqs`
+
+This function computes the directions that span the th functional
+central quantile subspace. These directions represent functions that can
+be linearly applied via the inner product to give predictors that reduce
+the dimension of the infinitely-dimensional ones without losing any
+information on the conditional quantile.
+
+The function requires several inputs:
+
+- `x` a 3-dimensional array () representing the functional predictors,
+  where n is the number of observations, nt is the number of time
+  points, and p is the number of predictors.
+- `y` a numeric vector of length representing the scalar response.
+- `time` a numeric vector of length representing the time points at
+  which the functional data is evaluated.
+- `nbasis` the number of basis functions for smoothing the functional
+  predictors.
+- `tau` the quantile level
+- `d_tau` the number of directions the user wants to extract.
+
+The function then returns:
+
+- `betacoef` the functional parameters that span the functional central
+  quantile subspace
+- `betax` the resulting sufficient predictors, calculated as the inner
+  product between `betacoef` and `x`.
+
+This is a basic example that shows how to apply the function. First,
+let’s define the basic parameters, such as the sample size, the number
+of predictors, the number of times points, the quantile level, and the
+number of basis functions that we wish to smooth the functional
+predictors.
+
+``` r
+library(fquantdr)
+
+# define the parameters
+set.seed(1234)
+n <- 100
+p <- 5
+nt <- 101
+tau <- 0.5
+nbasis <- 4
+```
 
 This is a basic example which shows you how to solve a common problem
 using ‘mfsir’:
