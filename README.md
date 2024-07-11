@@ -117,6 +117,39 @@ error <- rnorm(n)
 y <- 3 * mfpca.scores[, 1] + error
 ```
 
+Before moving on and for illustration purposes, we plot the first
+functional predictor.
+
+``` r
+library(fda)
+#> Loading required package: splines
+#> Loading required package: fds
+#> Loading required package: rainbow
+#> Loading required package: MASS
+#> Loading required package: pcaPP
+#> Loading required package: RCurl
+#> Loading required package: deSolve
+#> 
+#> Attaching package: 'fda'
+#> The following object is masked from 'package:graphics':
+#> 
+#>     matplot
+```
+
+``` r
+matplot(time, t(xc[, , 1]), type = "l", lty = 1, col = 1:n, xlab = "Time", ylab = "Value", main = paste("Functional Predictor", 1))
+```
+
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+The purpose of the `fcqs` function is to estimate $\beta_1$ and form the
+new predictor $\langle \beta_1, X \rangle$. We now run the function and
+specify $d_\tau = 1$, so we can obtain the first direction.
+
+``` r
+result <- fcqs(xc, y, time, nbasis, tau, d_tau = 1)
+```
+
 This is a basic example which shows you how to solve a common problem
 using ‘mfsir’:
 
