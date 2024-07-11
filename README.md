@@ -32,17 +32,17 @@ two vector or matrices.
 
 ## Installation
 
-<!-- You can install the stable version of fquantdr from CRAN with: -->
+You can install the released version of `fquantdr` from
+[CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-# To install the package
 install.packages("fquantdr")
+```
 
-# To install the development version from GitHub, you can use:
-# Ensure the devtools package installed
+and the development version from [GitHub](https://github.com/) with:
+
+``` r
 # install.packages("devtools")
-
-# Then, install the development version of fquantdr
 devtools::install_github("elianachristou/fquantdr")
 ```
 
