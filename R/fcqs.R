@@ -5,10 +5,9 @@
 #'
 #' This function computes the directions that span the \eqn{\tau}th functional
 #' central quantile subspace. These directions represent functions that can
-#' be linearly applied via the inner product to given predictors to reduce the
-#' dimension of infinitely-dimensional functional data without losing any
-#' information required for accurate quantile regression of the functional
-#' data.
+#' be linearly applied via the inner product to give predictors that reduce the
+#' dimension of the infinitely-dimensional ones without losing any information
+#' on the conditional quantile.
 #'
 #' @param x A 3-dimensional array (\code{n x nt x p}), where n is the number
 #'     of observations, nt is the number of time points, and p is the number
