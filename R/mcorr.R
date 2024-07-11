@@ -54,11 +54,11 @@ mcorr <- function(u, v) {
   }
 
   # Compute the correlation
-  if(ncol(u) == 1) {
+  if(dim(u)[2] == 1) {
     result <- c(abs(stats::cor(u, v)))
     return(result)
   } else {
-    suu.nhalf <- matpower(stats::var(u), -1 / 2)
+    suu.nhalf <- matpower(stats::var(u), - 1 / 2)
     svv.inv <- solve(stats::var(v))
     result <- c(abs(sum(diag(suu.nhalf %*% stats::cov(u, v) %*% svv.inv %*%
                                stats::cov(v, u) %*% suu.nhalf))))
