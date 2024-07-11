@@ -84,8 +84,8 @@ smooth the functional predictors.
 library(fquantdr)
 
 # define the parameters
-set.seed(1234)
-n <- 100
+set.seed(12345)
+n <- 500
 p <- 5
 nt <- 101
 time <- seq(0, 1, length = nt)
@@ -148,6 +148,39 @@ specify $d_\tau = 1$, so we can obtain the first direction.
 
 ``` r
 result <- fcqs(xc, y, time, nbasis, tau, d_tau = 1)
+```
+
+The first sufficient predictor \$\_1, X \$ is given by
+
+``` r
+result$betax
+```
+
+Since the true relationship is
+$Y = 3 \langle \beta_1, X \rangle + \epsilon$, then a plot of $Y$
+against $\langle \beta_1, X \rangle$ should display a linear
+relationship.
+
+``` r
+plot(result$betax, y, xlab = 'First Sufficient Predictor')
+```
+
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+
+Another way to evaluate the performance of the methodology is to
+calculate the correlation between the true $\langle \beta_1, X \rangle$
+and the estimated $\langle \widehat{\beta}_1, X \rangle$. For that, we
+can use the `mcorr` function of the package, which calculates the
+multiple correlationship between two vectors of matrices. The output is
+a number between 0 and $d$, the dimension of the input. For this case,
+since we have a one-dimensional sufficient predictor, a number closer to
+1 indicates better performance.
+
+``` r
+true.pred <- mfpca.scores[, 1]
+est.pred <- result$betax
+mcorr(true.pred, est.pred)
+#> [1] 0.7355172
 ```
 
 This is a basic example which shows you how to solve a common problem
