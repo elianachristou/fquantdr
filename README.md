@@ -84,8 +84,8 @@ smooth the functional predictors.
 library(fquantdr)
 
 # define the parameters
-set.seed(12345)
-n <- 500
+set.seed(1234)
+n <- 100
 p <- 5
 nt <- 101
 time <- seq(0, 1, length = nt)
@@ -106,7 +106,9 @@ $\{\beta_1\}$.
 
 ``` r
 # Generate the functional predictors
-eta <- matrix(rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
+library(mvtnorm)
+#eta <- matrix(rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
+eta <- rmvnorm(n, mean = rep(0, p * nbasis))
 data.output <- fundata(n, p, nbasis, time, eta)
 xc <- data.output$xc
 
@@ -180,7 +182,7 @@ since we have a one-dimensional sufficient predictor, a number closer to
 true.pred <- mfpca.scores[, 1]
 est.pred <- result$betax
 mcorr(true.pred, est.pred)
-#> [1] 0.7355172
+#> [1] 0.9478022
 ```
 
 Another example where the $\tau$-th functional central quantile subspace
@@ -189,13 +191,13 @@ $Y = \arctan(\pi \langle \beta_1, X \rangle) + 0.5 \sin(\pi \langle \beta_2, X \
 Then,
 
 ``` r
-y <- atan(pi * mfpca.scores[, 1]) + 0.5 * sin(pi * mfpca.scores[, 2] / 6) + 0.1 * error
+y <- mfpca.scores[, 1]^3 + exp(mfpca.scores[, 2]) + error
 result2 <- fcqs(xc, y, time, nbasis, tau, d_tau = 2)
 
 true.pred2 <- mfpca.scores[, 1:2]
 est.pred2 <- result2$betax
 mcorr(true.pred2, est.pred2)
-#> [1] 0.7327519
+#> [1] 1.663245
 ```
 
 ## Applications
