@@ -10,3 +10,16 @@ test_that("y is a univariate response", {
   y <- matrix(1:6, nrow = 6, ncol = 1)
   expect_error(sonf(y, fdobj))
 })
+
+test_that("y is of length n", {
+  set.seed(2)
+  n <- 100
+  m <- 80
+  nbasis <- 8
+  p <- 5
+  basis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
+  coef_matrix <- array(rnorm(n * nbasis * p), dim = c(nbasis, n, p))
+  fdobj <- fda::fd(coef_matrix, basis)
+  y <- #rnorm(m)
+  expect_error(sonf(y, fdobj))
+})
