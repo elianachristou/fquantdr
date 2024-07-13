@@ -1,3 +1,5 @@
+library(fquantdr)
+
 test_that("y is a univariate response", {
   set.seed(1)
   n <- 100
@@ -5,10 +7,10 @@ test_that("y is a univariate response", {
   p <- 3
   basis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
   coef_matrix <- array(rnorm(n * nbasis * p), dim = c(nbasis, n, p))
-  fdobj <- fda::fd(coef_matrix, basis)
+  xfd <- fda::fd(coef_matrix, basis)
   # Creates a multivariate vector
   y <- matrix(1:6, nrow = 6, ncol = 1)
-  expect_error(sonf(y, fdobj))
+  expect_error(sonf(y, xfd))
 })
 
 test_that("y is of length n", {
@@ -19,7 +21,31 @@ test_that("y is of length n", {
   p <- 5
   basis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
   coef_matrix <- array(rnorm(n * nbasis * p), dim = c(nbasis, n, p))
-  fdobj <- fda::fd(coef_matrix, basis)
-  y <- #rnorm(m)
-  expect_error(sonf(y, fdobj))
+  xfd <- fda::fd(coef_matrix, basis)
+  y <- rnorm(m)
+  expect_error(sonf(y, xfd))
 })
+
+test_that("xfd is a functional data object of the class 'fd'", {
+  set.seed(3)
+  n <- 100
+  nbasis <- 8
+  p <- 5
+  basis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
+  coef_matrix <- array(rnorm(n * nbasis * p), dim = c(nbasis, n, p))
+  y <- rnorm(n)
+  expect_error(sonf(y, coef_matrix))
+})
+
+test_that("xfd is a three dimensional array", {
+  set.seed(2)
+  n <- 100
+  nbasis <- 8
+  p <- 5
+  basis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
+  coef_matrix <- array(rnorm(n * nbasis * p), dim = c(nbasis, n))
+  xfd <- fda::fd(coef_matrix, basis)
+  y <- rnorm(n)
+  expect_error(sonf(y, xfd))
+})
+
