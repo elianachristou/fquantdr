@@ -1,3 +1,5 @@
+library(fquantdr)
+
 test_that("the function returns an error when y is not a vector", {
   y <- -10000
   # This statement should throw an error
