@@ -9,6 +9,7 @@ test_that("the function returns an error when y is not a vector", {
 
 test_that("H has to be a positive integer", {
   y <- c(4, 7, 8, 9, 17)
+  # H also cannot contain a vector
   H <- -3
   expect_error(slprob(y, H))
 })
