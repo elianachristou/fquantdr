@@ -72,7 +72,7 @@ mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
   evec <- eig$vectors
 
   if(!is.numeric(ignore)) {
-    stop("the third input, ignore, must be an numeric input")
+    stop("the fouth input, ignore, must be an numeric input")
   }
 
   # Find indices where eigenvalues are greater than ignore threshold
