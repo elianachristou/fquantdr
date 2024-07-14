@@ -9,8 +9,7 @@ test_that("the input for y is a vector", {
 })
 
 test_that("the input for H positive whole number", {
-  # This contains the same issue as slprob, the function allows scalar values
-  y <- 3
+  y <- c(1, 3, 5, 9, 4)
   H <- c(1, 6, 10)
   expect_error(discretize(y, H))
 })
