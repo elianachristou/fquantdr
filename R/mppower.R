@@ -55,7 +55,7 @@ mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
   }
 
   # to ensure that the matrix is symmetric
-  B <- (t(a) + a) / 2
+  B <- symmetry(a)
 
   if (epsilon > 0) {
     iden <- diag(nrow(a))
