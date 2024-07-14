@@ -53,6 +53,10 @@ mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
   if (epsilon < 0){
     stop("epsilon should be a nonnegative real number.")
   }
+  # Checks if epsilon is complex
+  if (is.complex(epsilon)) {
+    stop("epsilon should be a nonnegative real number.")
+  }
 
   # to ensure that the matrix is symmetric
   B <- symmetry(a)
