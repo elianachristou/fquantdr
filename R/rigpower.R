@@ -55,8 +55,8 @@ rigpower <- function(a, alpha, rho) {
   p <- nrow(a)
 
   # Eigen decomposition
-  eig <- eigen(a, symmetric = TRUE)
-  eval <- Re(eig$values)
+  eig <- eigen(a, symmetric = T)
+  eval <- eig$values
   evec <- eig$vectors
 
   # Regularize the matrix
