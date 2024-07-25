@@ -140,20 +140,16 @@ eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
 # Generate functional data according to KL expanasion
 result <- fundata(n, p, nbasis, time, eta)
 xc <- result$xc
-
-# Generate y 
 P <- eigen(cov(eta))$vectors
 Q <- diag(eigen(cov(eta))$values)
 
 # this is the inner products <b1, X>, <b2, X>, ... 
 mfpca.scores <- eta %*% P
 
-# define true inner products for functional central subspace
-uu_fcs <- mfpca.scores[, 1:d_DR]
-
 # Generate error for data
 error <- rnorm(n)
 
+# Generate y
 y <- 1 / (0.5 + (mfpca.scores[, 1] + 1)^2) + 0.2 * error
 ```
 The `fcqs` function operates by specifying a three-dimensional $n \times nt \times p$ array $X$, a vector of the response variable $Y$, a vector of time points $nt$ at which the functional data is evaluated, the number of basis functions for smoothing the functional data, and a quantile level $\tau$. The dimension of the $\tau$-FCQS is an integer between 1 and $p$. For this example, $d_{\tau} = 1$ for every quantile level $\tau$.
@@ -165,9 +161,10 @@ output1 <- fcqs(xc, y, time, nbasis, tau, d_tau)
 output1
 ```
 The output of the `fcqs` function includes two primary components:
-1. `betacoef`: The functional parameters that span the FCQS. These are the estimated directions in the functional central quantile subspace, which reflect the significant functional predictors for the quantile regression.
 
-1. `betax`: The resulting sufficient predictor, calculated as the inner product between `betacoef` and `x`. This represents the reduced-dimensional representation of the functional data that retains the essential information for the quantile regression.
+1. `ffun`: The functional parameters that span the FCQS. These are the estimated directions in the functional central quantile subspace, which reflect the significant functional predictors for the quantile regression.
+
+1. `betax`: The resulting sufficient predictor, calculated as the inner product between `ffun` and `x`. This represents the reduced-dimensional representation of the functional data that retains the essential information for the quantile regression.
 
 To better understand the output, we can visualize the estimated functional central quantile subspace directions and the relationship between the true and estimated predictors.
 
