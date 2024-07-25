@@ -1,14 +1,8 @@
 ---
 title: "Dimension Reduction Techniques for Conditional Quantiles for Functional Data in R: A Vignette"
-author: # double check this part 
-- name: Eliana Christou, Precious Donkoer, Austin Stitz,          Shanshan Wang
+author:  
+- name: Shanshan Wang, Eliana Christou
   affiliation: University of North Carolina at Charlotte
-- name: Jun Song
-  affiliation: Korea University
-- name: Eftychia Solea
-  affiliation: Queen Mary University of London
-- name: Nathan Hogshead
-  affiliation: Miami University
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Dimension Reduction Techniques for Conditional Quantiles for Functional Data in R: A Vignette}
@@ -28,7 +22,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-Functional data analysis (FDA) is a field of statistics that considers data as realizations of random functions. It was first formally introduced by Ramsay and Dalzell (1991). The challenge with functional data lies in their *infinite-dimensional* space, which requires the use of dimension reduction techniques to replace them with finite data. For references, see Ferré and Yao (2003), Lian and Li (2004), Wang et al. (2013), and Li and Song (2022). Many functional data sets exhibit characteristics such as skewness and outliers, which make quantile regression (QR) a more suitable approach in these cases.
+Functional data analysis (FDA) is a field of statistics that considers data as realizations of random functions. It was first formally introduced by Ramsay and Dalzell (1991). The challenge with functional data lies in their *infinite-dimensional* space, which requires the use of dimension reduction techniques to replace them with finite data. For references, see Ferré and Yao (2003), Wang et al. (2013), Lian and Li (2014), and Li and Song (2022). Many functional data sets exhibit characteristics such as skewness and outliers, which make quantile regression (QR) a more suitable approach in these cases.
 
 Quantile regression (QR) has gained significant attention since its inception by Koenker and Bassett (1978), becoming a valuable tool in research areas where non-central parts of the data are important. Despite its extensive use, QR has seen limited application in the context of functional data. For reference, see Cardot et al. (2005), Kato (2012), and Chen and Müller (2012).
 
@@ -44,7 +38,7 @@ To get started you need to first install the package using the command
 install.packages("fquantdr")
 ```
 
-and then use it during any `R` session by issuing the command
+After installation, you can load the package in any R session by issuing the command:
 ```{r setup}
 library(fquantdr)
 ```
@@ -56,9 +50,10 @@ help(package = "fquantdr")
 
 The package includes the following functions:
 
-* `fundata` Functional data
 * `fcqs` Functional central quantile subspace
+* `fundata` Functional data
 * `mcorr` Multiple correlation
+* `mfsir` Functional Sliced Inverse Regression
 * `sonf` Scalar-on-function regression
 
 <!-- * `discrete` Discretize conversion of a continuous numeric vector -->
@@ -72,7 +67,7 @@ The package includes the following functions:
 <!-- * `slprob` Compute slice proportions  -->
 <!-- * `symmetry` Symmtrize Matrix -->
 
-To get help on a specific function type `help(function.name)` or `?function.name` for a convenient shorthand. Try
+You can find detailed descriptions and examples for each function by using the `help()` function or the `?` operator in R, specifying the function name. For example, to get help on the `fcqs` function, use:
 ```{r, eval = FALSE}
 help(fcqs)
 ?fcqs
@@ -96,16 +91,13 @@ where $L \in \mathscr{B}(\mathscr{H}, \mathbb{R}^d)$, such that the functional c
 
 The above two results imply the following:
 
-1. If the dimension of the $\tau$-FCQS is known to be one, then we can fit a linear quantile regression model of $Q_\tau\{Y|L(X)\}$ on $X$ and report the 
-slope vector $\beta_\tau^*$ as the basis vector (double check it).
-
-1. If the dimension of the $\tau$-FCQS is known to be greater than one, then we can set $b_{\tau 0} = \beta_\tau^*$ as the initial vector and then create more vectors using $b_{\tau j} = E(\langle b_{\tau j-1}, X \rangle_\mathscr{H} X)$ for $j = 1, ..., m$, where $m = pq-1$ (double check). In order to obtain more linear independent vector, we can let $B_\tau = \sum_{j=0}^m b_{\tau j} \otimes b_{\tau j}$, then perform the generalized eigenvalue problem $B_\tau v_{\tau j} = \lambda \Sigma_{XX} v_{\tau j}$ and choose the $v_{\tau 1}, ..., v_{\tau d_\tau}$ be the set of solutions. 
+First, we set $b_{\tau 0} = \beta_\tau^*$ as the initial vector and then create more vectors using $b_{\tau j} = E(\langle b_{\tau j-1}, X \rangle_\mathscr{H} X)$ for $j = 1, ..., m$, where $m = pq-1$, $p$ is the number of predictor variables and $q$ is the number of basis functions used to approximate the functional predictors. In order to obtain more linear independent vector, we can let $B_\tau = \sum_{j=0}^m b_{\tau j} \otimes b_{\tau j}$, then perform the generalized eigenvalue problem $B_\tau v_{\tau j} = \lambda \Sigma_{XX} v_{\tau j}$ and choose the $v_{\tau 1}, ..., v_{\tau d_\tau}$ be the set of solutions. 
 
 All of the above are incorporated in the `fcqs` function.
 
 ## The algorithm at a glance
 
-The first step of the algorithm requires to fit a linear regression model of $Q_\tau \{Y|L(X) \}$ on $L(X)$ (or X?), which implies the non-parametric estimation of the conditional quantile. The second step of the algorithm relies on estimating an expectation and performing a generalized eigenvalue problem.  Specifically,
+The first step of the algorithm requires to fit a linear regression model of $Q_\tau \{Y|L(X) \}$ on $X$, which implies the non-parametric estimation of the conditional quantile. The second step of the algorithm relies on estimating an expectation and performing a generalized eigenvalue problem.  Specifically,
 
 1. For $u=1, \dots, n$, let $Y_u$ be an independent and identically distributed (iid) sample from $Y$, and let $X_1, \dots, X_n$ be an independent sample from the random element $X = (X^1, \dots, X^p)$, such that $X_u = (X_u^1, \dots, X_u^p)^{\top}$.
 
@@ -168,3 +160,26 @@ We now discuss the output of the `fcqs` function
 ```{r}
 
 ```
+
+# References
+1. Cardot, H., Crambes, C., and Sarda, P. (2005). Quantile regression when the covariates are functions. *Journal of Nonparametric Statistics*, 17, 841--856.
+
+1. Chen, K., and M\"uller, H.-G. (2012). Conditional quantile analysis when covariates are functions, with application to growth data. *Journal of the Royal Statistical Society. Series B (Statistical Methodology)*, 74(1), 67--89. 
+
+1. Christou, E., Solea, E., Wang, S., and Song, J. (2024+). Sufficient dimension reduction for conditional quantiles for functional data. Under review. 
+
+1. Ferr\'e, L., and Yao, F. (2003). Functional sliced inverse regression analysis. *Statistics*, 37, 475--488.
+
+1. Guerre, E., and Sabbah, C. (2012). Uniform bias study and Bahadur representation for local polynomial estimators of the conditional quantile function. *Econometric Theory*, 28(1), 87--129.  
+
+1. Kato, K. (2012). Estimation in functional linear quantile regression. *The Annals of Statistics*, 40: 3108--3136.
+
+1. Koenker, R., and Bassett, G. (1978) Regression quantiles. *Econometrica*, 46, 33-50
+
+1. Lian, H., and Li, G. (2014). Series expansion for functional sufficient dimension reduction. *Journal of Multivariate analysis*, 124, 150--165. 
+
+1. Li, B, and Song, J. (2022). Dimension reduction for functional data based on weak conditional moments. *The Annals of Statistics*, 50(1), 107--128. 
+
+1. Ramsay, J. O., and Dalzell, C. J. (1991). Some tools for functional data analysis, *Journal of the Royal Statistical Society: Series B (Methodological)*, 53, 539--572.
+
+1. Wang, G., Lin, N., and Zhang, B. (2013). Functional contour regression. *Journal of Multivariate Analysis*, 116, 1--13. 
