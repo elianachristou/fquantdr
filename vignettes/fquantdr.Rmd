@@ -166,6 +166,21 @@ The output of the `fcqs` function includes two primary components:
 
 1. `betax`: The resulting sufficient predictor, calculated as the inner product between `ffun` and `x`. This represents the reduced-dimensional representation of the functional data that retains the essential information for the quantile regression.
 
+If we want to measure the multiple correlation between the true and estimated predictors, we can use the `mcorr` function. Specifically, for random vectors $U$ and $V$ of the same dimension $d$, we define $C_{UU}, C_{UV},$ and $C_{VV}$ as the sample covariance matrices.  Then, the multiple correlation between $U$ and $V$ is given by:
+\begin{eqnarray*}
+mcorr(U, V) = tr(C_{VV}^{-1/2} C_{VU} C_{UU}^{-1} C_{UV} C_{VV}^{-1/2}),
+\end{eqnarray*}
+
+```{r}
+# define true inner products for FCQS
+uu_fcqs <- mfpca.scores[, 1:d_tau]
+
+# Compute the multiple correlation between the true and estimated predictors
+mcorr.fcqs.vec <- mcorr(output1$betax, uu_fcqs)
+mcorr.fcqs.vec
+```
+Note that the results range from $0$ to $1$, and a number closer to $d$ indicates better performance.
+
 To better understand the output, we can visualize the estimated functional central quantile subspace directions and the relationship between the true and estimated predictors.
 
 ```{r}
