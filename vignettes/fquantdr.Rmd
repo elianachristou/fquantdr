@@ -59,7 +59,6 @@ The package includes the following functions:
 <!-- * `discrete` Discretize conversion of a continuous numeric vector -->
 <!-- * `gramatrix` Computes the center gram matrix -->
 <!-- * `matpower` Power of a matrix -->
-<!-- * `mcorr` Multiple correlation between two random vectors -->
 <!-- * `mppower` Moore-Penrose type power -->
 <!-- * `qmat` Computes a transformed identity matrix -->
 <!-- * `rigpower` Ridge-regression type power -->
@@ -183,9 +182,35 @@ Note that the results range from $0$ to $1$, and a number closer to $d$ indicate
 
 To better understand the output, we can visualize the estimated functional central quantile subspace directions and the relationship between the true and estimated predictors.
 
-```{r}
+First, we can plot the relationship between the response variable $Y$ and the first sufficient predictor
+```{r, fig.align = "center"}
+library(ggplot2)
 
+# Create a dataframe for plotting
+df_y_vs_score <- data.frame(score = mfpca.scores[, 1], y = y)
+
+# Scatter plot
+ggplot(df_y_vs_score, aes(x = score, y = y)) +
+  geom_point() +
+  geom_smooth(method = "gam", se = FALSE, color = "red") +
+  labs(x = "First sufficient predictor", y = "y") +
+  theme_minimal()
 ```
+
+Then we can compare the estimated inner product from the `fcqs` function to the true inner products used in data generation. 
+```{r, fig.align = "center"}
+# Create a dataframe for plotting
+df_inner_products <- data.frame(estimated = output1$betax, true = uu_fcqs)
+
+# Scatter plot
+ggplot(df_inner_products, aes(x = true, y = estimated)) +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, color = "red") +
+  labs(x = "True Inner Products", y = "Estimated Inner Products") +
+  theme_minimal()
+```
+
+Note that the reference line (slope = 1) indicates perfect agreement. The overall positive trend and the clustering around the reference line suggest that the `fcqs` function reasonably accurately estimates the inner products.
 
 # References
 1. Cardot, H., Crambes, C., and Sarda, P. (2005). Quantile regression when the covariates are functions. *Journal of Nonparametric Statistics*, 17, 841--856.
