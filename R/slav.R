@@ -7,7 +7,7 @@
 #' defined by the unique elements of the sliced response \code{y}.  The
 #' resulting matrix contains the mean values for each group.  This is
 #' essential for applying sliced inverse regression (SIR) of Li (1991) and
-#' its functional counterpart of Ferr\'e and Yao (2003).
+#' its functional counterpart of Ferr&#233; and Yao (2003).
 #'
 #' @param x A \code{n x p} numeric matrix, where rows represent
 #'     observations and columns represent variables.  If the user is using
