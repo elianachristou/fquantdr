@@ -1,9 +1,9 @@
 #' Group-wise mean calculation
 #'
-#' \code{slav} computes the mean of the rows of \code{x} within each group
+#' \code{slav} computes the row-wise mean of \code{x} within each group
 #' determined by the \code{H} slices.
 #'
-#' This function calculates the mean of the rows of \code{x} for each group
+#' This function calculates the row-wise mean of \code{x} for each group
 #' defined by the unique elements of the sliced response \code{y}.  The
 #' resulting matrix contains the mean values for each group.  This is
 #' essential for applying sliced inverse regression (SIR) of Li (1991) and
@@ -19,7 +19,9 @@
 #' @param H The number of slices.
 #'
 #' @return A \code{H x p} matrix, where rows represent the mean values of
-#'     \code{x} as determined by slicing the response \code{y}.
+#'     \code{x} as determined by the discretize response \code{ydis}. If
+#'     \code{x} consists of the coefficients of a functional object, then
+#'     the output is a \code{H x (p * nbasis)} matrix.
 #'
 #' @references Li, K.-C. (1991) Sliced Inverse Regression for Dimension
 #' Reduction. \emph{Journal of the American Statistical Association}, 86(414),
@@ -32,13 +34,50 @@
 #'
 #' @noRd
 #' @examples
-#' n <- 20
+#' # Example 1
+#' # set the parameters
+#' n <- 100
 #' p <- 5
-#' H <- 4
-#' x <- matrix(rnorm(100), nrow = n, ncol = p)
-#' y <- rnorm(n)
+#' H <- 10
+#' # define the variables
+#' x <- matrix(rnorm(n * p), nrow = n, ncol = p)
+#' beta <- c(1, 1, 0, 0, 0)
+#' y <- c(x %*% beta + rnorm(n))
 #' ydis <- discretize(y, H)
 #' slav(x, ydis, H)
+#'
+#' # Example 2
+#' # set the parameters
+#' n <- 100
+#' p <- 5
+#' nt <- 101
+#' nbasis <- 4
+#' H <- 10
+#' time <- seq(0, 1, length.out = nt)
+#' eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n,
+#'     ncol = p * nbasis)
+#' # Generate the functional data
+#' result <- fundata(n, p, nbasis, time, eta)
+#' Xc <- result$xc
+#' P <- eigen(stats::cov(eta))$vectors
+#' mfpca.scores <- eta %*% P
+#' # Generate the model
+#' error <- rnorm(n)
+#' y <- 3 * mfpca.scores[, 1] + error
+#' ydis <- discretize(y, H)
+#' # define the coefficients for the functional predictors
+#' databasis <- fda::create.bspline.basis(rangeval = c(0, 1),
+#'                                       nbasis = nbasis)
+#' # Calculate the coefficients
+#' xfd.coef <- numeric()
+#' for (k in 1:p) {
+#'  xfdk <- fda::smooth.basis(seq(0, 1, length.out = nt),
+#'                            t(Xc[, , k]), databasis)$fd
+#'  xfdk <- fda::center.fd(xfdk)
+#'  xk.coef <- t(xfdk$coef)
+#'  xfd.coef <- cbind(xfd.coef, xk.coef)
+#' }
+#' slav(xfd.coef, ydis, H)
 #'
 slav <- function(x, ydis, H) {
 
