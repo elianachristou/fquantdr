@@ -28,9 +28,9 @@
 #' @examples
 #' # Example 1
 #' # Set the parameters
-#' n <- 50
+#' n <- 100
+#' p <- 5
 #' nbasis <- 10
-#' p <- 70
 #' # Create a B-spline basis
 #' basis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
 #' # Generate random coefficients for the functional data object
@@ -49,6 +49,8 @@
 #' print(result_with_penalty$betacoef)
 #' print("Predicted values:")
 #' print(result_with_penalty$yhat)
+#' # Compare y and yhat
+#' cor(y, result_with_penalty$yhat)
 #'
 #' # Example 2
 #' # set the parameters
@@ -80,6 +82,12 @@
 #' result_no_penalty <- sonf(y, x.fd, dev2_penalty = FALSE)
 #' print("Regression coefficients without penalty:")
 #' print(result_no_penalty$betacoef)
+#' # Compare y and yhat
+#' cor(y, result_no_penalty$yhat)
+#' # Perform scalar-on-function regression with penalty
+#' lambda <- 0.1
+#' result_with_penalty <- sonf(y, x.fd, dev2_penalty = TRUE, lambda = lambda)
+#' cor(y, result_with_penalty$yhat)
 #'
 #' @export
 sonf = function(y, xfd, dev2_penalty = FALSE, lambda = NULL) {
@@ -109,11 +117,11 @@ sonf = function(y, xfd, dev2_penalty = FALSE, lambda = NULL) {
   }
 
   # Check if n > p
-  #if (length(y) <= dim(xfd$coef)[3]) {
-  #  stop(paste("The number of observations of y (", length(y), ") should be
-  #             greater than the number of predictors of xfd
-  #             (", dim(xfd$coef)[3], ").", sep = ""))
-  #}
+  if (length(y) <= dim(xfd$coef)[3]) {
+    stop(paste("The number of observations of y (", length(y), ") should be
+               greater than the number of predictors of xfd
+               (", dim(xfd$coef)[3], ").", sep = ""))
+  }
 
   # Check if the number of basis agrees
   if (dim(xfd$coef)[1] != xfd$basis$nbasis) {

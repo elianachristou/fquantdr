@@ -41,9 +41,9 @@ coefficients, the estimated response values, and the design matrix.
 \examples{
 # Example 1
 # Set the parameters
-n <- 50
+n <- 100
+p <- 5
 nbasis <- 10
-p <- 70
 # Create a B-spline basis
 basis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
 # Generate random coefficients for the functional data object
@@ -62,6 +62,8 @@ print("Regression coefficients with penalty:")
 print(result_with_penalty$betacoef)
 print("Predicted values:")
 print(result_with_penalty$yhat)
+# Compare y and yhat
+cor(y, result_with_penalty$yhat)
 
 # Example 2
 # set the parameters
@@ -93,5 +95,11 @@ y <- 3 * mfpca.scores[, 1] + error
 result_no_penalty <- sonf(y, x.fd, dev2_penalty = FALSE)
 print("Regression coefficients without penalty:")
 print(result_no_penalty$betacoef)
+# Compare y and yhat
+cor(y, result_no_penalty$yhat)
+# Perform scalar-on-function regression with penalty
+lambda <- 0.1
+result_with_penalty <- sonf(y, x.fd, dev2_penalty = TRUE, lambda = lambda)
+cor(y, result_with_penalty$yhat)
 
 }
