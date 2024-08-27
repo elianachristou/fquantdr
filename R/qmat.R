@@ -17,8 +17,8 @@
 #' @noRd
 #' @examples
 #' # Generate the 3 x 3 projection matrix
-#' proj_matrix3 <- qmat(3)
-#' proj_matrix3
+#' proj.matrix3 <- qmat(3)
+#' proj.matrix3
 #'
 qmat <- function(n) {
 
