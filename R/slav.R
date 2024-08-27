@@ -66,9 +66,7 @@
 #' y <- 3 * mfpca.scores[, 1] + error
 #' ydis <- discretize(y, H)
 #' # define the coefficients for the functional predictors
-#' databasis <- fda::create.bspline.basis(rangeval = c(0, 1),
-#'                                       nbasis = nbasis)
-#' # Calculate the coefficients
+#' databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
 #' xfd.coef <- numeric()
 #' for (k in 1:p) {
 #'  xfdk <- fda::smooth.basis(seq(0, 1, length.out = nt),
@@ -77,6 +75,7 @@
 #'  xk.coef <- t(xfdk$coef)
 #'  xfd.coef <- cbind(xfd.coef, xk.coef)
 #' }
+#' # Calculate the row-wise means
 #' slav(xfd.coef, ydis, H)
 #'
 slav <- function(x, ydis, H) {
