@@ -25,7 +25,7 @@
 #' @examples
 #' mat <- matrix(c(6, 4, 8, 2, 5, 9, 3, 1, 7), nrow = 3, ncol = 3)
 #' alpha <- 2
-#' result <- mppower(mat, alpha)
+#' mppower(mat, alpha)
 #'
 mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
 
@@ -41,7 +41,7 @@ mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
 
   # Check if 'alpha' is a single number
   if (length(alpha) != 1) {
-    stop("The exponent 'alpha' must be a single number.")
+    stop("The exponent 'alpha' must be a one-dimensional scalar.")
   }
 
   # Check if 'alpha' is numeric
