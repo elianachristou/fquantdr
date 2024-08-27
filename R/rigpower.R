@@ -19,10 +19,10 @@
 #' @noRd
 #' @examples
 #' a <- matrix(c(4, 1, 1, 3), nrow = 2, ncol = 2)
-#' alpha <- 2
+#' alpha <- -1 / 2
 #' rho <- 0.1
-#' transformed_matrix <- rigpower(a, alpha, rho)
-#' transformed_matrix
+#' a.inv.sqrt <- rigpower(a, alpha, rho)
+#' a.inv.sqrt
 #'
 rigpower <- function(a, alpha, rho) {
 
@@ -31,19 +31,19 @@ rigpower <- function(a, alpha, rho) {
     stop("The input 'a' must be a matrix.")
   }
 
-  # Check is 'a' is a square matrix
+  # Check if 'a' is a square matrix
   if (dim(a)[1] != dim(a)[2]) {
     stop("The input 'a' must be a square matrix.")
   }
 
   # Check if 'alpha' is a single number
   if (length(alpha) != 1) {
-    stop("The exponent 'alpha' must be a single number.")
+    stop("The exponent 'alpha' must be a one-dimensional scalar.")
   }
 
   # Check if 'alpha' is numeric
   if (!is.numeric(alpha)) {
-    stop("The exponent 'alpha' must be numeric. ")
+    stop("The exponent 'alpha' must be numeric.")
   }
 
   # Check if 'rho' is a real number
