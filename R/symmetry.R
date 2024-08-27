@@ -11,7 +11,8 @@
 #'
 #' @noRd
 #' @examples
-#' sym.mat <- matrix(rnorm(9), nrow = 3, ncol = 3)
+#' q <- 3
+#' sym.mat <- matrix(rnorm(q * q), nrow = q, ncol = q)
 #' sym.mat
 #' symmetry(sym.mat)
 #'
