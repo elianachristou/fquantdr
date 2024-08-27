@@ -52,8 +52,9 @@
 #'      that is calculated during the dimension reduction process.}
 #' \item{gx}{The \code{(p * nbasis) x (p * nbasis)} block diagonal Gram
 #'     matrix of the B-spline basis functions.}
-#' \item{betas}{The coordinates of \eqn{\beta_1, \dots, \beta_d} resulting
-#'     from the coordinate representation on the B-spline basis functions.}
+#' \item{betas}{The \code{(p * nbasis) x (p * nbasis)} matrix of the
+#'     coordinates of \eqn{\beta_1, \dots, \beta_d} resulting from the
+#'     coordinate representation on the B-spline basis functions.}
 #' \item{sufpred}{The estimated sufficient predictors of the functional
 #'     central subspace.}
 #'
