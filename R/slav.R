@@ -13,7 +13,9 @@
 #'     observations and columns represent variables.  If the user is using
 #'     functional predictors, then \code{x} consists of the coefficients
 #'     of the functional object and is of \code{n x (p * nbasis)} dimension.
-#' @param y A numeric vector.
+#' @param ydis A discrete numeric vector that contains labels that define the
+#' slice each value of a vector `y` is in. This can be obtained using the
+#' `discretize` function.
 #' @param H The number of slices.
 #'
 #' @return A \code{H x p} matrix, where rows represent the mean values of
@@ -35,23 +37,24 @@
 #' H <- 4
 #' x <- matrix(rnorm(100), nrow = n, ncol = p)
 #' y <- rnorm(n)
-#' slav(x, y, H)
+#' ydis <- discretize(y, H)
+#' slav(x, ydis, H)
 #'
-slav <- function(x, y, H) {
+slav <- function(x, ydis, H) {
 
   # Check if x is a matrix
   if (!is.matrix(x)){
     stop("The input 'x' must be a matrix.")
   }
 
-  # Check if y is a vector
-  if (!is.vector(y)) {
-    stop("The input 'y' must be a vector.")
+  # Check if ydis is a vector
+  if (!is.vector(ydis)) {
+    stop("The input 'ydis' must be a vector.")
   }
 
-  # Check if x and y have the same number of observations
-  if (length(y) != dim(x)[1]) {
-    stop("The number of observations of y must be the same as the number
+  # Check if x and ydis have the same number of observations
+  if (length(ydis) != dim(x)[1]) {
+    stop("The number of observations of ydis must be the same as the number
          of rows of x.")
   }
 
@@ -60,11 +63,21 @@ slav <- function(x, y, H) {
     stop("H must be a positive integer.")
   }
 
+  # Check if H is one number
+  if (length(H) > 1) {
+    stop("H must be one number.")
+  }
+
+  # Check if H is greater than 1 and less than the length of ydis
+  if (H == 1 | H >= length(ydis)) {
+    stop("H must be an integer that is at least 2 and less than the
+         length of ydis.")
+  }
+
   # Define the parameters
   n <- nrow(x)
   p <- ncol(x)
   yunit <- 1:H
-  ydis <- discretize (y, H)
 
   # Initialize matrix to store group means
   xgy <- matrix(0, H, p)
