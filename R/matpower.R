@@ -35,7 +35,7 @@ matpower <- function(a, alpha) {
 
   # Check if 'alpha' is a single number
   if (length(alpha) != 1) {
-    stop("The exponent 'alpha' must be a single number.")
+    stop("The exponent 'alpha' must be a one-dimensional scalar.")
   }
 
   # Check if 'alpha' is numeric
