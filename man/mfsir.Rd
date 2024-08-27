@@ -41,7 +41,7 @@ provides the new estimated predictors.
 }
 \details{
 This function performs functional sliced inverse regression (FSIR),
-introduced by Ferr\'e and Yao (2003), for scalar-on-function problem.
+introduced by Ferré and Yao (2003), for scalar-on-function problems.
 The authors proved that \eqn{E(X|Y) - E(X)} belongs to
 \eqn{\Sigma_{XX} S_{Y|X}}, where \eqn{S_{Y|X}} denotes the functional
 central subspace.
@@ -60,7 +60,7 @@ techniques aim at finding functions \eqn{\beta_1, \dots, \beta_d} in
 \eqn{X} are independent given \eqn{\langle \beta_1,
 X \rangle_{\bigoplus \mathcal{H}}, \dots,
 \langle \beta_d, X \rangle_{\bigoplus \mathcal{H}}} and that the \eqn{p}-
-dimensional predictor \eqn{X} can be replace with the \eqn{d}-dimensional
+dimensional predictor \eqn{X} can be replaced with the \eqn{d}-dimensional
 predictor \eqn{\langle \beta_1, X \rangle_{\bigoplus \mathcal{H}}, \dots,
 \langle \beta_d, X \rangle_{\bigoplus \mathcal{H}}}.
 
@@ -78,8 +78,7 @@ nt <- 101
 nbasis <- 4
 H <- 10
 time <- seq(0, 1, length.out = nt)
-eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n,
-    ncol = p * nbasis)
+eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
 # Generate the functional data
 result <- fundata(n, p, nbasis, time, eta)
 Xc <- result$xc
@@ -99,6 +98,6 @@ mcorr(result$sufpred[, 1], mfpca.scores[, 1])
 
 }
 \references{
-Ferr\'e, L, and Yao, F. (2003) Function Sliced Inverse Regression
+Ferré, L, and Yao, F. (2003) Function Sliced Inverse Regression
 Analysis. \emph{Statistics}, 37(6), 475-488.
 }

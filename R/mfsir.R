@@ -4,7 +4,7 @@
 #' provides the new estimated predictors.
 #'
 #' This function performs functional sliced inverse regression (FSIR),
-#' introduced by Ferr\'e and Yao (2003), for scalar-on-function problem.
+#' introduced by Ferr&#233; and Yao (2003), for scalar-on-function problems.
 #' The authors proved that \eqn{E(X|Y) - E(X)} belongs to
 #' \eqn{\Sigma_{XX} S_{Y|X}}, where \eqn{S_{Y|X}} denotes the functional
 #' central subspace.
@@ -23,7 +23,7 @@
 #' \eqn{X} are independent given \eqn{\langle \beta_1,
 #' X \rangle_{\bigoplus \mathcal{H}}, \dots,
 #' \langle \beta_d, X \rangle_{\bigoplus \mathcal{H}}} and that the \eqn{p}-
-#' dimensional predictor \eqn{X} can be replace with the \eqn{d}-dimensional
+#' dimensional predictor \eqn{X} can be replaced with the \eqn{d}-dimensional
 #' predictor \eqn{\langle \beta_1, X \rangle_{\bigoplus \mathcal{H}}, \dots,
 #' \langle \beta_d, X \rangle_{\bigoplus \mathcal{H}}}.
 #'
@@ -57,7 +57,7 @@
 #' \item{sufpred}{The estimated sufficient predictors of the functional
 #'     central subspace.}
 #'
-#' @references Ferr\'e, L, and Yao, F. (2003) Function Sliced Inverse Regression
+#' @references Ferr&#233;, L, and Yao, F. (2003) Function Sliced Inverse Regression
 #' Analysis. \emph{Statistics}, 37(6), 475-488.
 #'
 #' @examples
@@ -68,8 +68,7 @@
 #' nbasis <- 4
 #' H <- 10
 #' time <- seq(0, 1, length.out = nt)
-#' eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n,
-#'     ncol = p * nbasis)
+#' eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
 #' # Generate the functional data
 #' result <- fundata(n, p, nbasis, time, eta)
 #' Xc <- result$xc
@@ -107,6 +106,17 @@ mfsir <- function(X, y, H, nbasis) {
   # Check if H is a positive integer
   if (H <= 0 | H != floor(H)) {
     stop("H must be a positive integer.")
+  }
+
+  # Check if H is one number
+  if (length(H) > 1) {
+    stop("H must be one number.")
+  }
+
+  # Check if H is greater than 1 and less than the length of y
+  if (H == 1 | H >= length(y)) {
+    stop("H must be an integer that is at least 2 and less than the
+         length of y.")
   }
 
   # Check if nbasis is a positive integer
