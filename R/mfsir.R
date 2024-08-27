@@ -137,8 +137,12 @@ mfsir <- function(X, y, H, nbasis) {
   }
 
   # Create a B-spline basis for smoothing
-  databasis <- fda::create.bspline.basis(rangeval = c(0, 1),
-                                         nbasis = nbasis, norder = nbasis)
+  if (nbasis < 4) {
+  databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis,
+                                         norder = nbasis)
+  } else {
+  databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
+  }
 
   # Calculate the coefficients
   xfd.coef <- numeric()
@@ -172,9 +176,9 @@ mfsir <- function(X, y, H, nbasis) {
   mucoef <- apply(xfd.coef, 2, mean)
 
   # Compute the proportion of observations and means within each slice
-  #ydis <- discretize (y, H)
-  prob <- slprob(y, H)
-  avg.slav <- slav(xfd.coef, y, H)
+  ydis <- discretize (y, H)
+  prob <- slprob(ydis, H)
+  avg.slav <- slav(xfd.coef, ydis, H)
 
   # Calculate the target matrix for the eigenvalue decomposition
   Lambda1 <- matrix(0, p * nbasis, p * nbasis)
