@@ -76,8 +76,8 @@ fundata <- function(n, p, nbasis, time, eta) {
   }
 
   # Check if n is positive and greater than p
-  if (n <= 0 | n <= p) {
-    stop("Parameter 'n' must be a positive integer and greater than 'p'.")
+  if (n <= 0) {
+    stop("Parameter 'n' must be a positive integer.")
   }
 
   # Check that p is a single number
