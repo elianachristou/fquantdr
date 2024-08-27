@@ -26,33 +26,6 @@
 #'         regression.}
 #'
 #' @examples
-#' # Example 1
-#' # Set the parameters
-#' n <- 100
-#' p <- 5
-#' nbasis <- 10
-#' # Create a B-spline basis
-#' basis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
-#' # Generate random coefficients for the functional data object
-#' coef_matrix <- array(rnorm(n * nbasis * p), dim = c(nbasis, n, p))
-#' fdobj <- fda::fd(coef_matrix, basis)
-#' # Create a scalar response vector
-#' y <- rnorm(n)
-#' # Perform scalar-on-function regression without penalty
-#' result_no_penalty <- sonf(y, fdobj, dev2_penalty = FALSE)
-#' print("Regression coefficients without penalty:")
-#' print(result_no_penalty$betacoef)
-#' # Perform scalar-on-function regression with penalty
-#' lambda <- 0.1
-#' result_with_penalty <- sonf(y, fdobj, dev2_penalty = TRUE, lambda = lambda)
-#' print("Regression coefficients with penalty:")
-#' print(result_with_penalty$betacoef)
-#' print("Predicted values:")
-#' print(result_with_penalty$yhat)
-#' # Compare y and yhat
-#' cor(y, result_with_penalty$yhat)
-#'
-#' # Example 2
 #' # set the parameters
 #' n <- 100
 #' p <- 5
