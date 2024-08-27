@@ -17,16 +17,17 @@
 #' @noRd
 #' @examples
 #' # Generate the 3 x 3 projection matrix
-#' proj_matrix <- qmat(3)
-#' proj_matrix
+#' proj_matrix3 <- qmat(3)
+#' proj_matrix3
 #'
 qmat <- function(n) {
+
   # Check if n is a positive integer
-  if (n <= 0 || n != floor(n)) {
+  if (n <= 0 | n != floor(n)) {
     stop("n must be a positive integer.")
   }
 
-  # Creates the n x n identity matrix and the matrix of ones
+  # Create the n x n identity matrix and the matrix of ones
   ii <- diag(n)
   jj <- rep(1, n) %*% t(rep(1, n))
 
