@@ -25,8 +25,14 @@
 #'
 #' @noRd
 #' @examples
+#' # Example 1
 #' y <-  c(2.5, 3.6, 1.2, 4.8, 2.9)
 #' H <- 3
+#' discretize(y, H)
+#'
+#' # Example 2
+#' y <- rnorm(100)
+#' H <- 4
 #' discretize(y, H)
 #'
 discretize <- function(y, H) {
