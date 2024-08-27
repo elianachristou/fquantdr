@@ -46,10 +46,15 @@ discretize <- function(y, H) {
     stop("H must be one number.")
   }
 
+  # Check if H is greater than 1 and less than the length of y
+  if (H == 1 | H >= length(y)) {
+    stop("H must be an integer that is at least 2 and less than the
+         length of y.")
+  }
+
   # define the parameters
   n <- length(y)
   yunit <- 1:H
-  nsli <- length(yunit)
 
   # Add small amount of noise to y
   y <- y + .00001 * mean(y) * stats::rnorm(n)
@@ -57,22 +62,22 @@ discretize <- function(y, H) {
   # Order y values in ascending order
   yord <- y[order(y)]
   # Calculate the approximate number of data points per slice
-  nwidth <- floor(n / nsli)
+  nwidth <- floor(n / H)
 
-  # Set each division point to the values of yord that represent the boundaries
-  # between slices
-  divpt <- rep(0, nsli - 1)
-  for(i in 1:(nsli - 1)) {
+  # Set each division point to the values of yord that represent
+  # the boundaries between slices
+  divpt <- rep(0, H - 1)
+  for(i in 1:(H - 1)) {
     divpt[i] <- yord[i * nwidth + 1]
   }
 
   y1 <- rep(0, n)
   # Assign slice labels to the upper boundary slice
-  y1[y >= divpt[nsli - 1]] <- nsli
+  y1[y >= divpt[H - 1]] <- H
   # Assign slice labels to the lower boundary slice
   y1[y < divpt[1]] <- 1
   # Assign slices labels to intermediate slices
-  for(i in 2:(nsli - 1)) {
+  for(i in 2:(H - 1)) {
     y1[(y >= divpt[i - 1]) & (y < divpt[i])] <- i
   }
 
