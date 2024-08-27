@@ -41,9 +41,9 @@ coefficients, the estimated response values, and the design matrix.
 \examples{
 # Example 1
 # Set the parameters
-n <- 100
+n <- 50
 nbasis <- 10
-p <- 3
+p <- 70
 # Create a B-spline basis
 basis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
 # Generate random coefficients for the functional data object
@@ -57,8 +57,7 @@ print("Regression coefficients without penalty:")
 print(result_no_penalty$betacoef)
 # Perform scalar-on-function regression with penalty
 lambda <- 0.1
-result_with_penalty <- sonf(y, fdobj, dev2_penalty = TRUE,
-          lambda = lambda)
+result_with_penalty <- sonf(y, fdobj, dev2_penalty = TRUE, lambda = lambda)
 print("Regression coefficients with penalty:")
 print(result_with_penalty$betacoef)
 print("Predicted values:")
@@ -71,16 +70,14 @@ p <- 5
 nbasis <- 4
 nt <- 101
 time <- seq(0, 1, length.out = nt)
-eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n,
-    ncol = p * nbasis)
+eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
 # Generate the functional data
 gen_data <- fundata(n, p, nbasis, time, eta)
 Xc <- gen_data$xc
 P <- eigen(stats::cov(eta))$vectors
 mfpca.scores <- eta \%*\% P
 # Prepare the fd object
-databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis,
-norder = nbasis)
+databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
 xcoef_array <- array(0, c(nbasis, n, p))
 for (k in 1:p) {
  xfdk <- fda::smooth.basis(time, t(Xc[, , k]), databasis)$fd
