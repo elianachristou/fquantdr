@@ -8,7 +8,7 @@
 #' slice it is in.  The idea stems from Li (1991), who proposed sliced inverse
 #' regression (SIR), a dimension reduction technique.  This function is
 #' necessary for this package when performing the extension of SIR to
-#' functional predictors, introduced by Ferr\'e and Yao (2003).
+#' functional predictors, introduced by Ferr&#233; and Yao (2003).
 #'
 #' @param y A (continuous or discrete) vector.  If y is discrete, a small
 #'     amount of noise is added to make it continuous.
@@ -20,7 +20,7 @@
 #' Reduction.  \emph{Journal of the American Statistical Association},
 #' 86(414), 316-327.
 #'
-#' Ferr\'e, L, and Yao, F. (2003) Function Sliced Inverse Regression Analysis.
+#' Ferr&#233;, L, and Yao, F. (2003) Function Sliced Inverse Regression Analysis.
 #' \emph{Statistics}, 37(6), 475-488.
 #'
 #' @noRd
