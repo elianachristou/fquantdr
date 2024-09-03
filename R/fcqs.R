@@ -42,17 +42,16 @@
 #' n <- 100
 #' p <- 5
 #' nbasis <- 4
-#' nbasis_KL <- 4
 #' tau <- 0.1
 #' dtau <- 1
 #' time <- seq(0, 1, length.out = 101)
 #' # Set the covariance matrix
-#' SigmaCov <- matrix(0, p * nbasis_KL, p * nbasis_KL)
+#' SigmaCov <- matrix(0, p * nbasis, p * nbasis)
 #' for (j in 1:p) {
-#'  index.j <-(((j - 1) * nbasis_KL + 1):(j * nbasis_KL))
+#'  index.j <-(((j - 1) * nbasis + 1):(j * nbasis))
 #'  diag(SigmaCov[index.j, index.j]) <- c(2, 1, 1/2, 1/4)
 #' }
-#' eta <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis_KL), sigma = SigmaCov)
+#' eta <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis), sigma = SigmaCov)
 #' # Generate functional data
 #' result <- fundata(n, p, nbasis, time, eta)
 #' xc <- result$xc
