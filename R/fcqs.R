@@ -5,9 +5,10 @@
 #'
 #' This function computes the directions that span the \eqn{\tau}th functional
 #' central quantile subspace. These directions represent functions that can
-#' be linearly applied via the inner product to give predictors that reduce the
-#' dimension of the infinitely-dimensional ones without losing any information
-#' on the conditional quantile.
+#' be linearly applied via the inner product to  replace the infinite-dimensional
+#' functional predictors with a few finite predictors without losing important
+#' information on the conditional quantiles while maintaining a flexible
+#' nonparametric model.
 #'
 #' @param x A 3-dimensional array (\code{n x nt x p}), where n is the number
 #'     of observations, nt is the number of time points, and p is the number
@@ -16,7 +17,8 @@
 #'     variable.
 #' @param time A numeric vector of length \code{nt} of time points at which
 #'     the functional data is evaluated.
-#' @param nbasis The number of basis functions for smoothing functional data.
+#' @param nbasis The number of basis functions for smoothing the functional
+#'     data.
 #' @param tau A quantile level, a number strictly between 0 and 1.
 #' @param d_tau The dimension of the functional central quantile subspace.
 #'      It should be an integer between 1 and `p`.
@@ -31,13 +33,20 @@
 #'
 #' @examples
 #' # Set the parameters
-#' n <- 100
+#' n <- 400
 #' p <- 5
 #' nbasis <- 4
+#' nbasis_KL <- 4
 #' tau <- 0.1
 #' d_tau <- 1
 #' time <- seq(0, 1, length.out = 101)
-#' eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
+#' # Set the covariance matrix
+#' SigmaCov <- matrix(0, p * nbasis_KL, p * nbasis_KL)
+#' for (j in 1:p) {
+#'  index.j <-(((j - 1) * nbasis_KL + 1):(j * nbasis_KL))
+#'  diag(SigmaCov[index.j, index.j]) <- c(2, 1, 1/2, 1/4)
+#' }
+#' eta <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis_KL), sigma = SigmaCov)
 #' # Generate functional data
 #' result <- fundata(n, p, nbasis, time, eta)
 #' xc <- result$xc
@@ -67,7 +76,7 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
 
   # Check if x is a 3-dimensional array
   if (length(dim(x)) != 3) {
-    stop("X must be a 3-dimensional array, where the first dimension
+    stop("x must be a 3-dimensional array, where the first dimension
          represent the number of observations, the second dimension
          represent the number of time points, and the third dimension
          reepresent the number of predictor variables.")

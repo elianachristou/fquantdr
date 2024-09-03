@@ -17,7 +17,8 @@ variable.}
 \item{time}{A numeric vector of length \code{nt} of time points at which
 the functional data is evaluated.}
 
-\item{nbasis}{The number of basis functions for smoothing functional data.}
+\item{nbasis}{The number of basis functions for smoothing the functional
+data.}
 
 \item{tau}{A quantile level, a number strictly between 0 and 1.}
 
@@ -38,19 +39,27 @@ subspace.
 \details{
 This function computes the directions that span the \eqn{\tau}th functional
 central quantile subspace. These directions represent functions that can
-be linearly applied via the inner product to give predictors that reduce the
-dimension of the infinitely-dimensional ones without losing any information
-on the conditional quantile.
+be linearly applied via the inner product to  replace the infinite-dimensional
+functional predictors with a few finite predictors without losing important
+information on the conditional quantiles while maintaining a flexible
+nonparametric model.
 }
 \examples{
 # Set the parameters
-n <- 100
+n <- 400
 p <- 5
 nbasis <- 4
+nbasis_KL <- 4
 tau <- 0.1
 d_tau <- 1
 time <- seq(0, 1, length.out = 101)
-eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
+# Set the covariance matrix
+SigmaCov <- matrix(0, p * nbasis_KL, p * nbasis_KL)
+for (j in 1:p) {
+ index.j <-(((j - 1) * nbasis_KL + 1):(j * nbasis_KL))
+ diag(SigmaCov[index.j, index.j]) <- c(2, 1, 1/2, 1/4)
+}
+eta <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis_KL), sigma = SigmaCov)
 # Generate functional data
 result <- fundata(n, p, nbasis, time, eta)
 xc <- result$xc
