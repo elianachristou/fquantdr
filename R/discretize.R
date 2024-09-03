@@ -42,14 +42,14 @@ discretize <- function(y, H) {
     stop("y must be a vector.")
   }
 
-  # Check if H is a positive integer
-  if (H != round(H) | H <= 0) {
-    stop("H must be a positive integer.")
-  }
-
   # Check if H is one number
   if (length(H) > 1) {
     stop("H must be one number.")
+  }
+
+  # Check if H is a positive integer
+  if (H != round(H) | H <= 0) {
+    stop("H must be a positive integer.")
   }
 
   # Check if H is greater than 1 and less than the length of y
