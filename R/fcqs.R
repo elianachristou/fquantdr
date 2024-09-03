@@ -42,7 +42,7 @@
 #' nbasis <- 4
 #' nbasis_KL <- 4
 #' tau <- 0.1
-#' d_tau <- 1
+#' dtau <- 1
 #' time <- seq(0, 1, length.out = 101)
 #' # Set the covariance matrix
 #' SigmaCov <- matrix(0, p * nbasis_KL, p * nbasis_KL)
@@ -60,11 +60,11 @@
 #' error <- rnorm(n)
 #' y <- 3 * mfpca.scores[, 1] + error
 #' # Run FCQS function
-#' output <- fcqs(xc, y, time, nbasis, tau, d_tau)
+#' output <- fcqs(xc, y, time, nbasis, tau, dtau)
 #' # Compare the true and estimated predictors
 #' mcorr(output$betax, mfpca.scores[, 1])
 
-fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
+fcqs <- function(x, y, time, nbasis, tau = 0.5, dtau = NULL) {
 
   # Check if y is a univariate response
   if (!is.vector(y)) {
@@ -114,15 +114,20 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
     stop("The input 'nbasis' must be a positive integer number.")
   }
 
-  # Check if d_tau is an integer
-  if (floor(d_tau) != d_tau) {
-    stop("The input 'd_tau' must be an integer.")
-  }
+  # If dtau is missing, set it equal to p.  Otherwise, perform compatibility checks
+  if (is.null(dtau)) {
+    dtau <- dim(x)[3]
+  } else {
+   # Check if dtau is an integer
+   if (floor(dtau) != dtau) {
+     stop("The input 'dtau' must be an integer.")
+   }
 
-  # Check if d_tau is between 1 and p
-  if (d_tau < 1 | d_tau > dim(x)[3]) {
-    stop("The input 'd_tau' should be an integer between 1 and p, the
-         number of predictor variables.")
+   # Check if dtau is between 1 and p
+   if (dtau < 1 | dtau > dim(x)[3]) {
+     stop("The input 'dtau' should be an integer between 1 and p, the
+          number of predictor variables.")
+   }
   }
 
   # Set the parameters
@@ -162,7 +167,7 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
 
   # Run Functional Sliced Inverse Regression
   out.mfsir <- mfsir(x, y, H, nbasis)
-  beta.mfsir <- out.mfsir$betas[, 1:d_tau]
+  beta.mfsir <- out.mfsir$betas[, 1:dtau]
   vv <- xcoef %*% gx %*% beta.mfsir
 
   # Run FCQS methodology to first find the initial vector
@@ -174,8 +179,8 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
   h <- 4 * h * (tau * (1 - tau) / (stats::dnorm(stats::qnorm(tau))) ^ 2) ^ 0.2
   # Use alternative method for bandwidth calculation on error
   if (h == 'NaN') {
-    h <- 1.25 * max(n ^ (-1 / (d_tau + 4)), min(2, stats::sd(y)) *
-                    n ^ (-1 / (d_tau + 4)))
+    h <- 1.25 * max(n ^ (-1 / (dtau + 4)), min(2, stats::sd(y)) *
+                    n ^ (-1 / (dtau + 4)))
   }
   h <- 3 * h
   # Get qhat through LLQR function
@@ -209,8 +214,8 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
   # Obtain eigenvectors and eigenvalues of symmetric M
   gg <- eigen(M, symmetric = T)$vectors
   # Compute directions of central quantile subspace
-  vv <- gx.inv.half %*% A %*% gg[, 1:d_tau]
-  vv2 <- xcoef %*% gx.half %*% A %*% gg[, 1:d_tau]
+  vv <- gx.inv.half %*% A %*% gg[, 1:dtau]
+  vv2 <- xcoef %*% gx.half %*% A %*% gg[, 1:dtau]
 
   # Return directions of FCQS
   list(ffun = vv, betax = vv2)

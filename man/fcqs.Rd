@@ -4,7 +4,7 @@
 \alias{fcqs}
 \title{Functional Central Quantile Subspace}
 \usage{
-fcqs(x, y, time, nbasis, tau = 0.5, d_tau)
+fcqs(x, y, time, nbasis, tau = 0.5, dtau = NULL)
 }
 \arguments{
 \item{x}{A 3-dimensional array (\code{n x nt x p}), where n is the number
@@ -51,7 +51,7 @@ p <- 5
 nbasis <- 4
 nbasis_KL <- 4
 tau <- 0.1
-d_tau <- 1
+dtau <- 1
 time <- seq(0, 1, length.out = 101)
 # Set the covariance matrix
 SigmaCov <- matrix(0, p * nbasis_KL, p * nbasis_KL)
@@ -69,7 +69,7 @@ mfpca.scores <- eta \%*\% P
 error <- rnorm(n)
 y <- 3 * mfpca.scores[, 1] + error
 # Run FCQS function
-output <- fcqs(xc, y, time, nbasis, tau, d_tau)
+output <- fcqs(xc, y, time, nbasis, tau, dtau)
 # Compare the true and estimated predictors
 mcorr(output$betax, mfpca.scores[, 1])
 }
