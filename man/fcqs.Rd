@@ -22,7 +22,7 @@ data.}
 
 \item{tau}{A quantile level, a number strictly between 0 and 1.}
 
-\item{d_tau}{The dimension of the functional central quantile subspace.
+\item{dtau}{The dimension of the functional central quantile subspace.
 It should be an integer between 1 and \code{p}.}
 }
 \value{
