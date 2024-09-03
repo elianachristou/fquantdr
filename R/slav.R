@@ -122,7 +122,7 @@ slav <- function(x, ydis, H) {
 
   # Compute the mean of x for each group defined by yunit
   for(i in yunit) {
-    predictors <- x[ydis == yunit[i], ]
+    predictors <- as.matrix(x[ydis == yunit[i], ])
     # If vector, convert to horizontal matrix
     if (is.vector(predictors)) {
       predictors <- t(as.matrix(predictors))
