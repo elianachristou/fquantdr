@@ -6,39 +6,35 @@ test_that("input a is a square matrix", {
   expect_error(mppower(a, alpha))
 })
 
-test_that("alpha is a positive scalar value", {
+test_that("alpha is numeric", {
   a <- matrix(rnorm(36), nrow = 6, ncol = 6)
   alpha <- "how"
   expect_error(mppower(a, alpha))
 })
 
-test_that("epsilon inputs are not complex", {
+test_that("alpha is a single number", {
+  a <- matrix(rnorm(36), nrow = 6, ncol = 6)
+  alpha <- c(-1, 2)
+  expect_error(mppower(a, alpha))
+})
+
+test_that("epsilon is a real number", {
   a <- matrix(rnorm(36), nrow = 6, ncol = 6)
   alpha <- 3
   epsilon <- 3 + 2i
   expect_error(mppower(a, alpha, epsilon))
 })
 
-test_that("epsilon inputs are not positive", {
+test_that("epsilon is a nonnegative real number", {
   a <- matrix(rnorm(36), nrow = 6, ncol = 6)
   alpha <- 3
   epsilon <- -3
   expect_error(mppower(a, alpha, epsilon))
 })
 
-test_that("ignore must be a numeric value", {
-  a <- matrix(rnorm(36), nrow = 6, ncol = 6)
-  alpha <- 3
-  epsilon <- 3
-  ignore <- 3 + 2i
-  expect_error(mppower(a, alpha, epsilon, ignore))
-})
-
-test_that("output a is a square matrix", {
-  a <- matrix(rnorm(12), nrow = 2, ncol = 6)
-  alpha <- 2
-  # How do I test if the output is a matrix?
-  # This does not return an error however since I said expect error and it
-  # Does not create an error it should return an error
-  expect_error(is.matrix(mppower(a, alpha)))
-})
+#test_that("mppower gives the same output as matpower if epsion is 0", {
+#  a <- matrix(c(6, 4, 8, 2, 5, 9, 3, 1, 7), nrow = 3, ncol = 3)
+#  alpha <- 2
+#  epsilon <- 0
+#  expect_equal(mppower(a, alpha, epsilon), matpower(a, alpha))
+#})
