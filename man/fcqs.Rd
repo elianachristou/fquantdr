@@ -46,7 +46,7 @@ nonparametric model. This methodology is introduced in Christou et al. (2024+).
 }
 \examples{
 # Set the parameters
-n <- 400
+n <- 100
 p <- 5
 nbasis <- 4
 nbasis_KL <- 4

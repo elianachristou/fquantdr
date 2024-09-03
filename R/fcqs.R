@@ -37,7 +37,7 @@
 #'
 #' @examples
 #' # Set the parameters
-#' n <- 400
+#' n <- 100
 #' p <- 5
 #' nbasis <- 4
 #' nbasis_KL <- 4
@@ -192,15 +192,15 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, dtau = NULL) {
   # Compute initial inner product
   initial_inner_prod <- fcqs.out$yhat
   # Compute initial beta coefficients
-  initial_beta_coef <- fcqs.out$beta_coef
+  initial_beta_coef <- fcqs.out$betacoef
 
   # Construct more vectors
   beta_vector <- initial_beta_coef
   inner_prod <- initial_inner_prod
   for (j in 1:(min(p * nbasis, 40) - 1)) {
     # Construct new beta vector using the inner product and x coefficients
-    new_beta <- apply(matrix(rep(as.vector(inner_prod), 2), n, p * nbasis) *
-                        xcoef, 2, mean)
+    new_beta <- apply(matrix(rep(as.vector(inner_prod), p * nbasis), n,
+                             p * nbasis) * as.numeric(xcoef), 2, mean)
     beta_vector <- cbind(beta_vector, new_beta)
     inner_prod <- xcoef %*% gx %*% new_beta
   }
