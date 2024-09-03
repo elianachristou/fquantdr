@@ -37,7 +37,7 @@ To get started you need to first install the package using the command
 install.packages("fquantdr")
 ```
 
-After installation, you can load the package in any R session by issuing the command:
+After installation, you can load the package in any `R` session by issuing the command:
 ```{r setup}
 library(fquantdr)
 ```
@@ -49,29 +49,19 @@ help(package = "fquantdr")
 
 The package includes the following functions:
 
-* `fcqs` Functional central quantile subspace
+* `fcqs` Functional Central Quantile Subspace
 * `fundata` Functional data
 * `mcorr` Multiple correlation
 * `mfsir` Functional Sliced Inverse Regression
 * `sonf` Scalar-on-function regression
 
-<!-- * `discrete` Discretize conversion of a continuous numeric vector -->
-<!-- * `gramatrix` Computes the center gram matrix -->
-<!-- * `matpower` Power of a matrix -->
-<!-- * `mppower` Moore-Penrose type power -->
-<!-- * `qmat` Computes a transformed identity matrix -->
-<!-- * `rigpower` Ridge-regression type power -->
-<!-- * `slav` Compute slice average  -->
-<!-- * `slprob` Compute slice proportions  -->
-<!-- * `symmetry` Symmtrize Matrix -->
-
-You can find detailed descriptions and examples for each function by using the `help()` function or the `?` operator in R, specifying the function name. For example, to get help on the `fcqs` function, use:
+You can find detailed descriptions and examples for each function by using `help(function.name)` function or the `?function.name` operator in R. For example, to get help on the `fcqs` function, use:
 ```{r, eval = FALSE}
 help(fcqs)
 ?fcqs
 ```
 
-For further examples, refer to the coding examples listed in the documentation for each `fquantdr` function.
+For further examples, refer to the coding examples listed in the documentation for each function of the `fquantdr` package.
 
 # Functional central quantile subspace
 ## Overview
