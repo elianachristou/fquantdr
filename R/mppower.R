@@ -53,9 +53,13 @@ mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
   if (epsilon < 0){
     stop("epsilon should be a nonnegative real number.")
   }
+  # Checks if epsilon is complex
+  if (is.complex(epsilon)) {
+    stop("epsilon should be a nonnegative real number.")
+  }
 
   # to ensure that the matrix is symmetric
-  B <- (t(a) + a) / 2
+  B <- symmetry(a)
 
   if (epsilon > 0) {
     iden <- diag(nrow(a))
@@ -66,6 +70,10 @@ mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
   eig <- eigen(B, symmetric = T)
   eval <- eig$values
   evec <- eig$vectors
+
+  if(!is.numeric(ignore)) {
+    stop("the fouth input, ignore, must be an numeric input")
+  }
 
   # Find indices where eigenvalues are greater than ignore threshold
   m <- length(eval[eval > ignore])
