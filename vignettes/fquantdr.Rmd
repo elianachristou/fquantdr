@@ -59,7 +59,6 @@ The package includes the following functions:
 <!-- * `discrete` Discretize conversion of a continuous numeric vector -->
 <!-- * `gramatrix` Computes the center gram matrix -->
 <!-- * `matpower` Power of a matrix -->
-<!-- * `mcorr` Multiple correlation between two random vectors -->
 <!-- * `mppower` Moore-Penrose type power -->
 <!-- * `qmat` Computes a transformed identity matrix -->
 <!-- * `rigpower` Ridge-regression type power -->
@@ -103,7 +102,8 @@ The first step of the algorithm requires to fit a linear regression model of $Q_
 
 1. We apply a standard dimension reduction technique to replace \( X \) with \( L(X) \). Specifically, we use Functional Sliced Inverse Regression (FSIR) as proposed by Ferré and Yao (2003). Using the `mfsir` function of the presented package, we estimate the \( d \)-dimensional predictors \(\widehat{L}(X_u)\), for \( u = 1, \dots, n \)
 
-1. For each $u=1, \dots, n$, we use the local linear quantile estimation method of Guerre and Sabbah (2012) to estimate $\widehat{Q}_{\tau}\{Y| \widehat{L}(X_u)\}$
+1. For each $u=1, \dots, n$, we use the local linear quantile estimation method of Guerre and Sabbah (2012) to estimate $\widehat{Q}_{\tau}\{Y| \widehat{L}(X_u)\}$.
+For this we use `llqr` function of the `quantdr` package
 
 1. We set $\widehat{\beta}_{\tau}$ to be 
 \begin{eqnarray*}
@@ -116,7 +116,7 @@ For this we use the `sonf` function of the presented package.
 \widehat{\beta}_{\tau j} = n^{-1} \sum_{u=1}^{n}\langle \widehat{\beta}_{\tau j-1}, X_u \rangle_{\mathscr{H}}X_u.
 \end{eqnarray*}
 
-1. After obtaining $\widehat{\beta}_{\tau 0}, \widehat{\beta}_{\tau 1}, \dots, \widehat{\beta}_{\tau m}$, we set $\widehat{B}_{\tau} = \sum_{j=0}^{m} \widehat{\beta}_{\tau j} \otimes \widehat{\beta}_{\tau j}$ and focus on the eigenvalue problem (should we include more details in this step?)
+1. After obtaining $\widehat{\beta}_{\tau 0}, \widehat{\beta}_{\tau 1}, \dots, \widehat{\beta}_{\tau m}$, we set $\widehat{B}_{\tau} = \sum_{j=0}^{m} \widehat{\beta}_{\tau j} \otimes \widehat{\beta}_{\tau j}$ and focus on the eigenvalue problem and solving $\Sigma_{XX}^{\dagger 1/2} B_{\tau} \Sigma_{XX}^{\dagger 1/2} \eta_{\tau} = \lambda \eta_{\tau}, \quad v_{\tau} = \Sigma_{XX}^{\dagger 1/2} \eta_{\tau}$.
 
 ## Ouput of `fcqs`
 In this section, we begin by simulating data from the homoscedastic single-index model.
@@ -129,37 +129,88 @@ set.seed(1234)
 # Parameters for generating functional data
 n <- 100
 p <- 5
-q <- 4
-time_points <- seq(0, 1, length.out = 101)
-eta <- matrix(stats::rnorm(n * p * q), nrow = n, ncol = p * q)
-
-# Generate functional data according to KL expanasion
-Xc <- fundata(n, p, q, time_points, eta)$cg
-P <- eigen(cov(eta))$vectors
-Q <- diag(eigen(cov(eta))$values)
-
-# Further parameters for FCQS
-nbasis <- q
-H <- 10
+nbasis <- 4
 tau <- 0.5
 d_tau <- 1
 d_DR <- 1
+time <- seq(0, 1, length.out = 101)
+eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
+
+# Generate functional data according to KL expanasion
+result <- fundata(n, p, nbasis, time, eta)
+xc <- result$xc
+P <- eigen(cov(eta))$vectors
+Q <- diag(eigen(cov(eta))$values)
 
 # this is the inner products <b1, X>, <b2, X>, ... 
 mfpca.scores <- eta %*% P
 
-# define true inner products for functional central subspace
-uu_fcs <- mfpca.scores[, 1:d_DR]
-
 # Generate error for data
 error <- rnorm(n)
 
+# Generate y
 y <- 1 / (0.5 + (mfpca.scores[, 1] + 1)^2) + 0.2 * error
 ```
-We now discuss the output of the `fcqs` function
-```{r}
+The `fcqs` function operates by specifying a three-dimensional $n \times nt \times p$ array $X$, a vector of the response variable $Y$, a vector of time points $nt$ at which the functional data is evaluated, the number of basis functions for smoothing the functional data, and a quantile level $\tau$. The dimension of the $\tau$-FCQS is an integer between 1 and $p$. For this example, $d_{\tau} = 1$ for every quantile level $\tau$.
 
+We now discuss the output of the `fcqs` function
+
+```{r}
+output1 <- fcqs(xc, y, time, nbasis, tau, d_tau)
+output1
 ```
+The output of the `fcqs` function includes two primary components:
+
+1. `ffun`: The functional parameters that span the FCQS. These are the estimated directions in the functional central quantile subspace, which reflect the significant functional predictors for the quantile regression.
+
+1. `betax`: The resulting sufficient predictor, calculated as the inner product between `ffun` and `x`. This represents the reduced-dimensional representation of the functional data that retains the essential information for the quantile regression.
+
+If we want to measure the multiple correlation between the true and estimated predictors, we can use the `mcorr` function. Specifically, for random vectors $U$ and $V$ of the same dimension $d$, we define $C_{UU}, C_{UV},$ and $C_{VV}$ as the sample covariance matrices.  Then, the multiple correlation between $U$ and $V$ is given by:
+\begin{eqnarray*}
+mcorr(U, V) = tr(C_{VV}^{-1/2} C_{VU} C_{UU}^{-1} C_{UV} C_{VV}^{-1/2}),
+\end{eqnarray*}
+
+```{r}
+# define true inner products for FCQS
+uu_fcqs <- mfpca.scores[, 1:d_tau]
+
+# Compute the multiple correlation between the true and estimated predictors
+mcorr.fcqs.vec <- mcorr(output1$betax, uu_fcqs)
+mcorr.fcqs.vec
+```
+Note that the results range from $0$ to $1$, and a number closer to $d$ indicates better performance.
+
+To better understand the output, we can visualize the estimated functional central quantile subspace directions and the relationship between the true and estimated predictors.
+
+First, we can plot the relationship between the response variable $Y$ and the first sufficient predictor
+```{r, fig.align = "center"}
+library(ggplot2)
+
+# Create a dataframe for plotting
+df_y_vs_score <- data.frame(score = mfpca.scores[, 1], y = y)
+
+# Scatter plot
+ggplot(df_y_vs_score, aes(x = score, y = y)) +
+  geom_point() +
+  geom_smooth(method = "gam", se = FALSE, color = "red") +
+  labs(x = "First sufficient predictor", y = "y") +
+  theme_minimal()
+```
+
+Then we can compare the estimated inner product from the `fcqs` function to the true inner products used in data generation. 
+```{r, fig.align = "center"}
+# Create a dataframe for plotting
+df_inner_products <- data.frame(estimated = output1$betax, true = uu_fcqs)
+
+# Scatter plot
+ggplot(df_inner_products, aes(x = true, y = estimated)) +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, color = "red") +
+  labs(x = "True Inner Products", y = "Estimated Inner Products") +
+  theme_minimal()
+```
+
+Note that the reference line (slope = 1) indicates perfect agreement. The overall positive trend and the clustering around the reference line suggest that the `fcqs` function reasonably accurately estimates the inner products.
 
 # References
 1. Cardot, H., Crambes, C., and Sarda, P. (2005). Quantile regression when the covariates are functions. *Journal of Nonparametric Statistics*, 17, 841--856.
