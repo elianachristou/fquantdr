@@ -11,7 +11,7 @@ test_that("y is a univariate response", {
   expect_error(sonf(y, xfd))
 })
 
-test_that("y is of length n", {
+test_that("y and xfd have the same number of observations", {
   n <- 100
   m <- 80
   nbasis <- 8
