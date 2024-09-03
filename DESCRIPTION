@@ -11,7 +11,7 @@ Author: c(person("Eliana", "Christou", email="echris15@charlotte.edu",
     person("Jun", "Song", role = "ctb"),
     person("Austin", "Stitz", role = "aut"),
     person("Shanshan", "Wang", role = "aut"))
-Maintainer: The package maintainer <echris15@uncc.edu>
+Maintainer: The package maintainer <echris15@charlotte.edu>
 Description: An implementation of dimension reduction techniques for 
     conditionl quantiles under the presence of functional predictors.
     Specifically, the main function 'fcqs' replaces the functional 
@@ -46,6 +46,7 @@ Collate:
     'sonf.R'
     'symmetry.R'
 Suggests: 
+    ggplot2,
     knitr,
     mvtnorm,
     rmarkdown,
