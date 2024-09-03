@@ -67,7 +67,7 @@ sonf = function(y, xfd, dev2_penalty = FALSE, lambda = NULL) {
 
   # Check if y is a univariate response
   if (!is.vector(y)) {
-    stop(paste("y needs to be a univariate response."))
+    stop(paste("y needs to be a univariate vector."))
   }
 
   # Check if xfd is a functional object of class 'fd'
