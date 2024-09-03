@@ -39,10 +39,17 @@ You can install the released version of `fquantdr` from
 install.packages("fquantdr")
 ```
 
-and the development version from [GitHub](https://github.com/) with:
+and then use it during any `R` session by issuing the command
 
 ``` r
-# install.packages("devtools")
+library(fquantdr)
+```
+
+The development version from [GitHub](https://github.com/) can be
+installed using:
+
+``` r
+install.packages("devtools")
 devtools::install_github("elianachristou/fquantdr")
 ```
 
@@ -75,6 +82,8 @@ The function then returns:
   quantile subspace
 - `betax` the resulting sufficient predictors, calculated as the inner
   product between `betacoef` and `x`.
+
+#### Example 1
 
 This is a basic example that shows how to apply the function. First,
 let’s define the basic parameters, such as the sample size, the number
@@ -109,7 +118,6 @@ $\{\beta_1\}$.
 ``` r
 # Generate the functional predictors
 library(mvtnorm)
-#eta <- matrix(rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
 eta <- rmvnorm(n, mean = rep(0, p * nbasis))
 data.output <- fundata(n, p, nbasis, time, eta)
 xc <- data.output$xc
@@ -125,36 +133,21 @@ Before moving on and for illustration purposes, we plot the first
 functional predictor.
 
 ``` r
-library(fda)
-#> Loading required package: splines
-#> Loading required package: fds
-#> Loading required package: rainbow
-#> Loading required package: MASS
-#> Loading required package: pcaPP
-#> Loading required package: RCurl
-#> Loading required package: deSolve
-#> 
-#> Attaching package: 'fda'
-#> The following object is masked from 'package:graphics':
-#> 
-#>     matplot
-```
-
-``` r
 matplot(time, t(xc[, , 1]), type = "l", lty = 1, col = 1:n, xlab = "Time", ylab = "Value", main = paste("Functional Predictor", 1))
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 The purpose of the `fcqs` function is to estimate $\beta_1$ and form the
 new predictor $\langle \beta_1, X \rangle$. We now run the function and
 specify $d_\tau = 1$, so we can obtain the first direction.
 
 ``` r
-result <- fcqs(xc, y, time, nbasis, tau, d_tau = 1)
+result <- fcqs(xc, y, time, nbasis, tau, dtau = 1)
 ```
 
-The first sufficient predictor \$\_1, X \$ is given by
+The first sufficient predictor $\langle \widehat{\beta}_1, X \rangle$ is
+given by
 
 ``` r
 result$betax
@@ -162,23 +155,23 @@ result$betax
 
 Since the true relationship is
 $Y = 3 \langle \beta_1, X \rangle + \epsilon$, then a plot of $Y$
-against $\langle \beta_1, X \rangle$ should display a linear
+against $\langle \widehat{\beta}_1, X \rangle$ should display a linear
 relationship.
 
 ``` r
 plot(result$betax, y, xlab = 'First Sufficient Predictor')
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
 Another way to evaluate the performance of the methodology is to
 calculate the correlation between the true $\langle \beta_1, X \rangle$
 and the estimated $\langle \widehat{\beta}_1, X \rangle$. For that, we
 can use the `mcorr` function of the package, which calculates the
-multiple correlationship between two vectors of matrices. The output is
-a number between 0 and $d$, the dimension of the input. For this case,
-since we have a one-dimensional sufficient predictor, a number closer to
-1 indicates better performance.
+multiple correlation between two matrices. The output is a number
+between 0 and $d$, the dimension of the input. For this case, since we
+have a one-dimensional sufficient predictor, a number closer to 1
+indicates better performance.
 
 ``` r
 true.pred <- mfpca.scores[, 1]
@@ -187,19 +180,21 @@ mcorr(true.pred, est.pred)
 #> [1] 0.9478022
 ```
 
-Another example where the $\tau$-th functional central quantile subspace
-is two-dimensional. Let
+#### Example 2
+
+Let’s consider another example, where the $\tau$-th functional central
+quantile subspace is two-dimensional. Let
 $Y = \arctan(\pi \langle \beta_1, X \rangle) + 0.5 \sin(\pi \langle \beta_2, X \rangle / 6) + 0.1 \epsilon$.
 Then,
 
 ``` r
 y <- mfpca.scores[, 1]^3 + exp(mfpca.scores[, 2]) + error
-result2 <- fcqs(xc, y, time, nbasis, tau, d_tau = 2)
+result2 <- fcqs(xc, y, time, nbasis, tau, dtau = 2)
 
 true.pred2 <- mfpca.scores[, 1:2]
 est.pred2 <- result2$betax
 mcorr(true.pred2, est.pred2)
-#> [1] 1.663245
+#> [1] 1.664628
 ```
 
 ## Applications
