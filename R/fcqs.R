@@ -141,13 +141,10 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
   for (k in 1:p) {
     # Smooth functional predictor using given basis
     xfdk <- fda::smooth.basis(time, t(x[, , k]), databasis)$fd
-    # Center data
+    # Center data and get coefficients
     xfdk <- fda::center.fd(xfdk)
-    # Get coefficients
     xk.coef <- t(xfdk$coefs)
-    # Create array from coefficients
     xcoef_array[, , k] <- t(xk.coef)
-    # Add coefficients to xcoef matrix
     xcoef <- cbind(xcoef, xk.coef)
   }
 
@@ -176,7 +173,6 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
     h <- 1.25 * max(n ^ (-1 / (d_tau + 4)), min(2, stats::sd(y)) *
                     n ^ (-1 / (d_tau + 4)))
   }
-  # Scale bandwidth by 3
   h <- 3 * h
   # Get qhat through LLQR function
   qhat <- quantdr::llqr(vv, y, tau = tau, h = h)$ll_est
@@ -189,10 +185,9 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
   # Compute initial beta coefficients
   initial_beta_coef <- fcqs.out$beta_coef
 
-  # Initialize quantities for the loop
+  # Construct more vectors
   beta_vector <- initial_beta_coef
   inner_prod <- initial_inner_prod
-  # Construct more vectors
   for (j in 1:(min(p * nbasis, 40) - 1)) {
     # Construct new beta vector using the inner product and x coefficients
     new_beta <- apply(matrix(rep(as.vector(inner_prod), 2), n, p * nbasis) *
@@ -202,11 +197,8 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, d_tau) {
   }
 
   # Eigenfunction decomposition
-  ## Compute Moore-Penrose inverse of gx to the .5 power
   gx.half = mppower(gx, 0.5, 1e-8)
-  ## Compute Moore-Penrose inverse of gx to the -.5 power
   gx.inv.half = mppower(gx, -0.5, 1e-8)
-  ## Compute matrix A to find eigenvectors of M
   A =  mppower(1 / n * gx.half %*% t(xcoef) %*% qmat(n) %*% xcoef %*%
                  gx.half, -0.5, 1e-8)
   M <- A %*% gx.half %*% beta_vector %*% t(beta_vector) %*% gx.half %*% A
