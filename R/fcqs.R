@@ -8,7 +8,7 @@
 #' be linearly applied via the inner product to  replace the infinite-dimensional
 #' functional predictors with a few finite predictors without losing important
 #' information on the conditional quantiles while maintaining a flexible
-#' nonparametric model.
+#' nonparametric model. This methodology is introduced in Christou et al. (2024+).
 #'
 #' @param x A 3-dimensional array (\code{n x nt x p}), where n is the number
 #'     of observations, nt is the number of time points, and p is the number
@@ -28,6 +28,10 @@
 #'      \item{betacoef}{The functional parameters that span the FCQS}
 #'      \item{betax}{The resulting sufficient predictor, calculated as the
 #'      inner product between `betacoef` and `x`.}
+#'
+#' @references Christou, E., Solea, E., Wang, S., and Song, J. (2024+) Sufficient
+#' Dimension Reduction for Conditional Quantiles for Functional Data.
+#' \emph{under review}.
 #'
 #' @export
 #'

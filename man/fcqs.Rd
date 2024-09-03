@@ -42,7 +42,7 @@ central quantile subspace. These directions represent functions that can
 be linearly applied via the inner product to  replace the infinite-dimensional
 functional predictors with a few finite predictors without losing important
 information on the conditional quantiles while maintaining a flexible
-nonparametric model.
+nonparametric model. This methodology is introduced in Christou et al. (2024+).
 }
 \examples{
 # Set the parameters
@@ -72,4 +72,9 @@ y <- 3 * mfpca.scores[, 1] + error
 output <- fcqs(xc, y, time, nbasis, tau, d_tau)
 # Compare the true and estimated predictors
 mcorr(output$betax, mfpca.scores[, 1])
+}
+\references{
+Christou, E., Solea, E., Wang, S., and Song, J. (2024+) Sufficient
+Dimension Reduction for Conditional Quantiles for Functional Data.
+\emph{under review}.
 }
