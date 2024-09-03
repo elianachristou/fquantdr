@@ -5,7 +5,7 @@
 #'
 #' This function computes the directions that span the \eqn{\tau}th functional
 #' central quantile subspace. These directions represent functions that can
-#' be linearly applied via the inner product to  replace the infinite-dimensional
+#' be linearly applied via the inner product to replace the infinite-dimensional
 #' functional predictors with a few finite predictors without losing important
 #' information on the conditional quantiles while maintaining a flexible
 #' nonparametric model. This methodology is introduced in Christou et al. (2024+).
