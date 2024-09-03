@@ -49,12 +49,13 @@ mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
     stop("The exponent 'alpha' must be numeric. ")
   }
 
-  # Check if 'epsilon is >= 0'
-  if (epsilon < 0){
-    stop("epsilon should be a nonnegative real number.")
-  }
   # Checks if epsilon is complex
   if (is.complex(epsilon)) {
+    stop("epsilon should be a nonnegative real number.")
+  }
+
+  # Check if 'epsilon is >= 0'
+  if (epsilon < 0){
     stop("epsilon should be a nonnegative real number.")
   }
 
