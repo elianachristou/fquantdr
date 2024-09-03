@@ -23,10 +23,10 @@ fquantdr: Dimension Reduction Techniques for Conditional Quantiles for
     Functional Data
 ====================================================================
 
-The R package `fquantdr` performs dimension reduction techniques for conditional quantiles of a scalar response given the functional predictors.  Specifically, the method aims at replacing the infinite-dimensional functional predictors with a few finite predictors without losing important information on the conditional quantiles while maintaining a flexible nonparametric model.  For details of the methodology, see Christou et al.\ (2024).
+The R package `fquantdr` performs dimension reduction techniques for conditional quantiles of a scalar response given the functional predictors.  Specifically, the method aims at replacing the infinite-dimensional functional predictors with a few finite predictors without losing important information on the conditional quantiles while maintaining a flexible nonparametric model.  For details of the methodology, see Christou et al.\ (2024+).
 <!-- [Christou, E., Solea, E., Wang, S., and Song, J. (2024+) Sufficient Dimension Reduction for Conditional Quantiles for Functional Data. *Journal*, volume, pages](link) -->
 
-The main function of the package is `fcqs`, which estimates the directions of the functional central quantile subspace.  However, the package includes more functions that are helpful to run `fcqs`.  Specifically, `mfsir` performs functional sliced inverse regression (FSIR) of [Ferre and Yao (2003)](https://doi.org/10.1080/0233188031000112845) and `sonf` performs scalar-on-function linear regression.  Moreover, `fundata` generates functional data and `mcorr` computes the multiple correlation between two vector or matrices.  
+The main function of the package is `fcqs`, which estimates the directions of the functional central quantile subspace.  However, the package includes more functions that are helpful to run `fcqs`.  Specifically, `mfsir` performs functional sliced inverse regression (FSIR) of [Ferr&#233; and Yao (2003)](https://doi.org/10.1080/0233188031000112845) and `sonf` performs scalar-on-function linear regression.  Moreover, `fundata` generates functional data and `mcorr` computes the multiple correlation between two matrices.  
 
 ## Installation
 You can install the released version of `fquantdr` from [CRAN](https://CRAN.R-project.org) with: 
@@ -44,8 +44,8 @@ devtools::install_github("elianachristou/fquantdr")
 
 ## Introducing `fcqs`
 
-This function computes the directions that span the \eqn{\tau}th functional central quantile subspace. These directions represent functions that can
-be linearly applied via the inner product to give predictors that reduce the dimension of the infinitely-dimensional ones without losing any information on the conditional quantile.  
+This function computes the directions that span the $\tau$th functional central quantile subspace. These directions represent functions that can
+be linearly applied via the inner product to replace the infinite-dimensional functional predictors with a few finite predictors without losing important information on the conditional quantiles while maintaining a flexible nonparametric model.   
 
 The function requires several inputs:
 
@@ -54,7 +54,7 @@ The function requires several inputs:
 * `time` a numeric vector of length $nt$ representing the time points at which the functional data is evaluated.
 * `nbasis` the number of basis functions for smoothing the functional predictors.
 * `tau` the quantile level 
-* `d_tau` the number of directions the user wants to extract. 
+* `dtau` the number of directions the user wants to extract.  If not provided, the function will return $p$ directions.  
 
 The function then returns:
 

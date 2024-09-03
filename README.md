@@ -17,18 +17,18 @@ predictors. Specifically, the method aims at replacing the
 infinite-dimensional functional predictors with a few finite predictors
 without losing important information on the conditional quantiles while
 maintaining a flexible nonparametric model. For details of the
-methodology, see Christou et al. (2024).
+methodology, see Christou et al. (2024+).
 <!-- [Christou, E., Solea, E., Wang, S., and Song, J. (2024+) Sufficient Dimension Reduction for Conditional Quantiles for Functional Data. *Journal*, volume, pages](link) -->
 
 The main function of the package is `fcqs`, which estimates the
 directions of the functional central quantile subspace. However, the
 package includes more functions that are helpful to run `fcqs`.
 Specifically, `mfsir` performs functional sliced inverse regression
-(FSIR) of [Ferre and Yao
+(FSIR) of [Ferré and Yao
 (2003)](https://doi.org/10.1080/0233188031000112845) and `sonf` performs
 scalar-on-function linear regression. Moreover, `fundata` generates
 functional data and `mcorr` computes the multiple correlation between
-two vector or matrices.
+two matrices.
 
 ## Installation
 
@@ -48,11 +48,12 @@ devtools::install_github("elianachristou/fquantdr")
 
 ## Introducing `fcqs`
 
-This function computes the directions that span the th functional
+This function computes the directions that span the $\tau$th functional
 central quantile subspace. These directions represent functions that can
-be linearly applied via the inner product to give predictors that reduce
-the dimension of the infinitely-dimensional ones without losing any
-information on the conditional quantile.
+be linearly applied via the inner product to replace the
+infinite-dimensional functional predictors with a few finite predictors
+without losing important information on the conditional quantiles while
+maintaining a flexible nonparametric model.
 
 The function requires several inputs:
 
@@ -65,7 +66,8 @@ The function requires several inputs:
 - `nbasis` the number of basis functions for smoothing the functional
   predictors.
 - `tau` the quantile level
-- `d_tau` the number of directions the user wants to extract.
+- `dtau` the number of directions the user wants to extract. If not
+  provided, the function will return $p$ directions.
 
 The function then returns:
 
