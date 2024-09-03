@@ -22,8 +22,10 @@ data.}
 
 \item{tau}{A quantile level, a number strictly between 0 and 1.}
 
-\item{dtau}{The dimension of the functional central quantile subspace.
-It should be an integer between 1 and \code{p}.}
+\item{dtau}{The number of directions to extract, i.e., the dimension of
+the functional central quantile subspace.  It should be an integer
+between 1 and \code{p}.  If not provided, the function will return \code{p}
+directions}
 }
 \value{
 \code{fcqs} computes the directions of the functional central quantile
