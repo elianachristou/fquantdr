@@ -118,7 +118,7 @@ $\{\beta_1\}$.
 ``` r
 # Generate the functional predictors
 library(mvtnorm)
-eta <- rmvnorm(n, mean = rep(0, p * nbasis))
+eta <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis))
 data.output <- fundata(n, p, nbasis, time, eta)
 xc <- data.output$xc
 
@@ -183,80 +183,56 @@ mcorr(true.pred, est.pred)
 #### Example 2
 
 Let’s consider another example, where the $\tau$-th functional central
-quantile subspace is two-dimensional. Let
+quantile subspace is two-dimensional. We will also modify the simulation
+process to consider a different covariance structure. Let
 $Y = \arctan(\pi \langle \beta_1, X \rangle) + 0.5 \sin(\pi \langle \beta_2, X \rangle / 6) + 0.1 \epsilon$.
-Then,
 
 ``` r
+# define the parameters
+set.seed(1234)
+n <- 100
+p <- 5
+nt <- 101
+time <- seq(0, 1, length = nt)
+tau <- 0.5
+nbasis <- 4
+
+# Set the covariance matrix
+SigmaCov <- matrix(0, p * nbasis, p * nbasis)
+for (j in 1:p) {
+index.j <-(((j - 1) * nbasis + 1):(j * nbasis))
+diag(SigmaCov[index.j, index.j]) <- c(2, 1, 1/2, 1/4)
+}
+eta <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis), sigma = SigmaCov)
+
+# Generate the functional predictors and the scalar response
+data.output <- fundata(n, p, nbasis, time, eta)
+xc <- data.output$xc
+P <- eigen(cov(eta))$vectors
+mfpca.scores <- eta %*% P
+error <- rnorm(n)
 y <- mfpca.scores[, 1]^3 + exp(mfpca.scores[, 2]) + error
 result2 <- fcqs(xc, y, time, nbasis, tau, dtau = 2)
 
+# Calculate the multiple correlation
 true.pred2 <- mfpca.scores[, 1:2]
 est.pred2 <- result2$betax
 mcorr(true.pred2, est.pred2)
-#> [1] 1.664628
+#> [1] 1.981486
 ```
 
 ## Applications
 
-Potential applications of fquantdr include, but are not limited to, the
-following fields:
+Potential applications of the `fcqs` function include, but are not
+limited to, the following fields:
 
-- Biomedical data analysis
-- Financial data modeling
-- Environmental data analysis
+- Medical Field
+- Finance
+- Natural Language Processing
 
-For more detailed examples, please refer to the package documentation.
-
-## Functions
-
-**mfsir: Functional Sliced Inverse Regression**
-
-Performs FSIR that can incorporate multivariate functional predictors.
-
-**Arguments:**
-
-- X: (n x t x p) array of functional elements (centered).
-- y: Response variable.
-- H: Number of slices.
-- nbasis: Number of basis functions.
-
-**Returns:**
-
-- phi: Eigenvectors.
-- betas: Sufficient predictors.
-- eigvalues: Eigenvalues.
-- xfd.coef: Coefficients of the functional data.
-- gx: Gram matrix of the basis functions.
-
-### fcqs: Functional Central Quantile Subspace
-
-Fits a scalar-on-function regression for multivariate functional data.
-
-**Arguments:**
-
-- x: (n x t x p) array of functional elements.
-- y: Response variable.
-- t: Vector of time points.
-- tau: Quantile level
-- d_tau: Dimension of the FCQS.
-- nbasis: Number of basis functions.
-
-**Returns:**
-
-- ffun: Functional parameters that span the FCQS..
-- betax: Resulting sufficient predictor.
-
-## Additional Utility Functions
-
-These utility functions support various operations related to functional
-data analysis:
-
-- **discretize**: Discretizes the response variable y into yunit slices,
-  adding a small perturbation for stability.
-- **slprob**: Computes slice proportions for the response variable.
-- **slav**: Computes slice averages for the predictor coefficients.
-- **symmetry**: Symmetrizes a matrix.
-
-For more detailed examples and documentation, please refer to the
-package documentation and vignettes.
+For example, Christou et al. (2024+) apply the methodology to an fMRI
+data set that studies patients with ADHD. Specifically, the authors
+investigate resting-state fMRI data from the [ADHD-200
+Consortium](https://fcon_1000.projects.nitrc.org/indi/adhd200/index.html)
+and determine the form of association betweent the ADHD index and the
+fMRI brain activity.
