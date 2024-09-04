@@ -116,7 +116,7 @@ where \(\beta_1(t)=\psi_1(t)\) is the first eigenfunction of \(\Sigma_{XX}\). Th
 ```{r}
 set.seed(1234)
 # Parameters for generating functional data
-n <- 100
+n <- 200
 p <- 5
 nbasis <- 4
 tau <- 0.5
@@ -200,6 +200,37 @@ ggplot(df_inner_products, aes(x = true, y = estimated)) +
 ```
 
 Note that the reference line (slope = 1) indicates perfect agreement. The overall positive trend and the clustering around the reference line suggest that the `fcqs` function reasonably accurately estimates the inner products.
+
+## ADHD-200 fMRI data
+To illustrate the `fcqs` function, we use the ADHD-200 fMRI data to visualize our output. First, we load the data for the response and predictor variables.
+
+```{r}
+# Loading the Data
+load("/Users/a33/Dropbox/Shanshan/rcode/categorical/real data/fmri.data.com.Rdata")
+dim(fmri.data.com)
+n=dim(fmri.data.com)[1]
+ntx=dim(fmri.data.com)[2]
+p=dim(fmri.data.com)[3]
+tt=seq(0,1,length=ntx)
+
+#response is the ADHD index for combined
+NYU_phenotypic=read.csv("~/Dropbox/Shanshan/rcode/categorical/real data/NYU_phenotypic.csv", sep=";")
+head(NYU_phenotypic)
+missing.data <- which(NYU_phenotypic[,"ADHD.Index"] == -999 | NYU_phenotypic[,"QC_Rest_1"] == "N/A") # 10 missing data 
+# remove the missing data
+NYU_phenotypic=NYU_phenotypic[-c(missing.data),] 
+nrow(NYU_phenotypic) 
+n=length(which(NYU_phenotypic[,"DX"]==1)) #number of combined
+y=NYU_phenotypic[,"ADHD.Index"][which(NYU_phenotypic[,"DX"]==1)]
+```
+
+```{r}
+# parameters
+nbasis=15 
+Xc=fmri.data.com
+
+# output2 <- fcqs(Xc, y, tt, nbasis, tau = 0.5, d_tau = 5) # error in y (72) should be greater than the number of predictors (116)
+```
 
 # References
 1. Cardot, H., Crambes, C., and Sarda, P. (2005). Quantile regression when the covariates are functions. *Journal of Nonparametric Statistics*, 17, 841--856.
