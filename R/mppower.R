@@ -25,7 +25,7 @@
 #' @examples
 #' mat <- matrix(c(6, 4, 8, 2, 5, 9, 3, 1, 7), nrow = 3, ncol = 3)
 #' alpha <- 2
-#' result <- mppower(mat, alpha)
+#' mppower(mat, alpha)
 #'
 mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
 
@@ -41,12 +41,17 @@ mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
 
   # Check if 'alpha' is a single number
   if (length(alpha) != 1) {
-    stop("The exponent 'alpha' must be a single number.")
+    stop("The exponent 'alpha' must be a one-dimensional scalar.")
   }
 
   # Check if 'alpha' is numeric
   if (!is.numeric(alpha)) {
     stop("The exponent 'alpha' must be numeric. ")
+  }
+
+  # Checks if epsilon is complex
+  if (is.complex(epsilon)) {
+    stop("epsilon should be a nonnegative real number.")
   }
 
   # Check if 'epsilon is >= 0'
@@ -55,7 +60,7 @@ mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
   }
 
   # to ensure that the matrix is symmetric
-  B <- (t(a) + a) / 2
+  B <- symmetry(a)
 
   if (epsilon > 0) {
     iden <- diag(nrow(a))
@@ -66,6 +71,10 @@ mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
   eig <- eigen(B, symmetric = T)
   eval <- eig$values
   evec <- eig$vectors
+
+  if(!is.numeric(ignore)) {
+    stop("the fouth input, ignore, must be an numeric input")
+  }
 
   # Find indices where eigenvalues are greater than ignore threshold
   m <- length(eval[eval > ignore])

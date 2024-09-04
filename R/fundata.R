@@ -71,13 +71,8 @@
 fundata <- function(n, p, nbasis, time, eta) {
 
   # Check if n is a single integer number
-  if (length(n) != 1 | n != round(n)) {
-    stop("Parameter 'n' must be a single integer number.")
-  }
-
-  # Check if n is positive and greater than p
-  if (n <= 0 | n <= p) {
-    stop("Parameter 'n' must be a positive integer and greater than 'p'.")
+  if (length(n) != 1 | n != round(n) | n <= 0) {
+    stop("Parameter 'n' must be a single positive integer number.")
   }
 
   # Check that p is a single number

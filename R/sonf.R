@@ -26,48 +26,20 @@
 #'         regression.}
 #'
 #' @examples
-#' # Example 1
-#' # Set the parameters
-#' n <- 100
-#' nbasis <- 10
-#' p <- 3
-#' # Create a B-spline basis
-#' basis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
-#' # Generate random coefficients for the functional data object
-#' coef_matrix <- array(rnorm(n * nbasis * p), dim = c(nbasis, n, p))
-#' fdobj <- fda::fd(coef_matrix, basis)
-#' # Create a scalar response vector
-#' y <- rnorm(n)
-#' # Perform scalar-on-function regression without penalty
-#' result_no_penalty <- sonf(y, fdobj, dev2_penalty = FALSE)
-#' print("Regression coefficients without penalty:")
-#' print(result_no_penalty$betacoef)
-#' # Perform scalar-on-function regression with penalty
-#' lambda <- 0.1
-#' result_with_penalty <- sonf(y, fdobj, dev2_penalty = TRUE,
-#'           lambda = lambda)
-#' print("Regression coefficients with penalty:")
-#' print(result_with_penalty$betacoef)
-#' print("Predicted values:")
-#' print(result_with_penalty$yhat)
-#'
-#' # Example 2
 #' # set the parameters
 #' n <- 100
 #' p <- 5
 #' nbasis <- 4
 #' nt <- 101
 #' time <- seq(0, 1, length.out = nt)
-#' eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n,
-#'     ncol = p * nbasis)
+#' eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
 #' # Generate the functional data
 #' gen_data <- fundata(n, p, nbasis, time, eta)
 #' Xc <- gen_data$xc
 #' P <- eigen(stats::cov(eta))$vectors
 #' mfpca.scores <- eta %*% P
 #' # Prepare the fd object
-#' databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis,
-#' norder = nbasis)
+#' databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
 #' xcoef_array <- array(0, c(nbasis, n, p))
 #' for (k in 1:p) {
 #'  xfdk <- fda::smooth.basis(time, t(Xc[, , k]), databasis)$fd
@@ -83,13 +55,19 @@
 #' result_no_penalty <- sonf(y, x.fd, dev2_penalty = FALSE)
 #' print("Regression coefficients without penalty:")
 #' print(result_no_penalty$betacoef)
+#' # Compare y and yhat
+#' cor(y, result_no_penalty$yhat)
+#' # Perform scalar-on-function regression with penalty
+#' lambda <- 0.1
+#' result_with_penalty <- sonf(y, x.fd, dev2_penalty = TRUE, lambda = lambda)
+#' cor(y, result_with_penalty$yhat)
 #'
 #' @export
 sonf = function(y, xfd, dev2_penalty = FALSE, lambda = NULL) {
 
-  # Check if y is univariate response
+  # Check if y is a univariate response
   if (!is.vector(y)) {
-    stop(paste("y needs to be a univariate response."))
+    stop(paste("y needs to be a univariate vector."))
   }
 
   # Check if xfd is a functional object of class 'fd'
@@ -112,11 +90,11 @@ sonf = function(y, xfd, dev2_penalty = FALSE, lambda = NULL) {
   }
 
   # Check if n > p
-  if (length(y) <= dim(xfd$coef)[3]) {
-    stop(paste("The number of observations of y (", length(y), ") should be
-               greater than the number of predictors of xfd
-               (", dim(xfd$coef)[3], ").", sep = ""))
-  }
+  #if (length(y) <= dim(xfd$coef)[3]) {
+  #  stop(paste("The number of observations of y (", length(y), ") should be
+  #             greater than the number of predictors of xfd
+  #             (", dim(xfd$coef)[3], ").", sep = ""))
+  #}
 
   # Check if the number of basis agrees
   if (dim(xfd$coef)[1] != xfd$basis$nbasis) {

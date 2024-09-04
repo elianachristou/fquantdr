@@ -4,7 +4,7 @@
 #' provides the new estimated predictors.
 #'
 #' This function performs functional sliced inverse regression (FSIR),
-#' introduced by Ferr\'e and Yao (2003), for scalar-on-function problem.
+#' introduced by Ferr&#233; and Yao (2003), for scalar-on-function problems.
 #' The authors proved that \eqn{E(X|Y) - E(X)} belongs to
 #' \eqn{\Sigma_{XX} S_{Y|X}}, where \eqn{S_{Y|X}} denotes the functional
 #' central subspace.
@@ -23,7 +23,7 @@
 #' \eqn{X} are independent given \eqn{\langle \beta_1,
 #' X \rangle_{\bigoplus \mathcal{H}}, \dots,
 #' \langle \beta_d, X \rangle_{\bigoplus \mathcal{H}}} and that the \eqn{p}-
-#' dimensional predictor \eqn{X} can be replace with the \eqn{d}-dimensional
+#' dimensional predictor \eqn{X} can be replaced with the \eqn{d}-dimensional
 #' predictor \eqn{\langle \beta_1, X \rangle_{\bigoplus \mathcal{H}}, \dots,
 #' \langle \beta_d, X \rangle_{\bigoplus \mathcal{H}}}.
 #'
@@ -52,12 +52,13 @@
 #'      that is calculated during the dimension reduction process.}
 #' \item{gx}{The \code{(p * nbasis) x (p * nbasis)} block diagonal Gram
 #'     matrix of the B-spline basis functions.}
-#' \item{betas}{The coordinates of \eqn{\beta_1, \dots, \beta_d} resulting
-#'     from the coordinate representation on the B-spline basis functions.}
+#' \item{betas}{The \code{(p * nbasis) x (p * nbasis)} matrix of the
+#'     coordinates of \eqn{\beta_1, \dots, \beta_d} resulting from the
+#'     coordinate representation on the B-spline basis functions.}
 #' \item{sufpred}{The estimated sufficient predictors of the functional
 #'     central subspace.}
 #'
-#' @references Ferr\'e, L, and Yao, F. (2003) Function Sliced Inverse Regression
+#' @references Ferr&#233;, L, and Yao, F. (2003) Function Sliced Inverse Regression
 #' Analysis. \emph{Statistics}, 37(6), 475-488.
 #'
 #' @examples
@@ -68,8 +69,7 @@
 #' nbasis <- 4
 #' H <- 10
 #' time <- seq(0, 1, length.out = nt)
-#' eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n,
-#'     ncol = p * nbasis)
+#' eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
 #' # Generate the functional data
 #' result <- fundata(n, p, nbasis, time, eta)
 #' Xc <- result$xc
@@ -83,7 +83,7 @@
 #' result$sufpred
 #' # Plot the first sufficient predictor against the true one
 #' plot(result$sufpred[, 1], mfpca.scores[, 1], xlab = 'First
-#'     Sufficient Predictor', ylab = 'True Predictor')
+#'     Sufficient Predictor', ylab = 'First true Predictor', pch = 20)
 #' # Calculate the correlation between the estimated and true predictors
 #' mcorr(result$sufpred[, 1], mfpca.scores[, 1])
 #'
@@ -109,6 +109,17 @@ mfsir <- function(X, y, H, nbasis) {
     stop("H must be a positive integer.")
   }
 
+  # Check if H is one number
+  if (length(H) > 1) {
+    stop("H must be one number.")
+  }
+
+  # Check if H is greater than 1 and less than the length of y
+  if (H == 1 | H >= length(y)) {
+    stop("H must be an integer that is at least 2 and less than the
+         length of y.")
+  }
+
   # Check if nbasis is a positive integer
   if (nbasis <= 0 | nbasis != floor(nbasis)) {
     stop("nbasis must be a positive integer.")
@@ -127,8 +138,12 @@ mfsir <- function(X, y, H, nbasis) {
   }
 
   # Create a B-spline basis for smoothing
-  databasis <- fda::create.bspline.basis(rangeval = c(0, 1),
-                                         nbasis = nbasis, norder = nbasis)
+  if (nbasis < 4) {
+  databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis,
+                                         norder = nbasis)
+  } else {
+  databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
+  }
 
   # Calculate the coefficients
   xfd.coef <- numeric()
@@ -162,9 +177,9 @@ mfsir <- function(X, y, H, nbasis) {
   mucoef <- apply(xfd.coef, 2, mean)
 
   # Compute the proportion of observations and means within each slice
-  #ydis <- discretize (y, H)
-  prob <- slprob(y, H)
-  avg.slav <- slav(xfd.coef, y, H)
+  ydis <- discretize (y, H)
+  prob <- slprob(ydis, H)
+  avg.slav <- slav(xfd.coef, ydis, H)
 
   # Calculate the target matrix for the eigenvalue decomposition
   Lambda1 <- matrix(0, p * nbasis, p * nbasis)

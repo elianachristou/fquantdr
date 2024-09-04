@@ -6,7 +6,7 @@
 #' of given basis functions, commonly used in functional data analysis.
 #'
 #' @param K A positive integer representing the number of elements in the
-#'     basis.
+#'     basis, usually termed as `nbasis`.
 #' @param databasis A basis object that is a representation of data as a
 #'     smoothed function.  It must be an object of class \code{"basisfd"},
 #'     typically created using functions from the `fda` package.
@@ -19,8 +19,7 @@
 #' # Example 1
 #' K <- 4
 #' x <- seq(0, 10, length.out = 5)
-#' databasis <- fda::create.bspline.basis(rangeval = c(0, 10), nbasis = K,
-#'     norder = 4)
+#' databasis <- fda::create.bspline.basis(rangeval = c(0, 10), nbasis = K)
 #' gramatrix(K, databasis)
 #'
 #' \dontrun{

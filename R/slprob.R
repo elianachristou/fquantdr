@@ -1,25 +1,29 @@
 #' Slice Probabilities
 #'
-#' \code{slprob} calculates the proportion of observations that fall within
+#' \code{slprob} calculates the proportions of observations that fall within
 #' each slice, where the number of slices is given by H.
 #'
-#' @param y A numeric vector.
+#' @param ydis A discrete numeric vector that contains labels that define the
+#' slice each value of a vector `y` is in. This can be obtained using the
+#' `discretize` function.
 #' @param H The number of slices.
 #'
-#' @return A vector of proportion of observations that fall within each slice.
+#' @return A `H`-dimensional vector of proportions of observations that fall
+#' within each slice.
 #'
-#'@seealso \code{\link{discretize}}, \code{\link{slav}}
+#' @seealso \code{\link{discretize}}, \code{\link{slav}}
 #' @noRd
 #' @examples
 #' y <- rnorm(100)
 #' H <- 3
-#' slprob(y, H)
+#' ydis <- discretize(y, H)
+#' slprob(ydis, H)
 #'
-slprob <- function(y, H) {
+slprob <- function(ydis, H) {
 
-  # Check if y is a vector
-  if (!is.vector(y)) {
-    stop("y must be a vector.")
+  # Check if ydis is a vector
+  if (!is.vector(ydis)) {
+    stop("ydis must be a vector.")
   }
 
   # Check if H is a positive integer
@@ -27,10 +31,20 @@ slprob <- function(y, H) {
     stop("H must be a positive integer.")
   }
 
+  # Check if H is one number
+  if (length(H) > 1) {
+    stop("H must be one number.")
+  }
+
+  # Check if H is greater than 1 and less than the length of ydis
+  if (H == 1 | H >= length(ydis)) {
+    stop("H must be an integer that is at least 2 and less than the
+         length of ydis.")
+  }
+
   # Define the parameters
-  n <- length(y)
+  n <- length(ydis)
   yunit <- 1:H
-  ydis <- discretize(y, H)
 
   # Calculate the proportions
   out <- rep(0, H)

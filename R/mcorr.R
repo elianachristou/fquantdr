@@ -1,18 +1,23 @@
 #' Multiple correlation
 #'
-#' \code{mcorr} computes the multiple correlation between two vectors or
-#' matrices \code{u} and \code{v}.
+#' \code{mcorr} computes the multiple correlation between two matrices
+#' \code{u} and \code{v}.
 #'
-#' This function computes the multiple correlation between two vectors or
-#' matrices \code{u} and \code{v} of the same dimension.  Let \eqn{C_{uu}},
-#' \eqn{C_{uv}}, and \eqn{C_{vu}} represent the sample covariance matrices.
-#' The multiple correlation between \code{u} and \code{v} is given by:
+#' This function computes the multiple correlation between two matrices
+#' \code{u} and \code{v} of the same dimension.  If \code{u} and \code{v}
+#' are column vectors, then `mcorr` does the same job as the function `cor`
+#' of the `stats` package.
+#'
+#' Let \eqn{C_{uu}}, \eqn{C_{uv}}, \eqn{C_{vu}}, and \eqn{C_{vv}} represent
+#' the sample covariance matrices. The multiple correlation between \code{u}
+#' and \code{v} is given by:
 #' \deqn{
 #' mcorr(u, v) = tr(C_{vv}^{-1/2} C_{vu} C_{uu}^{-1} C_{uv} C_{vv}^{-1/2}).
 #' }
-#' This number ranges from 0 to d, the dimension of \code{u} and \code{v},
-#' where a number closer to d indicates stronger correlation.  This measure
-#' was used, for example, in Li and Song (2022) and Solea et al. (2024).
+#' This number ranges from 0 to d, where d denotes the number of columns of
+#' \code{u} and \code{v}. A number closer to d indicates stronger correlation.
+#' This measure was used, for example, in Li and Song (2022) and Solea et al.
+#' (2024).
 #'
 #' @param u,v Numeric vectors or matrices.
 #' @return \code{mcorr} computes the multiple correlation between \code{u}
@@ -24,7 +29,7 @@
 #'
 #' Solea, E., Christou, E., and Song, J. (2024). Robust Inverse Regression for
 #'     Multivariate Elliptical Functional Data. \emph{Statistica Sinica}
-#'     https://www3.stat.sinica.edu.tw/ss_newpaper/SS-2023-0341_na.pdf
+#'     https://doi.org/10.5705/ss.202023.0341
 #'
 #' @include matpower.R
 #' @examples
@@ -37,6 +42,12 @@
 #' u <- matrix(rnorm(150), ncol = 3)
 #' v <- matrix(rnorm(150), ncol = 3)
 #' mcorr(u, v)
+#'
+#' # Example 3
+#' u <- rnorm(100)
+#' v <- u + 0.1 * rnorm(100)
+#' mcorr(u, v)
+#' stats::cor(u, v)
 #'
 #' @export
 mcorr <- function(u, v) {
@@ -54,11 +65,11 @@ mcorr <- function(u, v) {
   }
 
   # Compute the correlation
-  if(ncol(u) == 1) {
+  if(dim(u)[2] == 1) {
     result <- c(abs(stats::cor(u, v)))
     return(result)
   } else {
-    suu.nhalf <- matpower(stats::var(u), -1 / 2)
+    suu.nhalf <- matpower(stats::var(u), - 1 / 2)
     svv.inv <- solve(stats::var(v))
     result <- c(abs(sum(diag(suu.nhalf %*% stats::cov(u, v) %*% svv.inv %*%
                                stats::cov(v, u) %*% suu.nhalf))))

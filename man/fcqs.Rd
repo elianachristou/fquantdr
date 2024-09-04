@@ -4,7 +4,7 @@
 \alias{fcqs}
 \title{Functional Central Quantile Subspace}
 \usage{
-fcqs(x, y, time, nbasis, tau = 0.5, d_tau)
+fcqs(x, y, time, nbasis, tau = 0.5, dtau = NULL)
 }
 \arguments{
 \item{x}{A 3-dimensional array (\code{n x nt x p}), where n is the number
@@ -17,12 +17,15 @@ variable.}
 \item{time}{A numeric vector of length \code{nt} of time points at which
 the functional data is evaluated.}
 
-\item{nbasis}{The number of basis functions for smoothing functional data.}
+\item{nbasis}{The number of basis functions for smoothing the functional
+data.}
 
 \item{tau}{A quantile level, a number strictly between 0 and 1.}
 
-\item{d_tau}{The dimension of the functional central quantile subspace.
-It should be an integer between 1 and \code{p}.}
+\item{dtau}{The number of directions to extract, i.e., the dimension of
+the functional central quantile subspace.  It should be an integer
+between 1 and \code{p}.  If not provided, the function will return \code{p}
+directions}
 }
 \value{
 \code{fcqs} computes the directions of the functional central quantile
@@ -38,20 +41,27 @@ subspace.
 \details{
 This function computes the directions that span the \eqn{\tau}th functional
 central quantile subspace. These directions represent functions that can
-be linearly applied via the inner product to given predictors to reduce the
-dimension of infinitely-dimensional functional data without losing any
-information required for accurate quantile regression of the functional
-data.
+be linearly applied via the inner product to replace the infinite-dimensional
+functional predictors with a few finite predictors without losing important
+information on the conditional quantiles while maintaining a flexible
+nonparametric model. This methodology is introduced in Christou et al. (2024+).
 }
 \examples{
 # Set the parameters
 n <- 100
 p <- 5
 nbasis <- 4
+nbasis_KL <- 4
 tau <- 0.1
-d_tau <- 1
+dtau <- 1
 time <- seq(0, 1, length.out = 101)
-eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
+# Set the covariance matrix
+SigmaCov <- matrix(0, p * nbasis_KL, p * nbasis_KL)
+for (j in 1:p) {
+ index.j <-(((j - 1) * nbasis_KL + 1):(j * nbasis_KL))
+ diag(SigmaCov[index.j, index.j]) <- c(2, 1, 1/2, 1/4)
+}
+eta <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis_KL), sigma = SigmaCov)
 # Generate functional data
 result <- fundata(n, p, nbasis, time, eta)
 xc <- result$xc
@@ -61,7 +71,12 @@ mfpca.scores <- eta \%*\% P
 error <- rnorm(n)
 y <- 3 * mfpca.scores[, 1] + error
 # Run FCQS function
-output <- fcqs(xc, y, time, nbasis, tau, d_tau)
+output <- fcqs(xc, y, time, nbasis, tau, dtau)
 # Compare the true and estimated predictors
 mcorr(output$betax, mfpca.scores[, 1])
+}
+\references{
+Christou, E., Solea, E., Wang, S., and Song, J. (2024+) Sufficient
+Dimension Reduction for Conditional Quantiles for Functional Data.
+\emph{under review}.
 }
