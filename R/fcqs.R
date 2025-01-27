@@ -176,14 +176,42 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, dtau = NULL) {
   ## Trim the y for the bandwidth calculation
   red_dim <- floor(0.1 * n)
   index_y <- order(y)[red_dim:(n - red_dim)]
-  h <- KernSmooth::dpill(vv[index_y, ], y[index_y])
-  h <- 4 * h * (tau * (1 - tau) / (stats::dnorm(stats::qnorm(tau))) ^ 2) ^ 0.2
-  # Use alternative method for bandwidth calculation on error
-  if (h == 'NaN') {
-    h <- 1.25 * max(n ^ (-1 / (dtau + 4)), min(2, stats::sd(y)) *
-                    n ^ (-1 / (dtau + 4)))
-  }
-  h <- 3 * h
+  h <- NULL
+  h <- tryCatch({
+    # Try the first method, using subset of pred and y
+    h_value <- KernSmooth::dpill(vv[index_y, ], y[index_y])
+
+    # Check if bandwidth is valid (not missig or non-positive)
+    if (is.na(h_value) || (!missing(h_value) && h_value <= 0) || is.nan(h_value))
+      stop("'bandwidth' must be strictly positive")
+
+    h_value  # Return this value if no error
+  }, error = function(e) {
+
+    # Fallback to the alternative bandwidth calculation method using another tryCatch
+    h_fallback <- tryCatch({
+      # Attempt to calculate using the full dataset
+      h_fallback <- KernSmooth::dpill(vv, y)
+
+      # Check if fallback bandwidth is valid (not missing or non-positive)
+      if (is.na(h_fallback) || (!missing(h_fallback) && h_fallback <= 0) || is.nan(h_fallback))
+        stop("'fallback bandwidth' must be strictly positive")
+
+      h_fallback  # Return fallback value if no error
+    }, error = function(e2) {
+      # If the fallback method also fails, use the final backup formula
+      #message("Both primary and fallback bandwidth calculations failed. Using the backup formula.")
+
+      # Final backup formula for bandwidth
+      h <- 1.25 * max(n ^ (-1 / (dtau + 4)), min(2, stats::sd(y)) *
+                        n ^ (-1 / (dtau + 4)))
+      })
+
+    h_fallback  # Return the fallback value or the backup formula value
+  })
+
+  h <- 3 * 4 * h * (tau * (1 - tau) / (stats::dnorm(stats::qnorm(tau))) ^ 2) ^ 0.2
+
   # Get qhat through LLQR function
   qhat <- quantdr::llqr(vv, y, tau = tau, h = h)$ll_est
 
