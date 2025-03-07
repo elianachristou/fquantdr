@@ -34,4 +34,61 @@
 #' str(data)
 #'
 #' @export
+genfuncdata <- function(n, p, nbasis, tt, basisname = 'bspline') {
+  # Step 1: Initialize the functional data array
+  Time <- length(tt)
+  X <- array(0, c(n, Time, p))
+
+  # Step 2: Set up the basis functions
+  if (basisname == 'bspline') {
+    basis <- create.bspline.basis(c(0, 1), nbasis = q)
+  } else if (basisname == 'fourier') {
+    basis <- create.fourier.basis(c(0, 1), nbasis = q)
+  }
+
+  # Step 3: Generate random coefficients for functional predictors
+  xcoefs <- array(0, c(n, q, p))
+  if (basisname == 'fourier') {
+    xcoefs[, 1, ] <- rnorm(n * p, 0, 2)
+    xcoefs[, 2, ] <- rnorm(n * p, 0, 1 / 4)
+    xcoefs[, 3, ] <- rnorm(n * p, 0, 1 / 2)
+    xcoefs[, 4, ] <- rnorm(n * p, 0, 1 / 4)
+    if (q == 5) xcoefs[, 5, ] <- rnorm(n * p, 0, 1 / 2)
+  } else if (basisname == 'bspline') {
+    xcoefs[, 1, ] <- runif(n * p, -4, 4)
+    xcoefs[, 2, ] <- runif(n * p, -1, 1)
+    xcoefs[, 3, ] <- runif(n * p, -1 / 2, 1 / 2)
+    xcoefs[, 4, ] <- runif(n * p, -1 / 2, 1 / 2)
+    if (q == 5) xcoefs[, 5, ] <- runif(n * p, -2, 2)
+
+    # Normalize B-spline coefficients
+    for (i in 1:p) {
+      Xfd <- fd(t(xcoefs[, , i]), basis)
+      fd.sd <- sd(diag(inprod(Xfd, Xfd)))
+      xcoefs[, , i] <- xcoefs[, , i] / fd.sd
+    }
+  }
+
+  # Step 4: Orthogonalize coefficients using Q-matrix
+  Q <- qmat(n)
+  zcoefs <- xcoefs
+  for (i in 1:p) {
+    xcoefs[, , i] <- Q %*% zcoefs[, , i]
+  }
+  xcoefs <- aperm(xcoefs, c(2, 1, 3))
+
+  # Step 5: Perform Functional Principal Component Analysis (FPCA)
+  pca.out <- fpca(list(coef = xcoefs, basis = basis), basisname)
+  mfpca.scores <- pca.out$pred
+
+  # Step 6: Generate functional data for each predictor
+  for (i in 1:p) {
+    Xfd <- fd(xcoefs[, , i], basis)
+    X[, , i] <- t(eval.fd(tt, Xfd))
+  }
+
+  # Return output as a list
+  out <- list(X = X, mfpca.scores = mfpca.scores)
+  return(out)
+}
 
