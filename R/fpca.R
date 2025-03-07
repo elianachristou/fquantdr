@@ -25,17 +25,23 @@
 #'
 #' @export
 fpca <- function(ftn, basisname) {
+
+
+
   # Extract coefficient array from input 'ftn' and determine its dimensions
   temp <- ftn$coef
   n <- dim(temp)[2]
   p <- dim(temp)[3]
   nt <- dim(temp)[1]
 
+  # If 'p' is NA, set it to 1 (for univariate case)
   if(is.na(p)) p <- 1
   xcoef <- temp
 
+  # Extract basis information from input
   basis <- ftn$basis
-  # Generate basis matrix based on specified basis type
+
+  # Generate basis penalty matrix based on specified basis type
   if(basisname == 'bspline') {
     GB <- bsplinepen(basis, Lfdobj = 0)
   }
@@ -43,31 +49,40 @@ fpca <- function(ftn, basisname) {
     GB <- fourierpen(basis, Lfdobj = 0)
   }
 
-  # Centering matrix for FPCA
+  # Create centering matrix for FPCA
   one <- matrix(1, n, 1)
   Q <- diag(n) - one %*% t(one) / n
+
   # Compute the square root of the penalty matrix
   B.half <- matpower(GB, 0.5)
 
+  # Univariate case
   if(p==1) {
+    # Compute covariance matrix in transformed space
     Sigma <- B.half %*% xcoef %*% Q %*% t(xcoef) %*% B.half / n
+    # Perform eigen decomposition of covariacne matrix
     egn <- eigen(Sigma, sym = TRUE)
     B.inv.half <- matpower(GB, -0.5)
+    # Compute predicited principal component scores
     pred <- Q %*% t(xcoef) %*% GB %*% B.inv.half %*% egn$vec
     out <- list(pred = pred, eval = egn$val, mat = B.inv.half %*% egn$vec)
-  } else if(p > 1) { # BX is the same for now...
+  } else if(p > 1) {
+    # Multicariate case
+    # Compute transformed coefficient matrix
     M.half <- B.half %*% xcoef[, , 1] %*% Q
     B.inv.half <- matpower(GB, -0.5)
     D.inv.half <- B.inv.half
+    # Compute transformed matrix for all variables
     BB <- GB %*% xcoef[, , 1] %*% Q
     for(j in 2:p) {
       D.inv.half <- as.matrix(bdiag2(D.inv.half, B.inv.half))
       M.half <- rbind(M.half, B.half %*% xcoef[, , j] %*% Q)
       BB <- rbind(BB, GB %*% xcoef[, , j] %*% Q)
     }
-    DD <- M.half
+    # Compute covariance matrix in transformed space
     M.half <- M.half %*% t(M.half) / n
     egn <- eigen(M.half, sym = TRUE)
+    # Compute predicted principall component scores
     pred <- t(BB) %*% D.inv.half %*% egn$vec
     out <- list(pred = pred, eval = egn$val, mat = D.inv.half %*% egn$vec)
   }
