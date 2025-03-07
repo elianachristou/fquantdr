@@ -47,19 +47,27 @@ genfuncdata <- function(n, p, nbasis, tt, basisname = 'bspline') {
   }
 
   # Step 3: Generate random coefficients for functional predictors
-  xcoefs <- array(0, c(n, q, p))
+  xcoefs <- array(0, c(n, nbasis, p))
   if (basisname == 'fourier') {
     xcoefs[, 1, ] <- rnorm(n * p, 0, 2)
     xcoefs[, 2, ] <- rnorm(n * p, 0, 1 / 4)
     xcoefs[, 3, ] <- rnorm(n * p, 0, 1 / 2)
     xcoefs[, 4, ] <- rnorm(n * p, 0, 1 / 4)
-    if (q == 5) xcoefs[, 5, ] <- rnorm(n * p, 0, 1 / 2)
+    if (nbasis >= 5) {
+      for (i in 5:nbasis){
+        xcoefs[, i, ] <- rnorm(n * p, 0, 1 / 2)
+      }
+    }
   } else if (basisname == 'bspline') {
     xcoefs[, 1, ] <- runif(n * p, -4, 4)
     xcoefs[, 2, ] <- runif(n * p, -1, 1)
     xcoefs[, 3, ] <- runif(n * p, -1 / 2, 1 / 2)
     xcoefs[, 4, ] <- runif(n * p, -1 / 2, 1 / 2)
-    if (q == 5) xcoefs[, 5, ] <- runif(n * p, -2, 2)
+    if (nbasis >= 5) {
+      for (j in 5:nbasis) {
+        xcoefs[, j, ] <- runif(n * p, -2, 2)
+      }
+    }
 
     # Normalize B-spline coefficients
     for (i in 1:p) {
