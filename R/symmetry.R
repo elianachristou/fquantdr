@@ -1,9 +1,13 @@
-#' Symmetrize Matrix
+#' Symmetrize a Square Matrix
 #'
 #' \code{symmetry} transforms a given square matrix into a symmetric matrix.
 #'
 #' This function symmetrizes the input matrix `a' by averaging it with its
-#' transpose.
+#' transpose, ensuring that the output is symmetric.  Given a square matrix
+#' \eqn{A}, the function computes: \deqn{ S = \frac{1}{2} (A + A^T) }
+#' This operation ensures that \eqn{S} is symmetric (\eqn{S = S^T}).
+#' This is useful in numerical applications where symmetry is required,
+#' such as in covariance matrices.
 #'
 #' @param a A square matrix
 #'
@@ -28,5 +32,5 @@ symmetry <- function(a) {
     stop("a must be a square matrix.")
   }
 
-  (a + t(a)) / 2
+  return((a + t(a)) / 2)
 }
