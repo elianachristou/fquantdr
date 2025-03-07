@@ -18,7 +18,7 @@
 #' bdiag2(M, N)
 #'
 bdiag2 <- function(M, N) {
-  # Get dimensions of input matries
+  # Get dimensions of input matrices
   nc <- ncol(M)
   nr <- nrow(M)
   nc2 <- ncol(N)
