@@ -7,7 +7,9 @@
 fpca(ftn, basisname)
 }
 \arguments{
-\item{ftn}{A functional data object containing coefficients and basis information.}
+\item{ftn}{A functional data object containing coefficients and basis information.
+The coefficients is a 3D array (q x n x p), where \code{q} is the number of basis,
+\code{n} is the sample size, and \code{p} is the number of functional variables.}
 
 \item{basisname}{A character string specifying the type of basis function to use.
 Options are 'bspline' or 'fourier'.}

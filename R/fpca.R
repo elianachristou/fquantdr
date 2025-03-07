@@ -9,6 +9,8 @@
 #' eigenvalues and eigenfunctions of the covariance matrix.
 #'
 #' @param ftn A functional data object containing coefficients and basis information.
+#'     The coefficients is a 3D array (q x n x p), where `q` is the number of basis,
+#'     `n` is the sample size, and `p` is the number of functional variables.
 #' @param basisname A character string specifying the type of basis function to use.
 #'     Options are 'bspline' or 'fourier'.
 #'
