@@ -22,7 +22,8 @@
 #' gramatrix(K, databasis)
 #'
 #' \dontrun{
-#' # Example 2
+#' # Example 2: Error message when databasis is not a basisfd object
+#' K <- 5
 #' x <- seq(0, 10, length.out = 5)
 #' databasis <- splines::bs(x, degree = 3, knots = c(3, 7))
 #' gramatrix(K, databasis)
