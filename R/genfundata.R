@@ -71,8 +71,8 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline') {
 
     # Normalize B-spline coefficients
     for (i in 1:p) {
-      Xfd <- fd(t(xcoefs[, , i]), basis)
-      fd.sd <- sd(diag(inprod(Xfd, Xfd)))
+      Xfd <- fda::fd(t(xcoefs[, , i]), basis)
+      fd.sd <- sd(diag(fda::inprod(Xfd, Xfd)))
       xcoefs[, , i] <- xcoefs[, , i] / fd.sd
     }
   }
@@ -91,7 +91,7 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline') {
 
   # Step 6: Generate functional data for each predictor
   for (i in 1:p) {
-    Xfd <- fd(xcoefs[, , i], basis)
+    Xfd <- fda::fd(xcoefs[, , i], basis)
     X[, , i] <- t(eval.fd(tt, Xfd))
   }
 
