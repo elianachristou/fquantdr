@@ -32,4 +32,6 @@
 #' tt <- seq(0, 1, length.out = 100)
 #' data <- genfundata(n, p, nbasis, tt, 'bspline')
 #' str(data)
+#'
+#' @export
 
