@@ -26,7 +26,24 @@
 #' @export
 fpca <- function(ftn, basisname) {
 
+  # Check if ftn is a valid functional object
+  if (!("coef" %in% names(ftn)) || !("basis" %in% names(ftn))) {
+    stop("'ftn' must be a functional object with 'coef' and 'basis' components.")
+  }
 
+  # Check if basisname is valid
+  if (!basisname %in% c("bspline", "fourier")) {
+    stop("'basisname' must be either 'bspline' or 'fourier'.")
+  }
+
+  # Check if coef array has expected dimensions
+  if (!is.array(ftn$coef) || length(dim(ftn$coef)) < 2) {
+    stop("'ftn$coef' must be a multidimensional array, where the first dimension
+         represent the number of basis functions, the second dimension represent
+         the number of observations, and the third dimension represent the number
+         of variables.  If the third dimension is not specified, then it will be
+         set to 1, treating it as a univariate case.")
+  }
 
   # Extract coefficient array from input 'ftn' and determine its dimensions
   temp <- ftn$coef
