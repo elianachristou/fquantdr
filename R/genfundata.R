@@ -34,7 +34,7 @@
 #' str(data)
 #'
 #' @export
-genfuncdata <- function(n, p, nbasis, tt, basisname = 'bspline') {
+genfundata <- function(n, p, nbasis, tt, basisname = 'bspline') {
   # Step 1: Initialize the functional data array
   nt <- length(tt)
   X <- array(0, c(n, nt, p))
