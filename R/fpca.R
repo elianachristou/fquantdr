@@ -1,7 +1,9 @@
 #' Functional Principal Component Analysis
 #'
-#' \code{fpca} performs Functional Principal Component Analysis (FPCA) on a given
-#' functional object.
+#' \code{fpca} computes FPCA by first extracting the coefficient matrix from the
+#' functional data object, then constructing the appropriate penalty matrix based
+#' on the specified basis type.  The method applied eigen decomposition to obtain
+#' functional principal components.
 #'
 #' This function performs FPCA on a given function object and returns the
 #' eigenvalues and eigenfunctions of the covariance matrix.
