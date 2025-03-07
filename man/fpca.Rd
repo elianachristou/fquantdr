@@ -7,24 +7,24 @@
 fpca(ftn, basisname)
 }
 \arguments{
-\item{ftn}{A list containing the coefficients of the functional object and
-the basis}
+\item{ftn}{A functional data object containing coefficients and basis information.}
 
-\item{basisname}{A string specifying the type of basis function to use for FPCA}
+\item{basisname}{A character string specifying the type of basis function to use.
+Options are 'bspline' or 'fourier'.}
 }
 \value{
-\code{fpca} returns:
+\code{fpca} returns a list containing:
 \itemize{
-\item \code{pred}: The principal component scores matrix
-\item \code{eval}: The eigenvalues
-\item \code{mat}: The matrix of eigenfunctions
+\item \code{pred}: Principal component scores.
+\item \code{eval}: Eigenvalues of the covariance operator.
+\item \code{mat}: Transformation matrix for principal components.
 }
 }
 \description{
-\code{fpca} performs functional principal component analysis (FPCA) on functional
-data.
+\code{fpca} performs Functional Principal Component Analysis (FPCA) on a given
+functional object.
 }
 \details{
-This function performs FPCA on the given functional data and returns the
+This function performs FPCA on a given function object and returns the
 eigenvalues and eigenfunctions of the covariance matrix.
 }
