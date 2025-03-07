@@ -46,5 +46,6 @@ gramatrix <- function(K, databasis) {
 
   # Calculate the centered Gram matrix
   Gmat <- qmat(K) %*% kernmat %*% qmat(K)
-  Gmat
+
+  return(Gmat)
 }
