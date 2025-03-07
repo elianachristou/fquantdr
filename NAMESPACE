@@ -3,6 +3,7 @@
 export(fcqs)
 export(fpca)
 export(fundata)
+export(genfuncdata)
 export(mcorr)
 export(mfsir)
 export(sonf)
