@@ -6,7 +6,7 @@
 #' of given basis functions, commonly used in functional data analysis.
 #'
 #' @param K A positive integer representing the number of elements in the
-#'     basis, usually termed as `nbasis`.
+#'     basis, usually termed as `nbasis`.  It must be a positive integer.
 #' @param databasis A basis object that is a representation of data as a
 #'     smoothed function.  It must be an object of class \code{"basisfd"},
 #'     typically created using functions from the `fda` package.
