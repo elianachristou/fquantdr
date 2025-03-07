@@ -16,3 +16,7 @@
 #'        \item \code{eval}: The eigenvalues
 #'        \item \code{mat}: The matrix of eigenfunctions
 #'    }
+#'
+#' @examples
+#'
+#' @export
