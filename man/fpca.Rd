@@ -32,3 +32,28 @@ functional principal components.
 This function performs FPCA on a given function object and returns the
 eigenvalues and eigenfunctions of the covariance matrix.
 }
+\examples{
+# set the parameters
+n <- 100
+p <- 5
+nbasis <- 4
+nt <- 101
+time <- seq(0, 1, length.out = nt)
+eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
+# Generate the functional data
+gen_data <- fundata(n, p, nbasis, time, eta)
+Xc <- gen_data$xc
+P <- eigen(stats::cov(eta))$vectors
+mfpca.scores <- eta \%*\% P
+# Prepare the fd object
+databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
+xcoef_array <- array(0, c(nbasis, n, p))
+for (k in 1:p) {
+ xfdk <- fda::smooth.basis(time, t(Xc[, , k]), databasis)$fd
+ xfdk <- fda::center.fd(xfdk)
+ xk.coef <- t(xfdk$coef)
+ xcoef_array[, , k] <- t(xk.coef)
+ }
+x.fd <- fda::fd(xcoef_array, databasis)
+
+}
