@@ -26,9 +26,11 @@ bdiag2 <- function(M, N) {
 
   # Initialize an empty matrix with appropriate size
   out <- matrix(0, nr + nr2, nc + nc2)
-  # Pllace M in the top-left block
+
+  # Place M in the top-left block
   out[(1:nr), (1:nc)] <- M
   # Place N in the bottom-right block
   out[((nr + 1):(nr + nr2)), ((nc + 1):(nc + nc2))] <- N
+
   return(out)
 }
