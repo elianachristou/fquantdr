@@ -36,6 +36,7 @@ Collate:
     'fcqs.R'
     'fpca.R'
     'fundata.R'
+    'genfundata.R'
     'gramatrix.R'
     'matpower.R'
     'mcorr.R'
