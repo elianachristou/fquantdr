@@ -1,6 +1,6 @@
 #' Functional data
 #'
-#' \code{fundata} generates functional data using either B-spline or Fourier
+#' \code{genfundata} generates functional data using either B-spline or Fourier
 #' basis functions.
 #'
 #' This function constructs functional data using basis expansions.  The
@@ -25,3 +25,11 @@
 #'        \item \code{mfpca.scores}: Matrix of FPCA scores.
 #'    }
 #'
+#' @examples
+#' n <- 50
+#' p <- 2
+#' nbasis <- 5
+#' tt <- seq(0, 1, length.out = 100)
+#' data <- genfundata(n, p, nbasis, tt, 'bspline')
+#' str(data)
+
