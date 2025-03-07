@@ -41,9 +41,9 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline') {
 
   # Step 2: Set up the basis functions
   if (basisname == 'bspline') {
-    basis <- create.bspline.basis(c(0, 1), nbasis = nbasis)
+    basis <- fda::create.bspline.basis(c(0, 1), nbasis = nbasis)
   } else if (basisname == 'fourier') {
-    basis <- create.fourier.basis(c(0, 1), nbasis = nbasis)
+    basis <- fda::create.fourier.basis(c(0, 1), nbasis = nbasis)
   }
 
   # Step 3: Generate random coefficients for functional predictors
