@@ -1,24 +1,30 @@
-#' Projection onto the orthogonal complement of the subspace spanned by 1
+#' Projection Matrix onto the Orthogonal Complement of the Subspace spanned by 1
 #'
 #' \code{qmat} computes the projection matrix onto the orthogonal complement
 #' of the subspace spanned by the vector of ones.
 #'
-#' This function generates a matrix that projects onto the orthogonal
-#' complement of the subspace spanned by a vector of ones. This is useful
-#' in various statistical and mathematical applications where centering or
-#' removing the mean is required.
+#' This function generates a matrix that removes the mean by projecting
+#' onto the orthogonal complement of the subspace spanned by a vector of ones.
+#' This is useful in various statistical and mathematical applications where
+#' centering or removing the mean is required.  The projection matrix is given by:
+#' \deqn{Q = I_n - (1/n) J_n}
+#' where:
+#' \itemize{
+#'   \item \eqn{I_n} is the \eqn{n \times n} identity matrix.
+#'   \item \eqn{J_n} is an \eqn{n \times n} matrix of ones.
+#' }
+#' This matrix is symmetric and idempotent, meaning \eqn{Q^2 = Q}.
 #'
 #' @param n A positive integer representing the number of rows and columns
 #' of the resulting square matrix.
 #'
-#' @return A \code{n x n} matrix representing the projection onto the
+#' @return An \code{n x n} matrix representing the projection onto the
 #' orthogonal complement of the subspace spanned by the vector of ones.
 #'
 #' @noRd
 #' @examples
 #' # Generate the 3 x 3 projection matrix
-#' proj.matrix3 <- qmat(3)
-#' proj.matrix3
+#' qmat(3)
 #'
 qmat <- function(n) {
 
