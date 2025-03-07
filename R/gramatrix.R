@@ -16,9 +16,8 @@
 #'
 #' @noRd
 #' @examples
-#' # Example 1
+#' # Example 1: Compute the Gram matrix for a B-spline basis
 #' K <- 4
-#' x <- seq(0, 10, length.out = 5)
 #' databasis <- fda::create.bspline.basis(rangeval = c(0, 10), nbasis = K)
 #' gramatrix(K, databasis)
 #'
