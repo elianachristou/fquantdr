@@ -36,14 +36,14 @@
 #' @export
 genfuncdata <- function(n, p, nbasis, tt, basisname = 'bspline') {
   # Step 1: Initialize the functional data array
-  Time <- length(tt)
-  X <- array(0, c(n, Time, p))
+  nt <- length(tt)
+  X <- array(0, c(n, nt, p))
 
   # Step 2: Set up the basis functions
   if (basisname == 'bspline') {
-    basis <- create.bspline.basis(c(0, 1), nbasis = q)
+    basis <- create.bspline.basis(c(0, 1), nbasis = nbasis)
   } else if (basisname == 'fourier') {
-    basis <- create.fourier.basis(c(0, 1), nbasis = q)
+    basis <- create.fourier.basis(c(0, 1), nbasis = nbasis)
   }
 
   # Step 3: Generate random coefficients for functional predictors
