@@ -92,7 +92,7 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline') {
   # Step 6: Generate functional data for each predictor
   for (i in 1:p) {
     Xfd <- fda::fd(xcoefs[, , i], basis)
-    X[, , i] <- t(eval.fd(tt, Xfd))
+    X[, , i] <- t(fda::eval.fd(tt, Xfd))
   }
 
   # Return output as a list
