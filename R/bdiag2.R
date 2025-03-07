@@ -4,7 +4,8 @@
 #'
 #' This function takes two matrices and arranges them in block diagonal form,
 #' meaning `M` occupies the top-left block and `N` occupies the bottom-right block,
-#' with zeros filling the remaining space.
+#' with zeros filling the remaining space.  The resulting matrix has dimensions
+#' `(nrow(M) + nrow(N)) \times (ncol(M) + ncol(N))`.
 #'
 #' @param M,N Two numeric matrices
 #'
