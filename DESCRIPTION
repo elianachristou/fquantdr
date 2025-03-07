@@ -33,6 +33,7 @@ RoxygenNote: 7.3.1
 Collate: 
     'discretize.R'
     'fcqs.R'
+    'fpca.R'
     'fundata.R'
     'gramatrix.R'
     'matpower.R'
