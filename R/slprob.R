@@ -48,15 +48,9 @@ slprob <- function(ydis, H) {
          length of ydis.")
   }
 
-  # Define the parameters
-  n <- length(ydis)
-  yunit <- 1:H
+  # Compute slice proportions
+  slice_counts <- table(factor(ydis, levels = 1:H))
+  slice_probs <- as.numeric(slice_counts) / length(ydis)
 
-  # Calculate the proportions
-  out <- rep(0, H)
-  for (i in yunit) {
-    # Probability = number of points in slice / number of points
-    out[i] <- length(ydis[ydis == yunit[i]]) / n
-  }
-  out
+  return(slice_probs)
 }
