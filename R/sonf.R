@@ -77,13 +77,6 @@ sonf = function(y, xfd, dev2_penalty = FALSE, lambda = NULL) {
          in 'xfd' must agree.")
   }
 
-  # Check if n > p
-  #if (length(y) <= dim(xfd$coef)[3]) {
-  #  stop(paste("The number of observations of y (", length(y), ") should be
-  #             greater than the number of predictors of xfd
-  #             (", dim(xfd$coef)[3], ").", sep = ""))
-  #}
-
   # Check if the number of basis agrees
   if (dim(xfd$coef)[1] != xfd$basis$nbasis) {
     stop(paste("The number of basis functions in the 'xfd$coef' object and
