@@ -95,8 +95,14 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline') {
     X[, , i] <- t(fda::eval.fd(tt, Xfd))
   }
 
+  # Create the xcoefs as a n x (p * nbasis) matrix
+  xcoefs.mat <- numeric()
+  for (k in 1:p) {
+    xcoefs.mat <- cbind(xcoefs.mat, t(xcoefs[, , k]))
+  }
+
   # Return output as a list
-  out <- list(X = X, mfpca.scores = mfpca.scores, xcoefs = xcoefs)
+  out <- list(X = X, mfpca.scores = mfpca.scores, xcoefs = xcoefs, xcoefs.mat = xcoefs.mat)
   return(out)
 }
 
