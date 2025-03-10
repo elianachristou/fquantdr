@@ -27,19 +27,19 @@
 #'
 slprob <- function(ydis, H) {
 
-  # Check if ydis is a vector
-  if (!is.vector(ydis)) {
-    stop("ydis must be a vector.")
+  # Check if ydis is a numeric vector
+  if (!is.vector(ydis) || !is.numeric(ydis)) {
+    stop("ydis must be a numeric vector.")
   }
 
-  # Check if H is a positive integer
-  if (H <= 0 | H != floor(H)) {
-    stop("H must be a positive integer.")
+  # Check if H is a single positive integer
+  if (H <= 0 | H != floor(H) | !is.numeric(H)) {
+    stop("H must be a single positive integer.")
   }
 
   # Check if H is one number
   if (length(H) > 1) {
-    stop("H must be one number.")
+    stop("H must be a single number.")
   }
 
   # Check if H is greater than 1 and less than the length of ydis
@@ -55,7 +55,7 @@ slprob <- function(ydis, H) {
   # Calculate the proportions
   out <- rep(0, H)
   for (i in yunit) {
-    # Probabilty = number of points in slice / number of points
+    # Probability = number of points in slice / number of points
     out[i] <- length(ydis[ydis == yunit[i]]) / n
   }
   out
