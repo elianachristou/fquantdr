@@ -34,7 +34,8 @@
 #' # Example 2
 #' y <- rnorm(100)
 #' H <- 4
-#' discretize(y, H)
+#' discretized_y <- discretize(y, H)
+#' table(discretized_y)
 #'
 discretize <- function(y, H) {
 
