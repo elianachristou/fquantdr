@@ -37,13 +37,13 @@ mppower <- function(a, alpha, epsilon = 0, ignore = 10^(-15)) {
   }
 
   # Check is 'a' is a square matrix
-  if (dim(a)[1] != dim(a)[2]) {
+  if (nrow(a) != ncol(a)) {
     stop("The input 'a' must be a square matrix.")
   }
 
   # Check if 'alpha' is a single number
   if (length(alpha) != 1) {
-    stop("The exponent 'alpha' must be a one-dimensional scalar.")
+    stop("The exponent 'alpha' must be a single numeric scalar.")
   }
 
   # Check if 'alpha' is numeric
