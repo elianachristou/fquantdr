@@ -45,35 +45,20 @@
 #' ydis <- discretize(y, H)
 #' slav(x, ydis, H)
 #'
-#' # Example 2: Functional predictors
-#' # set the parameters
+#' # Example 2: Functional X
 #' n <- 100
 #' p <- 5
-#' nt <- 101
 #' nbasis <- 4
+#' nt <- 100
+#' tt <- seq(0, 1, length.out = nt)
 #' H <- 10
-#' time <- seq(0, 1, length.out = nt)
-#' eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n,
-#'     ncol = p * nbasis)
-#' # Generate the functional data
-#' result <- fundata(n, p, nbasis, time, eta)
-#' Xc <- result$xc
-#' P <- eigen(stats::cov(eta))$vectors
-#' mfpca.scores <- eta %*% P
+#' # Generate functional data and extract the coefficients
+#' data <- genfundata(n, p, nbasis, tt, 'bspline')
+#' xfd.coef <- data$xcoefs.mat
 #' # Generate the model
 #' error <- rnorm(n)
-#' y <- 3 * mfpca.scores[, 1] + error
+#' y <- 3 * data$mfpca.scores[, 1] + error
 #' ydis <- discretize(y, H)
-#' # define the coefficients for the functional predictors
-#' databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
-#' xfd.coef <- numeric()
-#' for (k in 1:p) {
-#'  xfdk <- fda::smooth.basis(seq(0, 1, length.out = nt),
-#'                            t(Xc[, , k]), databasis)$fd
-#'  xfdk <- fda::center.fd(xfdk)
-#'  xk.coef <- t(xfdk$coef)
-#'  xfd.coef <- cbind(xfd.coef, xk.coef)
-#' }
 #' # Calculate the row-wise means
 #' slav(xfd.coef, ydis, H)
 #'
