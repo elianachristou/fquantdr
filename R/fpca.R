@@ -98,7 +98,7 @@ fpca <- function(ftn, basisname) {
     pred <- Q %*% t(xcoef) %*% GB %*% B.inv.half %*% egn$vec
     out <- list(pred = pred, eval = egn$val, mat = B.inv.half %*% egn$vec)
   } else if(p > 1) {
-    # Multicariate case
+    # Multivariate case
     # Compute transformed coefficient matrix
     M.half <- B.half %*% xcoef[, , 1] %*% Q
     B.inv.half <- matpower(GB, -0.5)
