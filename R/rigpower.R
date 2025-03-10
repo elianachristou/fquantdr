@@ -67,10 +67,9 @@ rigpower <- function(a, alpha, rho) {
   # Eigen decomposition
   eig <- eigen(a, symmetric = T)
   eval <- eig$values
-  evec <- eig$vectors
 
   # Regularize the matrix
-  a1 <- a + rho * max(eval) * diag(p)
+  a1 <- a + rho * max(eval) * diag(nrow(a))
 
   # Apply the matrix power transformation
   tmp <- matpower(a1, alpha)
