@@ -19,7 +19,7 @@ evaluated.}
 \item{basisname}{A character string for the type of basis functions to use,
 either 'bspline' or 'fourier'.  Default is 'bspline'.}
 
-\item{eta}{An optional array of coefficients of dimension \code{n x p x nbasis}.
+\item{eta}{An optional array of coefficients of dimension \code{nbasis * n * p}.
 If not provided, the coefficients will be randomly generated.}
 }
 \value{
@@ -44,10 +44,11 @@ dimension \code{n * (p * nbasis)}.
 basis functions.
 }
 \details{
-This function constructs functional data using basis expansions, randomly
-generates coefficients for the basis functions, applies an orthogonalization
-step using a Q-matrix, and performs functional principal component analysis
-(FPCA) to obtain a low-dimensional represetation of the data.
+This function constructs functional data by expanding a set of coefficients
+onto a chosen basis (either B-spline or Fourier).  Then, functional principal
+component analysis (FPCA) is applied to obtain a low-dimensional represetation
+of the data.  If the coefficients are not provided, then they are randomly
+generated.
 }
 \examples{
 n <- 50

@@ -3,10 +3,11 @@
 #' \code{genfundata} generates functional data using either B-spline or Fourier
 #' basis functions.
 #'
-#' This function constructs functional data using basis expansions, randomly
-#' generates coefficients for the basis functions, applies an orthogonalization
-#' step using a Q-matrix, and performs functional principal component analysis
-#' (FPCA) to obtain a low-dimensional represetation of the data.
+#' This function constructs functional data by expanding a set of coefficients
+#' onto a chosen basis (either B-spline or Fourier).  Then, functional principal
+#' component analysis (FPCA) is applied to obtain a low-dimensional represetation
+#' of the data.  If the coefficients are not provided, then they are randomly
+#' generated.
 #'
 #' @param n Integer. The number of observations, i.e., sample size.
 #' @param p Integer. The number of functional predictors.
@@ -15,7 +16,7 @@
 #'     evaluated.
 #' @param basisname A character string for the type of basis functions to use,
 #'     either 'bspline' or 'fourier'.  Default is 'bspline'.
-#' @param eta An optional array of coefficients of dimension \code{n x p x nbasis}.
+#' @param eta An optional array of coefficients of dimension \code{nbasis * n * p}.
 #'     If not provided, the coefficients will be randomly generated.
 #'
 #' @return \code{genfundata} returns a list containing:
@@ -100,7 +101,9 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta = NULL) {
     basis <- fda::create.fourier.basis(c(0, 1), nbasis = nbasis)
   }
 
-  # Step 3: Generate random coefficients for functional predictors
+  if (is.null(eta)) {
+  # Step 3: Generate random coefficients for functional predictors, if not
+    # provided
   xcoefs <- array(0, c(n, nbasis, p))
   if (basisname == 'fourier') {
     xcoefs[, 1, ] <- rnorm(n * p, 0, 2)
@@ -138,6 +141,9 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta = NULL) {
     xcoefs[, , i] <- Q %*% zcoefs[, , i]
   }
   xcoefs <- aperm(xcoefs, c(2, 1, 3))
+  } else {
+    xcoefs <- eta
+  }
 
   # Step 5: Perform Functional Principal Component Analysis (FPCA)
   pca.out <- fpca(list(coef = xcoefs, basis = basis), basisname)
