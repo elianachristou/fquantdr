@@ -1,16 +1,19 @@
-#' Functional Principal Component Analysis
+#' Functional Principal Component Analysis (FPCA)
 #'
-#' \code{fpca} computes FPCA by first extracting the coefficient matrix from the
-#' functional data object, then constructing the appropriate penalty matrix based
-#' on the specified basis type.  The method applied eigen decomposition to obtain
+#' \code{fpca} computes FPCA by extracting the coefficient matrix from the
+#' functional data object, constructing the appropriate penalty matrix based
+#' on the specified basis type, and applying eigen decomposition to obtain
 #' functional principal components.
 #'
 #' This function performs FPCA on a given function object and returns the
-#' eigenvalues and eigenfunctions of the covariance matrix.
+#' eigenvalues, transformation matrix, and principal component scores of the
+#' functional covariance matrix.  The method supports both univariate
+#' (\code{p = 1}) and multivariaate (\code{p > 1}) functional predictors.
 #'
-#' @param ftn A functional data object containing coefficients and basis information.
-#'     The coefficients is a 3D array (q x n x p), where `q` is the number of basis,
-#'     `n` is the sample size, and `p` is the number of functional variables.
+#' @param ftn A functional data object containing coefficients and basis
+#'     information.  The coefficients is a 3D array (nbasis x n x p), where `nbasis`
+#'     is the number of basis, `n` is the sample size, and `p` is the number of
+#'     functional variables.
 #' @param basisname A character string specifying the type of basis function to use.
 #'     Options are 'bspline' or 'fourier'.
 #'
