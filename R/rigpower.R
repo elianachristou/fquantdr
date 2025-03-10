@@ -64,9 +64,6 @@ rigpower <- function(a, alpha, rho) {
     stop("The regularization parameter 'rho' must be a single numeric value.")
   }
 
-  # define parameters
-  p <- nrow(a)
-
   # Eigen decomposition
   eig <- eigen(a, symmetric = T)
   eval <- eig$values
