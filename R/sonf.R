@@ -13,7 +13,8 @@
 #'
 #' @param y A numeric vector of length \code{n}, representing the scalar
 #'      response.
-#' @param xfd A functional data object of class \code{fd}.
+#' @param xfd A functional data object of class \code{fd}. The basis type must
+#'     be either 'bspline' or 'fourier'.
 #' @param dev2_penalty A logical flag indicating whether to apply a second
 #'    derivative penalty (default is `FALSE`).
 #' @param lambda A penalty parameter used if `dev2_penalty` is `TRUE`.
@@ -82,6 +83,11 @@ sonf = function(y, xfd, dev2_penalty = FALSE, lambda = NULL) {
     stop(paste("The number of basis functions in the 'xfd$coef' object and
                in the 'xfd$basis' object should agree.  Check
                'dim(xfd$coef)[1]' and 'xfd$basis$nbasis'."))
+  }
+
+  # Check if the basis is Bspline of Fourier
+  if (xfd$basis$type != 'bspline' && xfd$basis$type != 'fourier') {
+    stop(paste('The basis type needs to be Bspline or Fourier.'))
   }
 
   # Set the parameters
