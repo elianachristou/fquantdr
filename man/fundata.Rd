@@ -2,7 +2,7 @@
 % Please edit documentation in R/fundata.R
 \name{fundata}
 \alias{fundata}
-\title{Functional data}
+\title{Generate Functional data using a specified coefficient matrix}
 \usage{
 fundata(n, p, nbasis, time, eta)
 }

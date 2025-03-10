@@ -1,4 +1,4 @@
-#' Functional data
+#' Generate Functional data using a specified coefficient matrix
 #'
 #' \code{fundata} generates functional data based on Fourier basis functions.
 #'
