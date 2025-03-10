@@ -56,18 +56,18 @@ mcorr <- function(u, v) {
   u <- as.matrix(u)
   v <- as.matrix(v)
 
-  # Check if the number of rows for u and v agree
+  # Check if u and v have the same number of rows
   if (nrow(u) != nrow(v)) {
     stop("u and v must have the same number of rows.")
   }
 
-  # Check if u and v have the same dimension
+  # Check if u and v have the same number of columns
   if (ncol(u) != ncol(v)) {
     stop("u and v must have the same number of columns.")
   }
 
   # Compute the correlation
-  if(dim(u)[2] == 1) {
+  if (dim(u)[2] == 1) {
     result <- c(abs(stats::cor(u, v)))
     return(result)
   } else {
