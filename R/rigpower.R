@@ -45,23 +45,23 @@ rigpower <- function(a, alpha, rho) {
   }
 
   # Check if 'a' is a square matrix
-  if (dim(a)[1] != dim(a)[2]) {
+  if (nrow(a) != ncol(a)) {
     stop("The input 'a' must be a square matrix.")
   }
 
-  # Check if 'alpha' is a single number
+  # Check if 'alpha' is a numeric scalar
   if (length(alpha) != 1) {
-    stop("The exponent 'alpha' must be a one-dimensional scalar.")
+    stop("The exponent 'alpha' must be a single numeric value.")
   }
 
-  # Check if 'alpha' is numeric
+  # Check if 'alpha' is a numeric scalar
   if (!is.numeric(alpha)) {
-    stop("The exponent 'alpha' must be numeric.")
+    stop("The exponent 'alpha' must be a single numeric value.")
   }
 
-  # Check if 'rho' is a real number
-  if (!is.numeric(rho)) {
-    stop("The input 'rho' must be numeric.")
+  # Check if 'rho' is a numeric scallar
+  if (!is.numeric(rho) || length(rho) != 1) {
+    stop("The regularization parameter 'rho' must be a single numeric value.")
   }
 
   # define parameters
