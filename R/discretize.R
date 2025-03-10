@@ -62,35 +62,17 @@ discretize <- function(y, H) {
 
   # define the parameters
   n <- length(y)
-  yunit <- 1:H
 
   # Add small noise if y is discrete (prevents ties)
   if (length(unique(y)) < length(y) * 0.75) {
   y <- y + .00001 * mean(y) * stats::rnorm(n)
   }
 
-  # Order y values in ascending order
-  yord <- y[order(y)]
-  # Calculate the approximate number of data points per slice
-  nwidth <- floor(n / H)
+  # Determine slice boundaries using quantiles
+  quantiles <- quantile(y, probs = seq(0, 1, length.out = H + 1), na.rm = TRUE)
 
-  # Set each division point to the values of yord that represent
-  # the boundaries between slices
-  divpt <- rep(0, H - 1)
-  for(i in 1:(H - 1)) {
-    divpt[i] <- yord[i * nwidth + 1]
-  }
+  # Assign each value to a slice based on quantile cutoffs
+  y_discrete <- cut(y, breaks = quantiles, labels = FALSE, include.lowest = TRUE)
 
-  y1 <- rep(0, n)
-  # Assign slice labels to the upper boundary slice
-  y1[y >= divpt[H - 1]] <- H
-  # Assign slice labels to the lower boundary slice
-  y1[y < divpt[1]] <- 1
-  # Assign slices labels to intermediate slices
-  for(i in 2:(H - 1)) {
-    y1[(y >= divpt[i - 1]) & (y < divpt[i])] <- i
-  }
-
-  # Return discretized y
-  y1
+  return(as.integer(y_discrete))
 }
