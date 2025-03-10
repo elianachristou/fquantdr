@@ -96,7 +96,7 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline') {
   }
 
   # Return output as a list
-  out <- list(X = X, mfpca.scores = mfpca.scores)
+  out <- list(X = X, mfpca.scores = mfpca.scores, xcoefs = xcoefs)
   return(out)
 }
 
