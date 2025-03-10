@@ -10,7 +10,8 @@ sonf(y, xfd, dev2_penalty = FALSE, lambda = NULL)
 \item{y}{A numeric vector of length \code{n}, representing the scalar
 response.}
 
-\item{xfd}{A functional data object of class \code{fd}.}
+\item{xfd}{A functional data object of class \code{fd}. The basis type must
+be either 'bspline' or 'fourier'.}
 
 \item{dev2_penalty}{A logical flag indicating whether to apply a second
 derivative penalty (default is \code{FALSE}).}
@@ -43,27 +44,15 @@ coefficients, the estimated response values, and the design matrix.
 n <- 100
 p <- 5
 nbasis <- 4
-nt <- 101
-time <- seq(0, 1, length.out = nt)
-eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
+nt <- 100
+tt <- seq(0, 1, length.out = nt)
 # Generate the functional data
-gen_data <- fundata(n, p, nbasis, time, eta)
-Xc <- gen_data$xc
-P <- eigen(stats::cov(eta))$vectors
-mfpca.scores <- eta \%*\% P
+fd.data <- genfundata(n, p, nbasis, tt, 'bspline')
 # Prepare the fd object
-databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
-xcoef_array <- array(0, c(nbasis, n, p))
-for (k in 1:p) {
- xfdk <- fda::smooth.basis(time, t(Xc[, , k]), databasis)$fd
- xfdk <- fda::center.fd(xfdk)
- xk.coef <- t(xfdk$coef)
- xcoef_array[, , k] <- t(xk.coef)
- }
-x.fd <- fda::fd(xcoef_array, databasis)
+x.fd <- fda::fd(fd.data$xcoefs, fd.data$basis)
 # Generate the model
 error <- rnorm(n)
-y <- 3 * mfpca.scores[, 1] + error
+y <- 3 * fd.data$mfpca.scores[, 1] + error
 # Perform scalar-on-function without penalty
 result_no_penalty <- sonf(y, x.fd, dev2_penalty = FALSE)
 print("Regression coefficients without penalty:")
