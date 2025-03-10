@@ -46,6 +46,7 @@
 #' slav(x, ydis, H)
 #'
 #' # Example 2: Functional X
+#' # Define the parameters
 #' n <- 100
 #' p <- 5
 #' nbasis <- 4
