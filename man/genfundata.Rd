@@ -25,6 +25,9 @@ either 'bspline' or 'fourier'.  Default is 'bspline'.}
 \item \code{X}: An array of generated functional data of dimension
 \code{n * nt * p}, where \code{nt} denotes the number of time
 points.
+\item \code{Xc}: An array of centered functional data of dimension
+\code{n * nt * p}, where \code{nt} denotes the number of time
+points.
 \item \code{mfpca.scores}: A matrix of FPCA scores.
 .       \item \code{xcoefs}: An array of the coefficients used for generating
 the functional data of dimension \code{nbasis * n * p}.

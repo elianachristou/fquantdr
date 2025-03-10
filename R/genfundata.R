@@ -21,6 +21,9 @@
 #'        \item \code{X}: An array of generated functional data of dimension
 #'            \code{n * nt * p}, where \code{nt} denotes the number of time
 #'            points.
+#'        \item \code{Xc}: An array of centered functional data of dimension
+#'            \code{n * nt * p}, where \code{nt} denotes the number of time
+#'            points.
 #'        \item \code{mfpca.scores}: A matrix of FPCA scores.
 #'.       \item \code{xcoefs}: An array of the coefficients used for generating
 #'        the functional data of dimension \code{nbasis * n * p}.
@@ -78,6 +81,7 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline') {
   # Step 1: Initialize the functional data array
   nt <- length(tt)
   X <- array(0, c(n, nt, p))
+  Xc <- array(0, c(n, nt, p))
 
   # Step 2: Set up the basis functions
   if (basisname == 'bspline') {
@@ -133,6 +137,8 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline') {
   for (i in 1:p) {
     Xfd <- fda::fd(xcoefs[, , i], basis)
     X[, , i] <- t(fda::eval.fd(tt, Xfd))
+    Xc[, , i] <- X[, , i] - matrix(rep(apply(X[, , i], 2, mean), n),
+                                   nrow = n, byrow = T)
   }
 
   # Create the xcoefs as a n x (p * nbasis) matrix
@@ -142,7 +148,7 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline') {
   }
 
   # Return output as a list
-  out <- list(X = X, mfpca.scores = mfpca.scores, xcoefs = xcoefs,
+  out <- list(X = X, Xc = Xc, mfpca.scores = mfpca.scores, xcoefs = xcoefs,
               xcoefs.mat = xcoefs.mat, basis = basis)
   return(out)
 }
