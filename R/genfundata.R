@@ -36,11 +36,22 @@
 #'    }
 #'
 #' @examples
+#' # Example 1: Randomly generated coefficients
 #' n <- 50
 #' p <- 2
 #' nbasis <- 5
 #' tt <- seq(0, 1, length.out = 100)
 #' data <- genfundata(n, p, nbasis, tt, 'bspline')
+#' str(data)
+#'
+#' # Example 2: Coefficients are provided by the user
+#' n <- 100
+#' p <- 3
+#' nbasis <- 4
+#' tt <- seq(0, 1, length.out = 100)
+#' eta.mat <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis))
+#' eta <- array(eta.mat, dim = c(nbasis, n, p))
+#' data <- genfundata(n, p, nbasis, tt, 'bspline', eta = eta)
 #' str(data)
 #'
 #' @export
