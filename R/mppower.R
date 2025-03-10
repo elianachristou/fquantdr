@@ -1,23 +1,24 @@
-#' Matrix power transformation
+#' Matrix power transformation via eigen decomposition
 #'
 #' \code{mppower} computes the power of a square matrix using eigen
 #'     decomposition.
 #'
-#' This function takes a square matrix \code{a} and an exponent \code{alpha}
-#' and transforms the matrix by performing eigen decomposition.  It differs
-#' from the function \code{matpower} since it includes a parameter
-#' \code{epsilon}, which, if provided, it is added to the diagonal elements
-#' to stabilize computations.  Moreover, it includes a parameter \code{ignore},
-#' which provides a threshold below which eigenvalues are ignored.
+#' This function raises a square matrix \code{a} to the power \code{alpha} by
+#' performing an eigen decomposition.  It differs from the function
+#' \code{matpower} since it includes an optional stabilization parameter
+#' \code{epsilon}, which is added to the diagonal elements to improve numerical
+#' stability.  Moreover, the parameter \code{ignore} specifies a threshold below
+#' which eigenvalues are ignored to mitigate numerical errors.
 #'
-#' @param a The input square matrix.
-#' @param alpha The exponent to which the matrix is raised.
+#' @param a A square numeric matrix.
+#' @param alpha A numeric scalar exponent.
 #' @param epsilon A nonnegative numeric value added to the diagonal elements
-#'     of the matrix to stabilize computations (default is 0).
+#'     of the matrix for stabilization (default is 0).
 #' @param ignore A numeric threshold below which eigenvalues are ignored
 #'     (default is 10^(-15)).
 #'
-#' @return The matrix raised to the power of \code{alpha}.
+#' @return A numeric matrix representing \code{a} raised to the power of
+#'     \code{alpha}.
 #'
 #' @seealso \code{\link{matpower}}
 #'
