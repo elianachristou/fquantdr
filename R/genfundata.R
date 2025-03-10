@@ -74,7 +74,7 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline') {
   }
 
   # Check if the basis is Bspline of Fourier
-  if (xfd$basis$type != 'bspline' && xfd$basis$type != 'fourier') {
+  if (basisname != 'bspline' && basisname != 'fourier') {
     stop(paste('The basis type needs to be Bspline or Fourier.'))
   }
 
