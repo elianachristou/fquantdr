@@ -1,25 +1,26 @@
 #' Group-wise mean calculation
 #'
 #' \code{slav} computes the row-wise mean of \code{x} within each group
-#' determined by the \code{H} slices.
+#' determined by the \code{ydis} slices.
 #'
 #' This function calculates the row-wise mean of \code{x} for each group
-#' defined by the unique elements of the sliced response \code{y}.  The
+#' defined by the unique elements of the sliced response \code{ydis}.  The
 #' resulting matrix contains the mean values for each group.  This is
 #' essential for applying sliced inverse regression (SIR) of Li (1991) and
 #' its functional counterpart of Ferr&#233; and Yao (2003).
 #'
-#' @param x A \code{n x p} numeric matrix, where rows represent
-#'     observations and columns represent variables.  If the user is using
-#'     functional predictors, then \code{x} consists of the coefficients
-#'     of the functional object and is of \code{n x (p * nbasis)} dimension.
+#' @param x A numeric matrix of dimension \code{n x p}, where rows represent
+#'     observations and columns represent variables.  If using functional
+#'     predictors, then \code{x} consists of the coefficients of the
+#'     functional object and is of dimension \code{n x (p * nbasis)}.
 #' @param ydis A discrete numeric vector that contains labels that define the
-#' slice each value of a vector `y` is in. This can be obtained using the
-#' `discretize` function.
-#' @param H The number of slices.
+#'     slice each value of a vector `y` is in. This can be obtained using the
+#'     `discretize` function.
+#' @param H An integer specifying the number of slices (groups).  Must be at
+#'     least 2 and less than the number of observations.
 #'
 #' @return A \code{H x p} matrix, where rows represent the mean values of
-#'     \code{x} as determined by the discretize response \code{ydis}. If
+#'     \code{x} as determined by the discretized response \code{ydis}. If
 #'     \code{x} consists of the coefficients of a functional object, then
 #'     the output is a \code{H x (p * nbasis)} matrix.
 #'
