@@ -65,18 +65,18 @@
 #'
 slav <- function(x, ydis, H) {
 
-  # Check if x is a matrix
-  if (!is.matrix(x)){
-    stop("The input 'x' must be a matrix.")
+  # Check if x is a is a numeric matrix
+  if (!is.matrix(x) | !is.numeric(x)) {
+    stop("The input 'x' must be a numeric matrix.")
   }
 
-  # Check if ydis is a vector
-  if (!is.vector(ydis)) {
-    stop("The input 'ydis' must be a vector.")
+  # Check if ydis is a numeric vector
+  if (!is.vector(ydis) | !is.numeric(ydis)) {
+    stop("The input 'ydis' must be a numeric vector.")
   }
 
   # Check if x and ydis have the same number of observations
-  if (length(ydis) != dim(x)[1]) {
+  if (length(ydis) != nrow(x)) {
     stop("The number of observations of ydis must be the same as the number
          of rows of x.")
   }
@@ -86,9 +86,9 @@ slav <- function(x, ydis, H) {
     stop("H must be a positive integer.")
   }
 
-  # Check if H is one number
+  # Check if H is a single number
   if (length(H) > 1) {
-    stop("H must be one number.")
+    stop("H must be a single number.")
   }
 
   # Check if H is greater than 1 and less than the length of ydis
