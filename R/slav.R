@@ -35,19 +35,17 @@
 #'
 #' @noRd
 #' @examples
-#' # Example 1
-#' # set the parameters
+#' # Example 1: Scalar X
 #' n <- 100
 #' p <- 5
 #' H <- 10
-#' # define the variables
 #' x <- matrix(rnorm(n * p), nrow = n, ncol = p)
 #' beta <- c(1, 1, 0, 0, 0)
-#' y <- c(x %*% beta + rnorm(n))
+#' y <- as.vector(x %*% beta + rnorm(n))
 #' ydis <- discretize(y, H)
 #' slav(x, ydis, H)
 #'
-#' # Example 2
+#' # Example 2: Functional predictors
 #' # set the parameters
 #' n <- 100
 #' p <- 5
