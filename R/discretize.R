@@ -1,20 +1,21 @@
 #' Discretize conversion of a continuous numeric vector
 #'
-#' \code{discretize} converts a continuous numeric vector into a discrete
+#' \code{discretize} partitions a continuous numeric vector into a discrete
 #' vector with labels corresponding to different slices of the data.
 #'
-#' This function converts a continuous numeric vector into a discrete vector
-#' by slicing the data and assigning a label to each value according to which
-#' slice it is in.  The idea stems from Li (1991), who proposed sliced inverse
-#' regression (SIR), a dimension reduction technique.  This function is
-#' necessary for this package when performing the extension of SIR to
-#' functional predictors, introduced by Ferr&#233; and Yao (2003).
+#' This function discretizes a continuous numeric vector into a discrete vector
+#' by dividing its rage into \code{H} approximately equal-sized slices and
+#' labeling each observation based on its slice assignment.  If \code{y} is
+#' discrete, a small amount of noise is added to prevent ties. The idea
+#' originates from Sliced Inverse Regression (SIR) proposed by Li (1991) and is
+#' used in functional SIR, as extended by Ferr&#233; and Yao (2003).
 #'
-#' @param y A (continuous or discrete) vector.  If y is discrete, a small
-#'     amount of noise is added to make it continuous.
-#' @param H The number of slices.
+#' @param y A (continuous or discrete) numeric vector.  If y is discrete, a small
+#'     amount of noise is added to ensure continuity.
+#' @param H A positive integer specifying the number of slices.
 #'
-#' @return A vector defining the slices each value of y corresponds to.
+#' @return A numeric vector of the same length as \code{y}, with integer labels
+#'     \code{1} to \code{H}, indicating the slice assignment of each value.
 #'
 #' @references Li, K.-C. (1991) Sliced Inverse Regression for Dimension
 #' Reduction.  \emph{Journal of the American Statistical Association},
