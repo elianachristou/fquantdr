@@ -1,12 +1,12 @@
 #' Multiple correlation
 #'
-#' \code{mcorr} computes the multiple correlation between two matrices
-#' \code{u} and \code{v}.
+#' \code{mcorr} computes the multiple correlation between two numeric matrices
+#' \code{u} and \code{v} of the same dimension.
 #'
 #' This function computes the multiple correlation between two matrices
 #' \code{u} and \code{v} of the same dimension.  If \code{u} and \code{v}
-#' are column vectors, then `mcorr` does the same job as the function `cor`
-#' of the `stats` package.
+#' are column vectors, then `mcorr` is equivalent to the `cor` function
+#' from the `stats` package.
 #'
 #' Let \eqn{C_{uu}}, \eqn{C_{uv}}, \eqn{C_{vu}}, and \eqn{C_{vv}} represent
 #' the sample covariance matrices. The multiple correlation between \code{u}
@@ -14,14 +14,14 @@
 #' \deqn{
 #' mcorr(u, v) = tr(C_{vv}^{-1/2} C_{vu} C_{uu}^{-1} C_{uv} C_{vv}^{-1/2}).
 #' }
-#' This number ranges from 0 to d, where d denotes the number of columns of
-#' \code{u} and \code{v}. A number closer to d indicates stronger correlation.
-#' This measure was used, for example, in Li and Song (2022) and Solea et al.
-#' (2024).
+#' This number ranges from 0 to d, where d denotes the number of columns in
+#' \code{u} and \code{v}. A number closer to `d` indicates stronger correlation.
+#' This measure has been used in functional dataaa dimension reduction studies,
+#' such as Li and Song (2022) and Solea et al. (2024).
 #'
 #' @param u,v Numeric vectors or matrices.
-#' @return \code{mcorr} computes the multiple correlation between \code{u}
-#'    and \code{v}.
+#' @return \code{mcorr} returns a numeric value representing the multiple
+#'     correlation between \code{u} and \code{v}.
 #'
 #' @references Li, B, and Song, J. (2022). Dimension reduction for functional
 #'    data based on weak conditional moments. \emph{The Annals of Statistics}
@@ -32,18 +32,20 @@
 #'     https://doi.org/10.5705/ss.202023.0341
 #'
 #' @include matpower.R
+#' @seealso \code{\link[stats]{cor}}, \code{\link[stats]{cov}}, \code{\link[stats]{var}}
+#'
 #' @examples
-#' # Example 1
+#' # Example 1: Strong correlation
 #' u <- matrix(rnorm(100), ncol = 2)
 #' v <- u + 0.1 * matrix(rnorm(100), ncol = 2)
 #' mcorr(u, v)
 #'
-#' # Example 2
+#' # Example 2: Weak correlation
 #' u <- matrix(rnorm(150), ncol = 3)
 #' v <- matrix(rnorm(150), ncol = 3)
 #' mcorr(u, v)
 #'
-#' # Example 3
+#' # Example 3: Comparison with Pearson correlation
 #' u <- rnorm(100)
 #' v <- u + 0.1 * rnorm(100)
 #' mcorr(u, v)
