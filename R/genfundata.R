@@ -15,6 +15,8 @@
 #'     evaluated.
 #' @param basisname A character string for the type of basis functions to use,
 #'     either 'bspline' or 'fourier'.  Default is 'bspline'.
+#' @param eta An optional array of coefficients of dimension \code{n x p x nbasis}.
+#'     If not provided, the coefficients will be randomly generated.
 #'
 #' @return \code{genfundata} returns a list containing:
 #'    \itemize{
@@ -41,7 +43,7 @@
 #' str(data)
 #'
 #' @export
-genfundata <- function(n, p, nbasis, tt, basisname = 'bspline') {
+genfundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta = NULL) {
 
   # Check if n is a single integer number
   if (length(n) != 1 | n != round(n) | n <= 0) {
@@ -76,6 +78,14 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline') {
   # Check if the basis is Bspline of Fourier
   if (basisname != 'bspline' && basisname != 'fourier') {
     stop(paste('The basis type needs to be Bspline or Fourier.'))
+  }
+
+  if (!is.null(eta)) {
+    if (!is.array(eta) | dim(eta)[1] != n | dim(eta)[2] != p |
+        dim(eta)[3] != nbasis) {
+      stop("Parameter 'eta' must be a numeric array with dimensions
+         n x p x nbasis.")
+    }
   }
 
   # Step 1: Initialize the functional data array

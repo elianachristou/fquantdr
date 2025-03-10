@@ -4,7 +4,7 @@
 \alias{genfundata}
 \title{Generate Functional data}
 \usage{
-genfundata(n, p, nbasis, tt, basisname = "bspline")
+genfundata(n, p, nbasis, tt, basisname = "bspline", eta = NULL)
 }
 \arguments{
 \item{n}{Integer. The number of observations, i.e., sample size.}
@@ -18,6 +18,9 @@ evaluated.}
 
 \item{basisname}{A character string for the type of basis functions to use,
 either 'bspline' or 'fourier'.  Default is 'bspline'.}
+
+\item{eta}{An optional array of coefficients of dimension \code{n x p x nbasis}.
+If not provided, the coefficients will be randomly generated.}
 }
 \value{
 \code{genfundata} returns a list containing:
