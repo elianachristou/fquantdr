@@ -35,7 +35,7 @@
 #' alpha <- -1 / 2
 #' rho <- 0.1
 #' a.inv.sqrt <- rigpower(a, alpha, rho)
-#' a.inv.sqrt
+#' print(a.inv.sqrt)
 #'
 rigpower <- function(a, alpha, rho) {
 
