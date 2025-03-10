@@ -9,13 +9,13 @@
 #' \code{H}.  The function returns an \code{H}-dimensional vector containing
 #' the proportion of observations in each slice.
 #'
-#' @param ydis A discrete numeric vector that contains labels that define the
-#' slice each value of a vector `y` is in. This can be obtained using the
-#' `discretize` function.
-#' @param H The number of slices.
+#' @param ydis A numeric vector of discrete labells indicating the slice
+#'     assignment for each observation.  Typically obtained using the
+#'     \code{\link{discretize}} function.
+#' @param H A positive integer specifying the total number of slices.
 #'
-#' @return A `H`-dimensional vector of proportions of observations that fall
-#' within each slice.
+#' @return A numeric vector of length \code{H}, where each element represents
+#'     the proportion of observations assignment to the corresponding slice.
 #'
 #' @seealso \code{\link{discretize}}, \code{\link{slav}}
 #' @noRd
