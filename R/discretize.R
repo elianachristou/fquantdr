@@ -40,13 +40,13 @@
 discretize <- function(y, H) {
 
   # Check if y is a vector
-  if (!is.vector(y)) {
-    stop("y must be a vector.")
+  if (!is.vector(y) || !is.numeric(y)) {
+    stop("y must be a numeric vector.")
   }
 
-  # Check if H is one number
+  # Check if H is a single number
   if (length(H) > 1) {
-    stop("H must be one number.")
+    stop("H must be a single number.")
   }
 
   # Check if H is a positive integer
@@ -64,8 +64,10 @@ discretize <- function(y, H) {
   n <- length(y)
   yunit <- 1:H
 
-  # Add small amount of noise to y
+  # Add small noise if y is discrete (prevents ties)
+  if (length(unique(y)) < length(y) * 0.75) {
   y <- y + .00001 * mean(y) * stats::rnorm(n)
+  }
 
   # Order y values in ascending order
   yord <- y[order(y)]
