@@ -2,18 +2,18 @@
 % Please edit documentation in R/genfundata.R
 \name{genfundata}
 \alias{genfundata}
-\title{Functional data}
+\title{Generate Functional data}
 \usage{
 genfundata(n, p, nbasis, tt, basisname = "bspline")
 }
 \arguments{
-\item{n}{The number of observations, i.e., sample size.}
+\item{n}{Integer. The number of observations, i.e., sample size.}
 
-\item{p}{The number of functional predictors.}
+\item{p}{Integer. The number of functional predictors.}
 
-\item{nbasis}{The number of basis functions.}
+\item{nbasis}{Integer. The number of basis functions.}
 
-\item{tt}{A vector of time points at which the functional data is
+\item{tt}{A numeric vector of time points at which the functional data is
 evaluated.}
 
 \item{basisname}{A character string for the type of basis functions to use,
@@ -22,10 +22,15 @@ either 'bspline' or 'fourier'.  Default is 'bspline'.}
 \value{
 \code{genfundata} returns a list containing:
 \itemize{
-\item \code{X}: An array of generated functional data of dimensions
-\code{n * nt * p} array, where \code{nt} denotes the number
-of time points.
-\item \code{mfpca.scores}: Matrix of FPCA scores.
+\item \code{X}: An array of generated functional data of dimension
+\code{n * nt * p}, where \code{nt} denotes the number of time
+points.
+\item \code{mfpca.scores}: A matrix of FPCA scores.
+.       \item \code{xcoefs}: An array of the coefficients used for generating
+the functional data of dimension \code{nbasis * n * p}.
+\item \code{xcoefs.mat}: A matrix version of the coefficients with
+dimension \code{n * (p * nbasis)}.
+\item \code{basis}: The basis object used for functional data generation.
 }
 }
 \description{
@@ -33,11 +38,10 @@ of time points.
 basis functions.
 }
 \details{
-This function constructs functional data using basis expansions.  The
-coefficients for the basis functions are randomly generated, and an
-orthogonalization step is applied using a Q-matrix.  Functional principal
-component analysis (FPCA) is then performed to obtain a low-dimensional
-representation of the data.
+This function constructs functional data using basis expansions, randomly
+generates coefficients for the basis functions, applies an orthogonalization
+step using a Q-matrix, and performs functional principal component analysis
+(FPCA) to obtain a low-dimensional represetation of the data.
 }
 \examples{
 n <- 50
