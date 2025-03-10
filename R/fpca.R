@@ -30,23 +30,12 @@
 #' p <- 5
 #' nbasis <- 4
 #' nt <- 101
-#' time <- seq(0, 1, length.out = nt)
-#' eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
+#' tt <- seq(0, 1, length.out = nt)
 #' # Generate the functional data
-#' gen_data <- fundata(n, p, nbasis, time, eta)
-#' Xc <- gen_data$xc
-#' P <- eigen(stats::cov(eta))$vectors
-#' mfpca.scores <- eta %*% P
-#' # Prepare the fd object
-#' databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
-#' xcoef_array <- array(0, c(nbasis, n, p))
-#' for (k in 1:p) {
-#'  xfdk <- fda::smooth.basis(time, t(Xc[, , k]), databasis)$fd
-#'  xfdk <- fda::center.fd(xfdk)
-#'  xk.coef <- t(xfdk$coef)
-#'  xcoef_array[, , k] <- t(xk.coef)
-#'  }
-#' x.fd <- fda::fd(xcoef_array, databasis)
+#' data <- genfundata(n, p, nbasis, tt, 'bspline')
+#' pca.out <- fpca(list(coef = data$xcoefs, basis = data$basis), 'bspline')
+#' pca.out$eval
+#' mfpca.scores <- pca.out$pred
 #'
 #' @export
 fpca <- function(ftn, basisname) {
