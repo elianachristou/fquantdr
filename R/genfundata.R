@@ -93,8 +93,8 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta = NULL) {
   }
 
   if (!is.null(eta)) {
-    if (!is.array(eta) | dim(eta)[1] != n | dim(eta)[2] != p |
-        dim(eta)[3] != nbasis) {
+    if (!is.array(eta) | dim(eta)[1] != nbasis | dim(eta)[2] != n |
+        dim(eta)[3] != p) {
       stop("Parameter 'eta' must be a numeric array with dimensions
          n x p x nbasis.")
     }
@@ -110,6 +110,7 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta = NULL) {
     basis <- fda::create.bspline.basis(c(0, 1), nbasis = nbasis)
   } else if (basisname == 'fourier') {
     basis <- fda::create.fourier.basis(c(0, 1), nbasis = nbasis)
+    nbasis <- basis$nbasis
   }
 
   if (is.null(eta)) {
@@ -153,7 +154,7 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta = NULL) {
   }
   xcoefs <- aperm(xcoefs, c(2, 1, 3))
   } else {
-    xcoefs <- eta
+    xcoefs <- eta[, , ]
   }
 
   # Step 5: Perform Functional Principal Component Analysis (FPCA)
