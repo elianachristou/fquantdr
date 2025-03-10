@@ -39,6 +39,42 @@
 #'
 #' @export
 genfundata <- function(n, p, nbasis, tt, basisname = 'bspline') {
+
+  # Check if n is a single integer number
+  if (length(n) != 1 | n != round(n) | n <= 0) {
+    stop("Parameter 'n' must be a single positive integer number.")
+  }
+
+  # Check that p is a single number
+  if (length(p) != 1) {
+    stop("Parameter 'p' must be a single number.")
+  }
+
+  # Check that p is a positive integer
+  if (p != round(p) | p <=0) {
+    stop("Parameter 'p' must be a positive integer number.")
+  }
+
+  # Check that nbasis is a single number
+  if (length(nbasis) != 1) {
+    stop("Parameter 'nbasis' must be a single number.")
+  }
+
+  # Check that nbasis is a positive integer
+  if (nbasis != round(nbasis) | nbasis <=0) {
+    stop("Parameter 'nbasis' must be a positive integer number.")
+  }
+
+  # Check if time is a vector
+  if (!is.vector(tt) | length(tt) == 1) {
+    stop("time is a vector of length more than 1.")
+  }
+
+  # Check if the basis is Bspline of Fourier
+  if (xfd$basis$type != 'bspline' && xfd$basis$type != 'fourier') {
+    stop(paste('The basis type needs to be Bspline or Fourier.'))
+  }
+
   # Step 1: Initialize the functional data array
   nt <- length(tt)
   X <- array(0, c(n, nt, p))
