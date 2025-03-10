@@ -3,21 +3,34 @@
 #' \code{rigpower} performs a regularized matrix power transformation using
 #' eigen decomposition
 #'
-#' This function takes a matrix \code{a} and applies a transformation that
-#' includes adding a scaled identity matrix to the input matrix and then
-#' raising the resulting matrix to a specified power.  The regularization
-#' parameter \code{rho} controls the scaling of the identity matrix.
+#' This function takes a square matrix \code{a}, adds a scaled identity
+#' matrix based on a regularization parameter \code{rho}, and then raises
+#' the resulting matrix to a specified power \code{\alpha}.  This
+#' transformation is useful for stabilizing covariace matrices in statistical
+#' applications.
 #'
-#' @param a The input square matrix.
-#' @param alpha The exponent to which the matrix is raised.
-#' @param rho A numeric value used as the regularization parameter to scale
-#' the identity matrix.
+#' The regularized transformation is defined as:
+#' \deqn{
+#' A_{\text{reg}} = A + \rho \lambda_{\max} I
+#' }
+#' where \eqn{\lambda_{\max}} is the largest eigenvalue of \eqn{A}, and \eqn{I}
+#' is the identity matrix. The function then computes:
+#' \deqn{
+#' A_{\text{reg}}^\alpha
+#' }
 #'
-#' @return A matrix that has been regularized and raised to the specified
-#' power.
+#' @param a A numeric square matrix.
+#' @param alpha A numeric scalar specifying the exponent for the matrix power
+#'     transformation.
+#' @param rho A numeric scalar specifying the regularization parameter used to
+#'     scale.
 #'
+#' @return A matrix that has been regularized and raised to the specified power.
+#'
+#' @include matpower.R
 #' @noRd
 #' @examples
+#' # Example: Regularized inverse square root transformation
 #' a <- matrix(c(4, 1, 1, 3), nrow = 2, ncol = 2)
 #' alpha <- -1 / 2
 #' rho <- 0.1
