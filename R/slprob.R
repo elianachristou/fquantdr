@@ -1,7 +1,13 @@
 #' Slice Probabilities
 #'
-#' \code{slprob} calculates the proportions of observations that fall within
-#' each slice, where the number of slices is given by H.
+#' \code{slprob} calculates the proportions of observations falling within
+#' each slice based on a discretized response vector.
+#'
+#' This function calculates the slice probabilities for a given discrete
+#' numeric vector \code{ydis}, where each value represents the slice
+#' assignment of an observation.  The total number of slices is specified by
+#' \code{H}.  The function returns an \code{H}-dimensional vector containing
+#' the proportion of observations in each slice.
 #'
 #' @param ydis A discrete numeric vector that contains labels that define the
 #' slice each value of a vector `y` is in. This can be obtained using the
