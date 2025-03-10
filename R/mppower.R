@@ -24,7 +24,8 @@
 #'
 #' @noRd
 #' @examples
-#' mat <- matrix(c(6, 4, 8, 2, 5, 9, 3, 1, 7), nrow = 3, ncol = 3)
+#' mat <- matrix(rnorm(9), nrow = 3, ncol = 3)
+#' mat <- mat %*% t(mat)  # Ensure the matrix is symmetric
 #' alpha <- 2
 #' mppower(mat, alpha)
 #'
