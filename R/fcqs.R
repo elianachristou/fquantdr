@@ -17,13 +17,16 @@
 #'     response variable.
 #' @param tt A numeric vector of length \code{nt} of time points at which
 #'     the functional data is evaluated.
-#' @param nbasis The number of basis functions for smoothing the functional
-#'     data.
 #' @param tau A quantile level, a number strictly between 0 and 1.
 #' @param dtau The number of directions to extract, i.e., the dimension of
 #'      the functional central quantile subspace.  It should be an integer
 #'      between 1 and `p`.  If not provided, the function will return `p`
 #'      directions
+#' @param nbasis An integer specifying the number of basis functions for
+#'     functional smoothing.  Currently, the only option is to use B-spline
+#'     basis. Default value is 4.
+#' @param norder An integer specifying the order of B-splines, which is one
+#'     higher than their degree.  The default of 4 gives cubic splines.
 #'
 #' @return `fcqs` computes the directions of the functional central quantile
 #'      subspace (FCQS) and returns:
@@ -63,11 +66,11 @@
 #' error <- rnorm(n)
 #' y <- 3 * data$mfpca.scores[, 1] + error
 #' # Run FCQS function
-#' output <- fcqs(Xc, y, tt, nbasis, tau, dtau)
+#' output <- fcqs(Xc, y, tt, tau, dtau)
 #' # Compare the true and estimated predictors
 #' mcorr(output$betax, mfpca.scores[, 1])
 
-fcqs <- function(x, y, tt, nbasis, tau = 0.5, dtau = NULL) {
+fcqs <- function(x, y, tt, tau = 0.5, dtau = NULL, nbasis = 4, norder = 4) {
 
   # Check if y is a univariate response
   if (!is.vector(y)) {
