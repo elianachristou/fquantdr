@@ -34,7 +34,9 @@
 #'        up to the nearest odd integer to preserve the pairing of sine and cosine
 #'        functions.
 #'        \item \code{xcoefs.mat}: A matrix version of the coefficients with
-#'        dimension \code{n * (p * nbasis)}.
+#'        dimension \code{n * (p * nbasis)}.  Note that, if Fourier basis is used
+#'        and `nbasis` is even number, then it is rounded up to the nearest odd
+#'        integer to preserve the pairing of sine and cosine functions.
 #'        \item \code{basis}: The basis object used for functional data generation.
 #'    }
 #'
