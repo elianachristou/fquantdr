@@ -5,7 +5,7 @@
 #'
 #' This function constructs functional data by expanding a set of coefficients
 #' onto a chosen basis (either B-spline or Fourier).  Then, functional principal
-#' component analysis (FPCA) is applied to obtain a low-dimensional represetation
+#' component analysis (FPCA) is applied to obtain a low-dimensional representation
 #' of the data.  If the coefficients are not provided, then they are randomly
 #' generated.
 #'
@@ -59,7 +59,6 @@
 #' data <- genfundata(n, p, nbasis, tt, 'bspline', eta = eta)
 #' str(data)
 #'
-#' @export
 genfundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta = NULL) {
 
   # Check if n is a single integer number

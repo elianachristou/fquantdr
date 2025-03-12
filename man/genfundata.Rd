@@ -51,7 +51,7 @@ basis functions.
 \details{
 This function constructs functional data by expanding a set of coefficients
 onto a chosen basis (either B-spline or Fourier).  Then, functional principal
-component analysis (FPCA) is applied to obtain a low-dimensional represetation
+component analysis (FPCA) is applied to obtain a low-dimensional representation
 of the data.  If the coefficients are not provided, then they are randomly
 generated.
 }
