@@ -122,7 +122,6 @@ $\{\beta_1\}$.
 ``` r
 # Generate the functional predictors
 library(mvtnorm)
-#> Warning: package 'mvtnorm' was built under R version 4.4.1
 eta.mat <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis))
 eta <- array(eta.mat, dim = c(nbasis, n, p))
 data.output <- fundata(n, p, nbasis, tt, 'bspline', eta)
