@@ -39,7 +39,7 @@
 #'        integer to preserve the pairing of sine and cosine functions.
 #'        \item \code{basis}: The basis object used for functional data generation.
 #'    }
-#'
+#' @noRd
 #' @examples
 #' # Example 1: Randomly generated coefficients
 #' n <- 50
