@@ -170,7 +170,7 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta = NULL) {
   }
 
   # Step 5: Perform Functional Principal Component Analysis (FPCA)
-  pca.out <- fpca(list(coef = xcoefs, basis = basis), basisname)
+  pca.out <- fpca(list(coef = xcoefs, basis = basis))
   mfpca.scores <- pca.out$pred
 
   # Step 6: Generate functional data for each predictor
