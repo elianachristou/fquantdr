@@ -68,7 +68,7 @@
 #' # Run FCQS function
 #' output <- fcqs(Xc, y, tt, tau, dtau)
 #' # Compare the true and estimated predictors
-#' mcorr(output$betax, mfpca.scores[, 1])
+#' mcorr(output$betax, data$mfpca.scores[, 1])
 
 fcqs <- function(x, y, tt, tau = 0.5, dtau = NULL, nbasis = 4, norder = 4) {
 

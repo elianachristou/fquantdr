@@ -78,7 +78,7 @@ y <- 3 * data$mfpca.scores[, 1] + error
 # Run FCQS function
 output <- fcqs(Xc, y, tt, tau, dtau)
 # Compare the true and estimated predictors
-mcorr(output$betax, mfpca.scores[, 1])
+mcorr(output$betax, data$mfpca.scores[, 1])
 }
 \references{
 Christou, E., Solea, E., Wang, S., and Song, J. (2025+) Sufficient
