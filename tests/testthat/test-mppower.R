@@ -32,9 +32,3 @@ test_that("epsilon is a nonnegative real number", {
   expect_error(mppower(a, alpha, epsilon))
 })
 
-#test_that("mppower gives the same output as matpower if epsion is 0", {
-#  a <- matrix(c(6, 4, 8, 2, 5, 9, 3, 1, 7), nrow = 3, ncol = 3)
-#  alpha <- 2
-#  epsilon <- 0
-#  expect_equal(mppower(a, alpha, epsilon), matpower(a, alpha))
-#})
