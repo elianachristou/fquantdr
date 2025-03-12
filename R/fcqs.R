@@ -120,6 +120,12 @@ fcqs <- function(x, y, tt, tau = 0.5, dtau = NULL, nbasis = 4, norder = 4) {
     stop("The input 'nbasis' must be a positive integer number.")
   }
 
+  # Check if nbasis >= norder
+  if (norder > nbasis) {
+    stop(paste("nbasis must be at least norder; nbasis = ",nbasis, ",
+               norder = ",norder, ""))
+  }
+
   # If dtau is missing, set it equal to p.  Otherwise, perform compatibility checks
   if (is.null(dtau)) {
     dtau <- dim(x)[3]
@@ -143,12 +149,8 @@ fcqs <- function(x, y, tt, tau = 0.5, dtau = NULL, nbasis = 4, norder = 4) {
   H <- max(10, floor(2 * p / n))
 
   # Create basis for functional data using splines
-  if (nbasis < 4) {
   databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis,
-                                         norder = nbasis)
-  } else {
-    databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
-  }
+                                         norder = norder)
 
   # Retrieve the coefficients as a (nbasis x n x p) array for the sonf function
   xcoef <- numeric()
