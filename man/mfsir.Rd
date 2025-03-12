@@ -41,11 +41,13 @@ central subspace.}
 provides the new estimated predictors.
 }
 \details{
-This function performs functional sliced inverse regression (FSIR),
-introduced by Ferré and Yao (2003), for scalar-on-function problems.
-The authors proved that \eqn{E(X|Y) - E(X)} belongs to
-\eqn{\Sigma_{XX} S_{Y|X}}, where \eqn{S_{Y|X}} denotes the functional
-central subspace.
+This function implements functional sliced inverse regression (FSIR),
+introduced by Ferré and Yao (2003), for scalar-on-function
+regression problems.  The method seeks to identify a low-dimensional
+subspace that captures the relationship between a scalar response and
+functional predictors.  The authors proved that \eqn{E(X|Y) - E(X)}
+belongs to \eqn{\Sigma_{XX} S_{Y|X}}, where \eqn{S_{Y|X}} denotes the
+functional central subspace.
 
 For \eqn{i=1, \dots, p}, let \eqn{\mathcal{H}_i} be a separable
 Hilbert space of real-valued functions on \eqn{T}, a bounded closed interval
