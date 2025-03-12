@@ -174,7 +174,7 @@ fcqs <- function(x, y, tt, tau = 0.5, dtau = NULL, nbasis = 4, norder = 4) {
   }
 
   # Run Functional Sliced Inverse Regression
-  out.mfsir <- mfsir(x, y, H, nbasis)
+  out.mfsir <- mfsir(x, y, H, nbasis, norder)
   beta.mfsir <- out.mfsir$betas[, 1:dtau]
   vv <- xcoef %*% gx %*% beta.mfsir
 
@@ -188,7 +188,7 @@ fcqs <- function(x, y, tt, tau = 0.5, dtau = NULL, nbasis = 4, norder = 4) {
     # Try the first method, using subset of pred and y
     h_value <- KernSmooth::dpill(vv[index_y, ], y[index_y])
 
-    # Check if bandwidth is valid (not missig or non-positive)
+    # Check if bandwidth is valid (not missing or non-positive)
     if (is.na(h_value) || (!missing(h_value) && h_value <= 0) || is.nan(h_value))
       stop("'bandwidth' must be strictly positive")
 
