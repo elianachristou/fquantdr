@@ -2,48 +2,59 @@
 % Please edit documentation in R/fundata.R
 \name{fundata}
 \alias{fundata}
-\title{Generate Functional data using a specified coefficient matrix}
+\title{Generate Functional data using pre-specified coefficients}
 \usage{
-fundata(n, p, nbasis, time, eta)
+fundata(n, p, nbasis, tt, basisname = "bspline", eta, norder = 4)
 }
 \arguments{
-\item{n}{The number of observations, i.e., sample size.}
+\item{n}{An integer specifying the number of observations, i.e., sample size.}
 
-\item{p}{The number of functional predictors.}
+\item{p}{An integer specifying the number of functional predictors.}
 
-\item{nbasis}{The number of Fourier basis functions.}
+\item{nbasis}{An integer specifying the number of basis functions.}
 
-\item{time}{A vector of time points at which the functional data is
+\item{tt}{A numeric vector of time points at which the functional data is
 evaluated.}
 
-\item{eta}{A matrix of coefficients with dimensions \code{n} by
-\code{p * nbasis}.}
+\item{basisname}{A character string for the type of basis functions to use,
+either 'bspline' or 'fourier'.  Default is 'bspline'.}
+
+\item{eta}{A matrix of coefficients of dimension \code{nbasis * n * p}.}
+
+\item{norder}{An integer specifying the order of B-splines, which is one
+higher than their degree.  The default of 4 gives cubic splines.}
 }
 \value{
-\code{fundata} generates functional data based on Fourier
-basis functions and returns:
+\code{fundata} returns a list containing:
 \itemize{
-\item \code{x}: The original functional predictors, a
-\code{n * nt * p} array, where \code{nt} denotes the number
-of time points.
-\item \code{xc}: The centered functional predictors, a
-\code{n * nt * p} array, where \code{nt} denotes the number
-of time points.
+\item \code{X}: An array of generated functional data of dimension
+\code{n * nt * p}, where \code{nt} denotes the number of time
+points.
+\item \code{Xc}: An array of centered functional data of dimension
+\code{n * nt * p}, where \code{nt} denotes the number of time
+points.
+\item \code{mfpca.scores}: A matrix of FPCA scores.
+.       \item \code{xcoefs}: The array of the coefficients used for generating
+the functional data of dimension \code{nbasis * n * p}.  Note that, if
+Fourier basis is used and \code{nbasis} is even number, then it is rounded
+up to the nearest odd integer to preserve the pairing of sine and cosine
+functions.
+\item \code{xcoefs.mat}: The matrix version of the coefficients with
+dimension \code{n * (p * nbasis)}.  Note that, if Fourier basis is used
+and \code{nbasis} is even number, then it is rounded up to the nearest odd
+integer to preserve the pairing of sine and cosine functions.
+\item \code{basis}: The basis object used for functional data generation.
 }
 }
 \description{
-\code{fundata} generates functional data based on Fourier basis functions.
+\code{fundata} generates functional data using either B-spline or Fourier
+basis functions.
 }
 \details{
-This function generates functional data for a given number of observations
-('n'), functional predictors ('p'), basis functions ('nbasis'), and time
-points ('time').  It utilizes a specified coefficient matrix ('eta') to
-create the functional predictors.  Using these basis functions, it computes
-the original functional predictors ('x') by multiplying the coefficients
-with the basis functions. The function then centers these functional
-predictors ('xc') by subtracting the mean across observations for each time
-point.  The output is a list containing both the original and centered
-functional predictors.
+This function generates functional data by expanding a set of coefficients
+(\code{eta}) onto a chosen basis (either B-spline or Fourier).  Then, functional
+principal component analysis (FPCA) is applied to obtain a low-dimensional
+representation of the data.
 }
 \examples{
 # Example 1

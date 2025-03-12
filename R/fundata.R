@@ -1,34 +1,43 @@
-#' Generate Functional data using a specified coefficient matrix
+#' Generate Functional data using pre-specified coefficients
 #'
-#' \code{fundata} generates functional data based on Fourier basis functions.
+#' \code{fundata} generates functional data using either B-spline or Fourier
+#' basis functions.
 #'
-#' This function generates functional data for a given number of observations
-#' ('n'), functional predictors ('p'), basis functions ('nbasis'), and time
-#' points ('time').  It utilizes a specified coefficient matrix ('eta') to
-#' create the functional predictors.  Using these basis functions, it computes
-#' the original functional predictors ('x') by multiplying the coefficients
-#' with the basis functions. The function then centers these functional
-#' predictors ('xc') by subtracting the mean across observations for each time
-#' point.  The output is a list containing both the original and centered
-#' functional predictors.
+#' This function generates functional data by expanding a set of coefficients
+#' (`eta`) onto a chosen basis (either B-spline or Fourier).  Then, functional
+#' principal component analysis (FPCA) is applied to obtain a low-dimensional
+#' representation of the data.
 #'
-#' @param n The number of observations, i.e., sample size.
-#' @param p The number of functional predictors.
-#' @param nbasis The number of Fourier basis functions.
-#' @param time A vector of time points at which the functional data is
+#' @param n An integer specifying the number of observations, i.e., sample size.
+#' @param p An integer specifying the number of functional predictors.
+#' @param nbasis An integer specifying the number of basis functions.
+#' @param tt A numeric vector of time points at which the functional data is
 #'     evaluated.
-#' @param eta A matrix of coefficients with dimensions \code{n} by
-#'     \code{p * nbasis}.
+#' @param basisname A character string for the type of basis functions to use,
+#'     either 'bspline' or 'fourier'.  Default is 'bspline'.
+#' @param eta A matrix of coefficients of dimension \code{nbasis * n * p}.
+#' @param norder An integer specifying the order of B-splines, which is one
+#'     higher than their degree.  The default of 4 gives cubic splines.
 #'
-#' @return \code{fundata} generates functional data based on Fourier
-#'    basis functions and returns:
+#' @return \code{fundata} returns a list containing:
 #'    \itemize{
-#'        \item \code{x}: The original functional predictors, a
-#'            \code{n * nt * p} array, where \code{nt} denotes the number
-#'            of time points.
-#'        \item \code{xc}: The centered functional predictors, a
-#'            \code{n * nt * p} array, where \code{nt} denotes the number
-#'            of time points.
+#'        \item \code{X}: An array of generated functional data of dimension
+#'            \code{n * nt * p}, where \code{nt} denotes the number of time
+#'            points.
+#'        \item \code{Xc}: An array of centered functional data of dimension
+#'            \code{n * nt * p}, where \code{nt} denotes the number of time
+#'            points.
+#'        \item \code{mfpca.scores}: A matrix of FPCA scores.
+#'.       \item \code{xcoefs}: The array of the coefficients used for generating
+#'        the functional data of dimension \code{nbasis * n * p}.  Note that, if
+#'        Fourier basis is used and `nbasis` is even number, then it is rounded
+#'        up to the nearest odd integer to preserve the pairing of sine and cosine
+#'        functions.
+#'        \item \code{xcoefs.mat}: The matrix version of the coefficients with
+#'        dimension \code{n * (p * nbasis)}.  Note that, if Fourier basis is used
+#'        and `nbasis` is even number, then it is rounded up to the nearest odd
+#'        integer to preserve the pairing of sine and cosine functions.
+#'        \item \code{basis}: The basis object used for functional data generation.
 #'    }
 #'
 #' @examples
@@ -68,7 +77,7 @@
 #'     xlab = "Time", ylab = "Value", main = paste("Functional Predictor", 1))
 #'
 #' @export
-fundata <- function(n, p, nbasis, time, eta) {
+fundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta, norder = 4) {
 
   # Check if n is a single integer number
   if (length(n) != 1 | n != round(n) | n <= 0) {
@@ -95,38 +104,64 @@ fundata <- function(n, p, nbasis, time, eta) {
     stop("Parameter 'nbasis' must be a positive integer number.")
   }
 
+  # Check if norder if smaller than nbaasis - for Bsplines
+  if (basisname == 'bspline' && norder > nbasis) {
+    stop(paste("nbasis must be at least norder; nbasis = ",nbasis, ",
+               norder = ",norder, ""))
+  }
+
   # Check if time is a vector
-  if (!is.vector(time) | length(time) == 1) {
+  if (!is.vector(tt) | length(tt) == 1) {
     stop("time is a vector of length more than 1.")
   }
 
-  # Check if the dimension of eta is n * (p * nbasis)
-  if (!is.matrix(eta) | nrow(eta) != n | ncol(eta) != (p * nbasis)) {
-    stop("Parameter 'eta' must be a numeric matrix with dimensions
-         n x (p * nbasis).")
+  # Check if the dimension of eta is n x p x nbasis
+  if (!is.array(eta) | dim(eta)[1] != nbasis | dim(eta)[2] != n |
+      dim(eta)[3] != p) {
+    stop("Parameter 'eta' must be a numeric array with dimensions
+         n x p x nbasis.")
   }
 
-  # define the parameters
-  nt <- length(time)
-  x <- array(0, dim = c(n, nt, p))
-  xc <- array(0, dim = c(n, nt, p))
+  # Step 1: Initialize the functional data array
+  nt <- length(tt)
+  X <- array(0, dim = c(n, nt, p))
+  Xc <- array(0, dim = c(n, nt, p))
 
-  ## Create a Fourier basis with nbasis functions over the interval [0, 1]
-  f.ans <- fda::create.fourier.basis(rangeval = c(0, 1), nbasis = nbasis,
-                                     dropind = 1)
-  st <- as.matrix(fda::eval.basis(time, f.ans))
+  # Step 2: Set up the basis functions
+  if (basisname == 'bspline') {
+    basis <- fda::create.bspline.basis(c(0, 1), norder = norder, nbasis = nbasis)
+    st <- as.matrix(fda::eval.basis(tt, basis))
+  } else if (basisname == 'fourier') {
+    basis <- fda::create.fourier.basis(c(0, 1), nbasis = nbasis)
+    nbasis_old <- nbasis
+    nbasis <- basis$nbasis
+    st <- as.matrix(fda::eval.basis(tt, basis))
+  }
 
-  # when nbasis is even, the dimension of st is n x nbasis, but when
-  # nbasis is odd, the dimension of st is n x (nbasis - 1)
-  nbasis <- dim(st)[2]
+  # Step 3: Set up coefficients
+  if (basisname == 'fourier') {
+    if (nbasis_old %% 2 == 0) {
+      xcoefs_extended <- array(0, c(nbasis, n, p))
+      xcoefs_extended[2:nbasis, , ] <- eta
+      eta <- xcoefs_extended
+    }
+  }
 
-  ## Generate functional predictors
-  # x and xc are the original and centered functional predictors
+  # Step 4: Transform eta into a n * (p * nbasis) matrix
+  eta.mat <- numeric()
+  for (k in 1:p) {
+    eta.mat <- cbind(eta.mat, t(eta[, , k]))
+  }
+
+  # Step 5: Generate functional data for each predictor
   for(j in 1:p) {
     index.j <- (((j - 1) * nbasis + 1):(j * nbasis))
-    x[, , j] <- eta[, index.j] %*% t(st)
-    xc[, , j] <- x[, , j] - matrix(rep(apply(x[, , j], 2, mean), n),
+    X[, , j] <- eta.mat[, index.j] %*% t(st)
+    Xc[, , j] <- X[, , j] - matrix(rep(apply(X[, , j], 2, mean), n),
                                    nrow = n, byrow = T)
   }
-  return(list(x = x, xc = xc))
+
+  # Return output as a list
+  out <- list(X = X, Xc = Xc, mfpca.scores = mfpca.scores, xcoefs = eta,
+              xcoefs.mat = eta.mat, basis = basis)
 }
