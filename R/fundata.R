@@ -163,7 +163,7 @@ fundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta, norder = 4) {
   }
 
   # Step 6: Perform Functional Principal Component Analysis (FPCA)
-  pca.out <- fpca(list(coef = eta, basis = basis), basisname)
+  pca.out <- fpca(list(coef = eta, basis = basis))
   mfpca.scores <- pca.out$pred
 
   # Return output as a list
