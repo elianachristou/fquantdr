@@ -38,17 +38,19 @@
 #' @param X A 3-dimensional array (\code{n x nt x p}), where n is the number
 #'     of observations, nt is the number of time points, and p is the number
 #'     of predictor variables.
-#' @param y A numeric vector of length \code{n} representing the response
+#' @param y A numeric vector of length \code{n} representing the scalar response
 #'     variable.
-#' @param H The number of slices for the response variable.
-#' @param nbasis The number of basis functions for the B-spline basis.
+#' @param H An integer specifying the number of slices for the response variable;
+#'     must be at least 2 and less than \code{n}.
+#' @param nbasis An integer specifying the number of basis functions for functional
+#'     smoothing.  Currently, the only option is to use B-spline basis.
 #'
 #' @return \code{mfsir} computes the new sufficient predictors and returns
 #' \item{xcoef}{A \code{n x (p * nbasis)} matrix of smoothed and centered
-#' coefficients for the functional predictors using B-spline basis functions.}
-#' \item{eigvalues}{The eigenvalues resulting from the eigenvalue decomposition
-#'    of the matrix of interest that is calculated during the dimension
-#'    reduction process.}
+#' coefficients for the functional predictors.}
+#' \item{eigvalues}{A vector of eigenvalues obtained from the eigenvalue
+#' decomposition of the matrix of interest that is calculated during the
+#' dimension reduction process.}
 #' \item{phi}{A \code{(p * nbasis) x (p * nbasis)} matrix of eigenvectors
 #'      resulting from the eigenvalue decomposition of the matrix of interest
 #'      that is calculated during the dimension reduction process.}
@@ -57,8 +59,8 @@
 #' \item{betas}{The \code{(p * nbasis) x (p * nbasis)} matrix of the
 #'     coordinates of \eqn{\beta_1, \dots, \beta_d} resulting from the
 #'     coordinate representation on the B-spline basis functions.}
-#' \item{sufpred}{The estimated sufficient predictors of the functional
-#'     central subspace.}
+#' \item{sufpred}{A \code{n x (p * nbasis)} matrix of estimated sufficient
+#' predictors of the functional central subspace.}
 #'
 #' @references Ferr&#233;, L, and Yao, F. (2003) Function Sliced Inverse Regression
 #' Analysis. \emph{Statistics}, 37(6), 475-488.
