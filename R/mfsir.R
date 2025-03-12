@@ -131,6 +131,7 @@ mfsir <- function(X, y, H, nbasis = 4, norder = 4) {
     stop("nbasis must be a positive integer.")
   }
 
+  # Check if nbasis >= norder
   if (norder > nbasis) {
     stop(paste("nbasis must be at least norder; nbasis = ",nbasis, ",
                norder = ",norder, ""))
