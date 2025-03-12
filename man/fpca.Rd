@@ -40,10 +40,12 @@ functional covariance matrix.  The method supports both univariate
 n <- 100
 p <- 5
 nbasis <- 4
-nt <- 101
+nt <- 100
 tt <- seq(0, 1, length.out = nt)
+eta.mat <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis))
+eta <- array(eta.mat, dim = c(nbasis, n, p))
 # Generate the functional data
-data <- genfundata(n, p, nbasis, tt, 'bspline')
+data <- fundata(n, p, nbasis, tt, 'bspline', eta)
 pca.out <- fpca(list(coef = data$xcoefs, basis = data$basis), 'bspline')
 pca.out$eval
 mfpca.scores <- pca.out$pred
