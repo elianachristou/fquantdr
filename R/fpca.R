@@ -65,7 +65,7 @@ fpca <- function(ftn, basisname) {
   temp <- ftn$coef
   n <- dim(temp)[2]
   p <- dim(temp)[3]
-  nt <- dim(temp)[1]
+  nbasis <- dim(temp)[1]
 
   # If 'p' is NA, set it to 1 (for univariate case)
   if(is.na(p)) p <- 1
