@@ -92,7 +92,7 @@ fpca <- function(ftn, basisname) {
     # Compute covariance matrix in transformed space
     Sigma <- B.half %*% xcoef %*% Q %*% t(xcoef) %*% B.half / n
     # Perform eigen decomposition of covariacne matrix
-    egn <- eigen(Sigma, sym = TRUE)
+    egn <- eigen(Sigma, symmetric = TRUE)
     B.inv.half <- matpower(GB, -0.5)
     # Compute predicited principal component scores
     pred <- Q %*% t(xcoef) %*% GB %*% B.inv.half %*% egn$vec
@@ -112,7 +112,7 @@ fpca <- function(ftn, basisname) {
     }
     # Compute covariance matrix in transformed space
     M.half <- M.half %*% t(M.half) / n
-    egn <- eigen(M.half, sym = TRUE)
+    egn <- eigen(M.half, symmetric = TRUE)
     # Compute predicted principall component scores
     pred <- t(BB) %*% D.inv.half %*% egn$vec
     out <- list(pred = pred, eval = egn$val, mat = D.inv.half %*% egn$vec)
