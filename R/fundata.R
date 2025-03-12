@@ -41,7 +41,7 @@
 #'    }
 #'
 #' @examples
-#' # Example 1
+#' # Example 1: B-spline
 #' # set the parameters
 #' n <- 100
 #' p <- 3
@@ -57,24 +57,24 @@
 #'  fda::matplot(tt, t(X[, , 1]), type = "l", lty = 1, col = 1:n,
 #'  xlab = "Time", ylab = "Value", main = paste("Functional Predictor", 1))
 #'
-#' # Example 2
+#' # Example 2: Fourier
 #' # set the parameters
 #' n <- 100
 #' p <- 5
 #' nbasis <- 4
-#' time <- seq(0, 1, length.out = 101)
+#' tt <- seq(0, 1, length.out = 100)
 #' SigmaCov <- matrix(0, nrow = p * nbasis, ncol = p * nbasis)
 #' for (j in 1:p) {
 #'  index.j <-(((j - 1) * nbasis + 1):(j * nbasis))
 #'  diag(SigmaCov[index.j, index.j]) <- c(2, 1, 1/2, 1/4)
 #' }
-#' eta <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis), sigma = SigmaCov)
+#' eta.mat <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis), sigma = SigmaCov)
+#' eta <- array(eta.mat, dim = c(nbasis, n, p))
 #' # create the functional predictors
-#' result <- fundata(n, p, nbasis, time, eta)
-#' x <- result$x
-#' xc <- result$xc
+#' data <- fundata(n, p, nbasis, tt, 'fourier', eta)
+#' X <- data$X
 #' # plot the first functional predictor for illustration
-#' fda::matplot(time, t(x[, , 1]), type = "l", lty = 1, col = 1:n,
+#' fda::matplot(tt, t(X[, , 1]), type = "l", lty = 1, col = 1:n,
 #'     xlab = "Time", ylab = "Value", main = paste("Functional Predictor", 1))
 #'
 #' @export
