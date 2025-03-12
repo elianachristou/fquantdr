@@ -125,7 +125,7 @@ library(mvtnorm)
 #> Warning: package 'mvtnorm' was built under R version 4.4.1
 eta.mat <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis))
 eta <- array(eta.mat, dim = c(nbasis, n, p))
-data.output <- fundata(n, p, nbasis, tt, 'fourier', eta)
+data.output <- fundata(n, p, nbasis, tt, 'bspline', eta)
 xc <- data.output$Xc
 
 # Generate the scalar response
@@ -182,7 +182,7 @@ indicates better performance.
 true.pred <- mfpca.scores[, 1]
 est.pred <- result$betax
 mcorr(true.pred, est.pred)
-#> [1] 0.5198261
+#> [1] 0.03120607
 ```
 
 #### Example 2
@@ -212,7 +212,7 @@ eta.mat <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis), sigma = SigmaCov)
 eta <- array(eta.mat, dim = c(nbasis, n, p))
 
 # Generate the functional predictors and the scalar response
-data.output <- fundata(n, p, nbasis, tt, 'fourier', eta)
+data.output <- fundata(n, p, nbasis, tt, 'bspline', eta)
 xc <- data.output$Xc
 mfpca.scores <- data.output$mfpca.scores
 error <- rnorm(n)
@@ -223,7 +223,7 @@ result2 <- fcqs(xc, y, tt, tau, dtau = 2, nbasis)
 true.pred2 <- mfpca.scores[, 1:2]
 est.pred2 <- result2$betax
 mcorr(true.pred2, est.pred2)
-#> [1] 0.89516
+#> [1] 0.5041857
 ```
 
 ## Applications

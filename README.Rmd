@@ -87,7 +87,7 @@ Then, we need to generate the functional predictors and the scalar response.  Fo
 library(mvtnorm)
 eta.mat <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis))
 eta <- array(eta.mat, dim = c(nbasis, n, p))
-data.output <- fundata(n, p, nbasis, tt, 'fourier', eta)
+data.output <- fundata(n, p, nbasis, tt, 'bspline', eta)
 xc <- data.output$Xc
 
 # Generate the scalar response
@@ -151,7 +151,7 @@ eta.mat <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis), sigma = SigmaCov)
 eta <- array(eta.mat, dim = c(nbasis, n, p))
 
 # Generate the functional predictors and the scalar response
-data.output <- fundata(n, p, nbasis, tt, 'fourier', eta)
+data.output <- fundata(n, p, nbasis, tt, 'bspline', eta)
 xc <- data.output$Xc
 mfpca.scores <- data.output$mfpca.scores
 error <- rnorm(n)
