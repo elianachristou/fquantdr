@@ -44,16 +44,17 @@
 #' # Example 1
 #' # set the parameters
 #' n <- 100
-#' p <- 5
-#' nbasis <- 3
-#' time <- seq(0, 1, length.out = 101)
-#' eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
+#' p <- 3
+#' nbasis <- 4
+#' tt <- seq(0, 1, length.out = 100)
+#' eta.mat <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis))
+#' eta <- array(eta.mat, dim = c(nbasis, n, p))
 #' # create the functional predictors
-#' result <- fundata(n, p, nbasis, time, eta)
-#' x <- result$x
-#' xc <- result$xc
+#' data <- fundata(n, p, nbasis, tt, 'bspline', eta)
+#' str(data)
+#' X <- data$X
 #' # plot the first functional predictor for illustration
-#'  fda::matplot(time, t(x[, , 1]), type = "l", lty = 1, col = 1:n,
+#'  fda::matplot(tt, t(X[, , 1]), type = "l", lty = 1, col = 1:n,
 #'  xlab = "Time", ylab = "Value", main = paste("Functional Predictor", 1))
 #'
 #' # Example 2
@@ -160,6 +161,10 @@ fundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta, norder = 4) {
     Xc[, , j] <- X[, , j] - matrix(rep(apply(X[, , j], 2, mean), n),
                                    nrow = n, byrow = T)
   }
+
+  # Step 6: Perform Functional Principal Component Analysis (FPCA)
+  pca.out <- fpca(list(coef = eta, basis = basis), basisname)
+  mfpca.scores <- pca.out$pred
 
   # Return output as a list
   out <- list(X = X, Xc = Xc, mfpca.scores = mfpca.scores, xcoefs = eta,

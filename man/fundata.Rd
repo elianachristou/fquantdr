@@ -60,16 +60,17 @@ representation of the data.
 # Example 1
 # set the parameters
 n <- 100
-p <- 5
-nbasis <- 3
-time <- seq(0, 1, length.out = 101)
-eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
+p <- 3
+nbasis <- 4
+tt <- seq(0, 1, length.out = 100)
+eta.mat <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis))
+eta <- array(eta.mat, dim = c(nbasis, n, p))
 # create the functional predictors
-result <- fundata(n, p, nbasis, time, eta)
-x <- result$x
-xc <- result$xc
+data <- fundata(n, p, nbasis, tt, 'bspline', eta)
+str(data)
+X <- data$X
 # plot the first functional predictor for illustration
- fda::matplot(time, t(x[, , 1]), type = "l", lty = 1, col = 1:n,
+ fda::matplot(tt, t(X[, , 1]), type = "l", lty = 1, col = 1:n,
  xlab = "Time", ylab = "Value", main = paste("Functional Predictor", 1))
 
 # Example 2
