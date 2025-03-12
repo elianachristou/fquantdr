@@ -44,26 +44,26 @@
 #' n <- 100
 #' p <- 5
 #' nbasis <- 4
+#' nt <- 100
 #' tau <- 0.1
 #' dtau <- 1
-#' tt <- seq(0, 1, length.out = 101)
+#' tt <- seq(0, 1, length.out = nt)
 #' # Set the covariance matrix
 #' SigmaCov <- matrix(0, p * nbasis, p * nbasis)
 #' for (j in 1:p) {
 #'  index.j <-(((j - 1) * nbasis + 1):(j * nbasis))
 #'  diag(SigmaCov[index.j, index.j]) <- c(2, 1, 1/2, 1/4)
 #' }
-#' eta <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis), sigma = SigmaCov)
+#' eta.mat <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis), sigma = SigmaCov)
+#' eta <- array(eta.mat, dim = c(nbasis, n, p))
 #' # Generate functional data
-#' result <- fundata(n, p, nbasis, tt, eta)
-#' xc <- result$xc
+#' data <- fundata(n, p, nbasis, tt, 'fourier', eta)
+#' Xc <- data$Xc
 #' # Generate y
-#' P <- eigen(cov(eta))$vectors
-#' mfpca.scores <- eta %*% P
 #' error <- rnorm(n)
-#' y <- 3 * mfpca.scores[, 1] + error
+#' y <- 3 * data$mfpca.scores[, 1] + error
 #' # Run FCQS function
-#' output <- fcqs(xc, y, tt, nbasis, tau, dtau)
+#' output <- fcqs(Xc, y, tt, nbasis, tau, dtau)
 #' # Compare the true and estimated predictors
 #' mcorr(output$betax, mfpca.scores[, 1])
 
