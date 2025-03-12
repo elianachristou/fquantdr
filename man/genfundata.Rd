@@ -33,7 +33,10 @@ points.
 points.
 \item \code{mfpca.scores}: A matrix of FPCA scores.
 .       \item \code{xcoefs}: An array of the coefficients used for generating
-the functional data of dimension \code{nbasis * n * p}.
+the functional data of dimension \code{nbasis * n * p}.  Note that, if
+Fourier basis is used and \code{nbasis} is even number, then it is rounded
+up to the nearest odd integer to preserve the pairing of sine and cosine
+functions.
 \item \code{xcoefs.mat}: A matrix version of the coefficients with
 dimension \code{n * (p * nbasis)}.
 \item \code{basis}: The basis object used for functional data generation.
