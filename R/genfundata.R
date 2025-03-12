@@ -113,9 +113,9 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta = NULL) {
     nbasis <- basis$nbasis
   }
 
+  # If coefficients for the functional predictors are not provided
   if (is.null(eta)) {
-  # Step 3: Generate random coefficients for functional predictors, if not
-    # provided
+  # Step 3: Generate random coefficients for functional predictors
   xcoefs <- array(0, c(n, nbasis, p))
   if (basisname == 'fourier') {
     xcoefs[, 1, ] <- rnorm(n * p, 0, 2)
@@ -154,7 +154,12 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta = NULL) {
   }
   xcoefs <- aperm(xcoefs, c(2, 1, 3))
   } else {
-    xcoefs <- eta[, , ]
+    xcoefs <- eta
+    if (nbasis %% 2 == 0) {
+      xcoefs_extended <- array(0, c(nbasis + 1, n, p))
+      xcoefs_extended[2:(nbasis+1), , ] <- eta
+      xcoefs <- xcoefs_extended
+    }
   }
 
   # Step 5: Perform Functional Principal Component Analysis (FPCA)
