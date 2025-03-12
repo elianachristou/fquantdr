@@ -4,7 +4,7 @@
 \alias{fcqs}
 \title{Functional Central Quantile Subspace}
 \usage{
-fcqs(x, y, time, nbasis, tau = 0.5, dtau = NULL)
+fcqs(x, y, tt, nbasis, tau = 0.5, dtau = NULL)
 }
 \arguments{
 \item{x}{A 3-dimensional array (\code{n x nt x p}), where n is the number
@@ -13,6 +13,9 @@ of predictor variables.}
 
 \item{y}{A numeric vector of length \code{n} representing the scalar
 response variable.}
+
+\item{tt}{A numeric vector of length \code{nt} of time points at which
+the functional data is evaluated.}
 
 \item{nbasis}{The number of basis functions for smoothing the functional
 data.}
@@ -23,9 +26,6 @@ data.}
 the functional central quantile subspace.  It should be an integer
 between 1 and \code{p}.  If not provided, the function will return \code{p}
 directions}
-
-\item{tt}{A numeric vector of length \code{nt} of time points at which
-the functional data is evaluated.}
 }
 \value{
 \code{fcqs} computes the directions of the functional central quantile
@@ -55,7 +55,7 @@ p <- 5
 nbasis <- 4
 tau <- 0.1
 dtau <- 1
-time <- seq(0, 1, length.out = 101)
+tt <- seq(0, 1, length.out = 101)
 # Set the covariance matrix
 SigmaCov <- matrix(0, p * nbasis, p * nbasis)
 for (j in 1:p) {
@@ -64,7 +64,7 @@ for (j in 1:p) {
 }
 eta <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis), sigma = SigmaCov)
 # Generate functional data
-result <- fundata(n, p, nbasis, time, eta)
+result <- fundata(n, p, nbasis, tt, eta)
 xc <- result$xc
 # Generate y
 P <- eigen(cov(eta))$vectors
@@ -72,7 +72,7 @@ mfpca.scores <- eta \%*\% P
 error <- rnorm(n)
 y <- 3 * mfpca.scores[, 1] + error
 # Run FCQS function
-output <- fcqs(xc, y, time, nbasis, tau, dtau)
+output <- fcqs(xc, y, tt, nbasis, tau, dtau)
 # Compare the true and estimated predictors
 mcorr(output$betax, mfpca.scores[, 1])
 }

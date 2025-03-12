@@ -46,7 +46,7 @@
 #' nbasis <- 4
 #' tau <- 0.1
 #' dtau <- 1
-#' time <- seq(0, 1, length.out = 101)
+#' tt <- seq(0, 1, length.out = 101)
 #' # Set the covariance matrix
 #' SigmaCov <- matrix(0, p * nbasis, p * nbasis)
 #' for (j in 1:p) {
@@ -55,7 +55,7 @@
 #' }
 #' eta <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis), sigma = SigmaCov)
 #' # Generate functional data
-#' result <- fundata(n, p, nbasis, time, eta)
+#' result <- fundata(n, p, nbasis, tt, eta)
 #' xc <- result$xc
 #' # Generate y
 #' P <- eigen(cov(eta))$vectors
@@ -63,11 +63,11 @@
 #' error <- rnorm(n)
 #' y <- 3 * mfpca.scores[, 1] + error
 #' # Run FCQS function
-#' output <- fcqs(xc, y, time, nbasis, tau, dtau)
+#' output <- fcqs(xc, y, tt, nbasis, tau, dtau)
 #' # Compare the true and estimated predictors
 #' mcorr(output$betax, mfpca.scores[, 1])
 
-fcqs <- function(x, y, time, nbasis, tau = 0.5, dtau = NULL) {
+fcqs <- function(x, y, tt, nbasis, tau = 0.5, dtau = NULL) {
 
   # Check if y is a univariate response
   if (!is.vector(y)) {
@@ -90,7 +90,7 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, dtau = NULL) {
   }
 
   # Check if time is a univariate vector
-  if (!is.vector(time)) {
+  if (!is.vector(tt)) {
     stop("The input 'time' should be a vector.")
   }
 
@@ -98,7 +98,7 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, dtau = NULL) {
   if(dim(x)[1] != length(y)) {
     stop("y and x should have the same number of observations.")
   }
-  if (dim(x)[2] != length(time)) {
+  if (dim(x)[2] != length(tt)) {
     stop(paste("x and time should have the same number of time points."))
   }
 
@@ -152,7 +152,7 @@ fcqs <- function(x, y, time, nbasis, tau = 0.5, dtau = NULL) {
   xcoef_array <- array(0, c(nbasis, n, p))
   for (k in 1:p) {
     # Smooth functional predictor using given basis
-    xfdk <- fda::smooth.basis(time, t(x[, , k]), databasis)$fd
+    xfdk <- fda::smooth.basis(tt, t(x[, , k]), databasis)$fd
     # Center data and get coefficients
     xfdk <- fda::center.fd(xfdk)
     xk.coef <- t(xfdk$coefs)
