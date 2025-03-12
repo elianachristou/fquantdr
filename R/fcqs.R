@@ -8,14 +8,14 @@
 #' be linearly applied via the inner product to replace the infinite-dimensional
 #' functional predictors with a few finite predictors without losing important
 #' information on the conditional quantiles while maintaining a flexible
-#' nonparametric model. This methodology is introduced in Christou et al. (2024+).
+#' nonparametric model. This methodology is introduced in Christou et al. (2025+).
 #'
 #' @param x A 3-dimensional array (\code{n x nt x p}), where n is the number
 #'     of observations, nt is the number of time points, and p is the number
 #'     of predictor variables.
-#' @param y A numeric vector of length \code{n} representing the response
-#'     variable.
-#' @param time A numeric vector of length \code{nt} of time points at which
+#' @param y A numeric vector of length \code{n} representing the scalar
+#'     response variable.
+#' @param tt A numeric vector of length \code{nt} of time points at which
 #'     the functional data is evaluated.
 #' @param nbasis The number of basis functions for smoothing the functional
 #'     data.
@@ -27,13 +27,15 @@
 #'
 #' @return `fcqs` computes the directions of the functional central quantile
 #'      subspace (FCQS) and returns:
-#'      \item{betacoef}{The functional parameters that span the FCQS}
-#'      \item{betax}{The resulting sufficient predictor, calculated as the
-#'      inner product between `betacoef` and `x`.}
+#'      \item{betacoef}{A matrix of size \code{nbasis x dtau}, representing
+#'      the functional parameters that span the FCQS}
+#'      \item{betax}{A numeric vector of length \code{n}, representing the
+#'      sufficient predictor, calculated as the inner product between
+#'      `betacoef` and `x`.}
 #'
-#' @references Christou, E., Solea, E., Wang, S., and Song, J. (2024+) Sufficient
-#' Dimension Reduction for Conditional Quantiles for Functional Data.
-#' \emph{under review}.
+#' @references Christou, E., Solea, E., Wang, S., and Song, J. (2025+) Sufficient
+#' Dimension Reduction for the Conditional Quantiles of Functional Data.
+#' \emph{under revision}.
 #'
 #' @export
 #'

@@ -11,11 +11,8 @@ fcqs(x, y, time, nbasis, tau = 0.5, dtau = NULL)
 of observations, nt is the number of time points, and p is the number
 of predictor variables.}
 
-\item{y}{A numeric vector of length \code{n} representing the response
-variable.}
-
-\item{time}{A numeric vector of length \code{nt} of time points at which
-the functional data is evaluated.}
+\item{y}{A numeric vector of length \code{n} representing the scalar
+response variable.}
 
 \item{nbasis}{The number of basis functions for smoothing the functional
 data.}
@@ -26,13 +23,18 @@ data.}
 the functional central quantile subspace.  It should be an integer
 between 1 and \code{p}.  If not provided, the function will return \code{p}
 directions}
+
+\item{tt}{A numeric vector of length \code{nt} of time points at which
+the functional data is evaluated.}
 }
 \value{
 \code{fcqs} computes the directions of the functional central quantile
 subspace (FCQS) and returns:
-\item{betacoef}{The functional parameters that span the FCQS}
-\item{betax}{The resulting sufficient predictor, calculated as the
-inner product between \code{betacoef} and \code{x}.}
+\item{betacoef}{A matrix of size \code{nbasis x dtau}, representing
+the functional parameters that span the FCQS}
+\item{betax}{A numeric vector of length \code{n}, representing the
+sufficient predictor, calculated as the inner product between
+\code{betacoef} and \code{x}.}
 }
 \description{
 \code{fcqs} estimates the directions of the functional central quantile
@@ -44,7 +46,7 @@ central quantile subspace. These directions represent functions that can
 be linearly applied via the inner product to replace the infinite-dimensional
 functional predictors with a few finite predictors without losing important
 information on the conditional quantiles while maintaining a flexible
-nonparametric model. This methodology is introduced in Christou et al. (2024+).
+nonparametric model. This methodology is introduced in Christou et al. (2025+).
 }
 \examples{
 # Set the parameters
@@ -75,7 +77,7 @@ output <- fcqs(xc, y, time, nbasis, tau, dtau)
 mcorr(output$betax, mfpca.scores[, 1])
 }
 \references{
-Christou, E., Solea, E., Wang, S., and Song, J. (2024+) Sufficient
-Dimension Reduction for Conditional Quantiles for Functional Data.
-\emph{under review}.
+Christou, E., Solea, E., Wang, S., and Song, J. (2025+) Sufficient
+Dimension Reduction for the Conditional Quantiles of Functional Data.
+\emph{under revision}.
 }
