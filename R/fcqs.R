@@ -24,15 +24,15 @@
 #'      directions
 #' @param nbasis An integer specifying the number of basis functions for
 #'     functional smoothing.  Currently, the only option is to use B-spline
-#'     basis. Default value is 4.
+#'     basis and the default value is 4.
 #' @param norder An integer specifying the order of B-splines, which is one
 #'     higher than their degree.  The default of 4 gives cubic splines.
 #'
 #' @return `fcqs` computes the directions of the functional central quantile
 #'      subspace (FCQS) and returns:
-#'      \item{betacoef}{A matrix of size \code{nbasis x dtau}, representing
+#'      \item{ffun}{A matrix of size \code{nbasis x dtau}, representing
 #'      the functional parameters that span the FCQS}
-#'      \item{betax}{A numeric vector of length \code{n}, representing the
+#'      \item{betax}{A matrix of size \code{n x dtau}, representing the
 #'      sufficient predictor, calculated as the inner product between
 #'      `betacoef` and `x`.}
 #'
