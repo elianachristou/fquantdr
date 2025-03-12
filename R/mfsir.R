@@ -149,12 +149,8 @@ mfsir <- function(X, y, H, nbasis = 4, norder = 4) {
   }
 
   # Create a B-spline basis for smoothing
-  if (nbasis < 4) {
   databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis,
-                                         norder = nbasis)
-  } else {
-  databasis <- fda::create.bspline.basis(rangeval = c(0, 1), nbasis = nbasis)
-  }
+                                         norder = norder)
 
   # Calculate the coefficients
   xfd.coef <- numeric()
