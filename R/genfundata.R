@@ -182,12 +182,6 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta = NULL) {
                                    nrow = n, byrow = T)
   }
 
-  #if (!is.null(eta)) {
-    #if (nbasis_old %% 2 == 0) {
-    #xcoefs <- xcoefs[-1, , ]
-    #}
-  #}
-
   # Create the xcoefs as a n x (p * nbasis) matrix
   xcoefs.mat <- numeric()
   for (k in 1:p) {
