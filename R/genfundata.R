@@ -123,30 +123,30 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta = NULL) {
   # Step 3: Generate random coefficients for functional predictors
   xcoefs <- array(0, c(n, nbasis, p))
   if (basisname == 'fourier') {
-    xcoefs[, 1, ] <- rnorm(n * p, 0, 2)
-    xcoefs[, 2, ] <- rnorm(n * p, 0, 1 / 4)
-    xcoefs[, 3, ] <- rnorm(n * p, 0, 1 / 2)
-    xcoefs[, 4, ] <- rnorm(n * p, 0, 1 / 4)
+    xcoefs[, 1, ] <- stats::rnorm(n * p, 0, 2)
+    xcoefs[, 2, ] <- stats::rnorm(n * p, 0, 1 / 4)
+    xcoefs[, 3, ] <- stats::rnorm(n * p, 0, 1 / 2)
+    xcoefs[, 4, ] <- stats::rnorm(n * p, 0, 1 / 4)
     if (nbasis >= 5) {
       for (i in 5:nbasis){
-        xcoefs[, i, ] <- rnorm(n * p, 0, 1 / 2)
+        xcoefs[, i, ] <- stats::rnorm(n * p, 0, 1 / 2)
       }
     }
   } else if (basisname == 'bspline') {
-    xcoefs[, 1, ] <- runif(n * p, -4, 4)
-    xcoefs[, 2, ] <- runif(n * p, -1, 1)
-    xcoefs[, 3, ] <- runif(n * p, -1 / 2, 1 / 2)
-    xcoefs[, 4, ] <- runif(n * p, -1 / 2, 1 / 2)
+    xcoefs[, 1, ] <- stats::runif(n * p, -4, 4)
+    xcoefs[, 2, ] <- stats::runif(n * p, -1, 1)
+    xcoefs[, 3, ] <- stats::runif(n * p, -1 / 2, 1 / 2)
+    xcoefs[, 4, ] <- stats::runif(n * p, -1 / 2, 1 / 2)
     if (nbasis >= 5) {
       for (j in 5:nbasis) {
-        xcoefs[, j, ] <- runif(n * p, -2, 2)
+        xcoefs[, j, ] <- stats::runif(n * p, -2, 2)
       }
     }
 
     # Normalize B-spline coefficients
     for (i in 1:p) {
       Xfd <- fda::fd(t(xcoefs[, , i]), basis)
-      fd.sd <- sd(diag(fda::inprod(Xfd, Xfd)))
+      fd.sd <- stats::sd(diag(fda::inprod(Xfd, Xfd)))
       xcoefs[, , i] <- xcoefs[, , i] / fd.sd
     }
   }
