@@ -110,8 +110,7 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta = NULL) {
     basis <- fda::create.bspline.basis(c(0, 1), nbasis = nbasis)
   } else if (basisname == 'fourier') {
     basis <- fda::create.fourier.basis(c(0, 1), nbasis = nbasis)
-    nbasis_old <- nbasis
-    nbasis <- basis$nbasis
+    nbasis_new <- basis$nbasis
   }
 
   # If coefficients for the functional predictors are not provided
@@ -156,9 +155,9 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta = NULL) {
   xcoefs <- aperm(xcoefs, c(2, 1, 3))
   } else {
     xcoefs <- eta
-    if (nbasis_old %% 2 == 0) {
-      xcoefs_extended <- array(0, c(nbasis, n, p))
-      xcoefs_extended[2:nbasis, , ] <- eta
+    if (nbasis %% 2 == 0) {
+      xcoefs_extended <- array(0, c(nbasis_new, n, p))
+      xcoefs_extended[2:nbasis_new, , ] <- eta
       xcoefs <- xcoefs_extended
     }
   }
@@ -176,7 +175,7 @@ genfundata <- function(n, p, nbasis, tt, basisname = 'bspline', eta = NULL) {
   }
 
   if (!is.null(eta)) {
-    if (nbasis_old %% 2 == 0) {
+    if (nbasis %% 2 == 0) {
     xcoefs <- xcoefs[-1, , ]
     }
   }
