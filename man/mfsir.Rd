@@ -4,7 +4,7 @@
 \alias{mfsir}
 \title{Functional Sliced Inverse Regression}
 \usage{
-mfsir(X, y, H, nbasis, norder = 4)
+mfsir(X, y, H, nbasis = 4, norder = 4)
 }
 \arguments{
 \item{X}{A 3-dimensional array (\code{n x nt x p}), where n is the number
@@ -18,7 +18,8 @@ variable.}
 must be at least 2 and less than \code{n}.}
 
 \item{nbasis}{An integer specifying the number of basis functions for functional
-smoothing.  Currently, the only option is to use B-spline basis.}
+smoothing.  Currently, the only option is to use B-spline basis. Default
+value is 4.}
 
 \item{norder}{An integer specifying the order of B-splines, which is one
 higher than their degree.  The default of 4 gives cubic splines.}

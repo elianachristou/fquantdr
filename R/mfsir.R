@@ -43,7 +43,8 @@
 #' @param H An integer specifying the number of slices for the response variable;
 #'     must be at least 2 and less than \code{n}.
 #' @param nbasis An integer specifying the number of basis functions for functional
-#'     smoothing.  Currently, the only option is to use B-spline basis.
+#'     smoothing.  Currently, the only option is to use B-spline basis. Default
+#'     value is 4.
 #' @param norder An integer specifying the order of B-splines, which is one
 #'     higher than their degree.  The default of 4 gives cubic splines.
 #'
@@ -93,7 +94,7 @@
 #' mcorr(result$sufpred[, 1], data$mfpca.scores[, 1])
 #'
 #' @export
-mfsir <- function(X, y, H, nbasis, norder = 4) {
+mfsir <- function(X, y, H, nbasis = 4, norder = 4) {
 
   # Check if X is a 3-dimensional array
   if (length(dim(X)) != 3) {
