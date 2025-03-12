@@ -44,6 +44,8 @@
 #'     must be at least 2 and less than \code{n}.
 #' @param nbasis An integer specifying the number of basis functions for functional
 #'     smoothing.  Currently, the only option is to use B-spline basis.
+#' @param norder An integer specifying the order of B-splines, which is one
+#'     higher than their degree.  The default of 4 gives cubic splines.
 #'
 #' @return \code{mfsir} computes the new sufficient predictors and returns
 #' \item{xcoef}{A \code{n x (p * nbasis)} matrix of smoothed and centered
@@ -69,30 +71,29 @@
 #' # set the parameters
 #' n <- 100
 #' p <- 5
-#' nt <- 101
+#' nt <- 100
 #' nbasis <- 4
 #' H <- 10
-#' time <- seq(0, 1, length.out = nt)
-#' eta <- matrix(stats::rnorm(n * p * nbasis), nrow = n, ncol = p * nbasis)
+#' tt <- seq(0, 1, length.out = nt)
+#' eta.mat <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis))
+#' eta <- array(eta.mat, dim = c(nbasis, n, p))
 #' # Generate the functional data
-#' result <- fundata(n, p, nbasis, time, eta)
-#' Xc <- result$xc
-#' P <- eigen(stats::cov(eta))$vectors
-#' mfpca.scores <- eta %*% P
+#' data <- fundata(n, p, nbasis, tt, 'fourier', eta)
+#' Xc <- data$Xc
 #' # Generate the model
 #' error <- rnorm(n)
-#' y <- 3 * mfpca.scores[, 1] + error
+#' y <- 3 * data$mfpca.scores[, 1] + error
 #' # Run mfsir
 #' result <- mfsir(Xc, y, H, nbasis)
 #' result$sufpred
 #' # Plot the first sufficient predictor against the true one
-#' plot(result$sufpred[, 1], mfpca.scores[, 1], xlab = 'First
+#' plot(result$sufpred[, 1], data$mfpca.scores[, 1], xlab = 'First
 #'     Sufficient Predictor', ylab = 'First true Predictor', pch = 20)
 #' # Calculate the correlation between the estimated and true predictors
-#' mcorr(result$sufpred[, 1], mfpca.scores[, 1])
+#' mcorr(result$sufpred[, 1], data$mfpca.scores[, 1])
 #'
 #' @export
-mfsir <- function(X, y, H, nbasis) {
+mfsir <- function(X, y, H, nbasis, norder = 4) {
 
   # Check if X is a 3-dimensional array
   if (length(dim(X)) != 3) {
@@ -127,6 +128,11 @@ mfsir <- function(X, y, H, nbasis) {
   # Check if nbasis is a positive integer
   if (nbasis <= 0 | nbasis != floor(nbasis)) {
     stop("nbasis must be a positive integer.")
+  }
+
+  if (norder > nbasis) {
+    stop(paste("nbasis must be at least norder; nbasis = ",nbasis, ",
+               norder = ",norder, ""))
   }
 
   # define the parameters
