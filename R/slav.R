@@ -102,7 +102,7 @@ slav <- function(x, ydis, H) {
   yunit <- 1:H
 
   # Initialize matrix to store group means
-  xgy <- matrix(0, row = H, ncol = p)
+  xgy <- matrix(0, nrow = H, ncol = p)
 
   # Compute the mean of x for each group defined by yunit
   for(i in yunit) {
