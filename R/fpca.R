@@ -33,7 +33,7 @@
 #' eta <- array(eta.mat, dim = c(nbasis, n, p))
 #' # Generate the functional data
 #' data <- fundata(n, p, nbasis, tt, 'bspline', eta)
-#' pca.out <- fpca(list(coef = data$xcoefs, basis = data$basis), 'bspline')
+#' pca.out <- fpca(list(coef = data$xcoefs, basis = data$basis))
 #' pca.out$eval
 #' mfpca.scores <- pca.out$pred
 #'
