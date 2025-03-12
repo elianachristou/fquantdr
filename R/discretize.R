@@ -69,7 +69,7 @@ discretize <- function(y, H) {
   }
 
   # Determine slice boundaries using quantiles
-  quantiles <- quantile(y, probs = seq(0, 1, length.out = H + 1), na.rm = TRUE)
+  quantiles <- stats::quantile(y, probs = seq(0, 1, length.out = H + 1), na.rm = TRUE)
 
   # Assign each value to a slice based on quantile cutoffs
   y_discrete <- cut(y, breaks = quantiles, labels = FALSE, include.lowest = TRUE)
