@@ -54,6 +54,6 @@ Suggests:
     mvtnorm,
     rmarkdown,
     splines,
-    testthat (>= 3.0.0)
+    testthat 
 VignetteBuilder: knitr
 Config/testthat/edition: 3
