@@ -13,9 +13,7 @@
 #' @param ftn A functional data object containing coefficients and basis
 #'     information.  The coefficients is a 3D array (nbasis x n x p), where `nbasis`
 #'     is the number of basis, `n` is the sample size, and `p` is the number of
-#'     functional variables.
-#' @param basisname A character string specifying the type of basis function to use.
-#'     Options are 'bspline' or 'fourier'.
+#'     functional variables.  For the basis, options are 'bspline' or 'fourier'.
 #'
 #' @return \code{fpca} returns a list containing:
 #'    \itemize{
@@ -40,7 +38,7 @@
 #' mfpca.scores <- pca.out$pred
 #'
 #' @export
-fpca <- function(ftn, basisname) {
+fpca <- function(ftn) {
 
   # Check if ftn is a valid functional object
   if (!("coef" %in% names(ftn)) || !("basis" %in% names(ftn))) {
@@ -48,7 +46,7 @@ fpca <- function(ftn, basisname) {
   }
 
   # Check if basisname is valid
-  if (!basisname %in% c("bspline", "fourier")) {
+  if (!ftn$basis$type %in% c("bspline", "fourier")) {
     stop("'basisname' must be either 'bspline' or 'fourier'.")
   }
 
@@ -73,6 +71,7 @@ fpca <- function(ftn, basisname) {
 
   # Extract basis information from input
   basis <- ftn$basis
+  basisname <- basis$type
 
   # Generate basis penalty matrix based on specified basis type
   if(basisname == 'bspline') {
