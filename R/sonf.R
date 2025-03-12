@@ -33,8 +33,10 @@
 #' nbasis <- 4
 #' nt <- 100
 #' tt <- seq(0, 1, length.out = nt)
+#' eta.mat <- mvtnorm::rmvnorm(n, mean = rep(0, p * nbasis))
+#' eta <- array(eta.mat, dim = c(nbasis, n, p))
 #' # Generate the functional data
-#' fd.data <- genfundata(n, p, nbasis, tt, 'bspline')
+#' fd.data <- fundata(n, p, nbasis, tt, 'bspline', eta)
 #' # Prepare the fd object
 #' x.fd <- fda::fd(fd.data$xcoefs, fd.data$basis)
 #' # Generate the model
