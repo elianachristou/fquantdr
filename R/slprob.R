@@ -9,7 +9,7 @@
 #' \code{H}.  The function returns an \code{H}-dimensional vector containing
 #' the proportion of observations in each slice.
 #'
-#' @param ydis A numeric vector of discrete labells indicating the slice
+#' @param ydis A numeric vector of discrete labels indicating the slice
 #'     assignment for each observation.  Typically obtained using the
 #'     \code{\link{discretize}} function.
 #' @param H A positive integer specifying the total number of slices.
